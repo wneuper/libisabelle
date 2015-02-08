@@ -5,6 +5,6 @@ env:
   - ISABELLE_HOME=./Isabelle2014
 before_install:
   - wget http://isabelle.in.tum.de/dist/Isabelle2014_linux.tar.gz -O /tmp/Isabelle.tar.gz
-  - tar xvzf /tmp/Isabelle.tar.gz
+  - tar xzf /tmp/Isabelle.tar.gz
 install:
-  - ./Isabelle2014/bin/isabelle build -d examples/src/main/isabelle/Hello_PIDE -bvl
+  - ./Isabelle2014/bin/isabelle build -d examples/src/main/isabelle/Hello_PIDE -bvl Hello_PIDE
