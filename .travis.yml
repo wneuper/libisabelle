@@ -1,10 +1,12 @@
 language: scala
-scala:
-  - 2.11.5
+sudo: false
 env:
   - ISABELLE_HOME=./Isabelle2014
 before_install:
   - wget http://isabelle.in.tum.de/dist/Isabelle2014_linux.tar.gz -O /tmp/Isabelle.tar.gz
   - tar xzf /tmp/Isabelle.tar.gz
 install:
-  - ./Isabelle2014/bin/isabelle build -d examples/src/main/isabelle/Hello_PIDE -bvl Hello_PIDE
+  - ./Isabelle2014/bin/isabelle build -d examples/src/main/isabelle/Hello_PIDE -bv Hello_PIDE
+script:
+  - sbt test:compile
+  - sbt test
