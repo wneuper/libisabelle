@@ -1,11 +1,11 @@
 language: scala
 env:
-  - ISABELLE_HOME=./Isabelle2014
+  - ISABELLE_HOME=./contrib/Isabelle2014
 before_install:
-  - wget http://isabelle.in.tum.de/dist/Isabelle2014_linux.tar.gz -O /tmp/Isabelle.tar.gz
-  - tar xzf /tmp/Isabelle.tar.gz
+  - mkdir -p contrib
+  - curl -s http://www21.in.tum.de/~hupel/libisabelle/Isabelle2014_HOL_linux_x86-64.tar.gz | tar xzf - -C contrib
 install:
-  - ./Isabelle2014/bin/isabelle build -d examples/src/main/isabelle/Hello_PIDE -bv Hello_PIDE
+  - "$ISABELLE_HOME"/bin/isabelle build -d . -bv Hello_PIDE
 script:
   - sbt test:compile
   - sbt test
