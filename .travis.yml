@@ -1,4 +1,5 @@
 language: scala
+sudo: false
 env:
   - ISABELLE_HOME=./contrib/Isabelle2014
 before_install:
