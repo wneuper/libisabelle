@@ -1,4 +1,9 @@
-protocol for Lars' mail:
+#######################################################################
+
+for build see libisabelle/README.md
+              https://github.com/larsrh/libisabelle ... Setup + Running the tests
+
+this is outdated now -------------------------------------------------
 
 1) Build an image of "Hello_PIDE" into ~/.isabelle
    libisabelle$ /usr/local/Isabelle2014/bin/isabelle build -d . -bv Hello_PIDE
