@@ -6,6 +6,7 @@ $ git pull
 $ git reset --hard  # Reset tracked files to match the most recent commit
 $ git clean -f      # Remove untracked files
 $ git commit -m "xxxxx"
+$ git push
 
 # https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/
 $ git pull https://github.com/larsrh/libisabelle.git

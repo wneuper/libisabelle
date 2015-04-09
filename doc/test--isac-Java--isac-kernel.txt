@@ -7,6 +7,8 @@ stdout: isac-kernel --> isac-java: XML created by "writeln" from SML.
 There are multiple calls with the same arguments for technical reasons;
 these are mentioned without XML from stdout.
 
+theory TTY_Communication imports Isac begin 
+
 ML {* CalcTree [(["equality (x+1=(2::real))", "solveFor x", "solutions L"],("Test",["sqroot-test","univariate","equation","test"],["Test","squ-equ-test-subpbl1"]))]; *}
  @@@@@begin@@@@@
   1 

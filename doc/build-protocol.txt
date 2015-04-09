@@ -1,8 +1,94 @@
 #######################################################################
-
+WN150409
 for build see libisabelle/README.md
               https://github.com/larsrh/libisabelle ... Setup + Running the tests
 
+protocol:
+#######################################################################
+
+wneuper@ProBook:~/proto4/libisabelle$ /usr/local/Isabelle2014/bin/isabelle build -D . -bv
+Started at Thu Apr  9 09:43:00 CEST 2015 (polyml-5.5.2_x86-linux on ProBook)
+ISABELLE_BUILD_OPTIONS=""
+
+ML_PLATFORM="x86-linux"
+ML_HOME="/usr/local/Isabelle2014/contrib/polyml-5.5.2-1/x86-linux"
+ML_SYSTEM="polyml-5.5.2"
+ML_OPTIONS="-H 500"
+
+Session Pure/Pure
+Session Unsorted/Protocol
+Finished at Thu Apr  9 09:43:07 CEST 2015
+0:00:07 elapsed time, 0:00:05 cpu time, factor 0.71
+wneuper@ProBook:~/proto4/libisabelle$ 
+
+#######################################################################
+FIRST TIME:
+
+wneuper@ProBook:~/proto4/libisabelle$ ./sbt
+[info] Loading project definition from /home/wneuper/proto4/libisabelle/project
+[info] Updating {file:/home/wneuper/proto4/libisabelle/project/}libisabelle-build...
+[info] Resolving org.fusesource.jansi#jansi;1.4 ...
+[info] Done updating.
+[info] Compiling 1 Scala source to /home/wneuper/proto4/libisabelle/project/target/scala-2.10/sbt-0.13/classes...
+[info] Set current project to root (in build file:/home/wneuper/proto4/libisabelle/)
+> 
+> test
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}root...
+[info] Resolving org.scala-lang#scala-library;2.11.6 ...
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}pide-core...
+[info] Resolving org.sonatype.oss#oss-parent;7 ...
+[info] downloading https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.6/scala-library-2.11.6.jar ...
+[info] 	[SUCCESSFUL ] org.scala-lang#scala-library;2.11.6!scala-library.jar (3925ms)
+[info] downloading https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.6/scala-compiler-2.11.6.jar ...
+[info] 	[SUCCESSFUL ] org.scala-lang#scala-compiler;2.11.6!scala-compiler.jar (6720ms)
+[info] downloading https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.6/scala-reflect-2.11.6.jar ...
+[info] 	[SUCCESSFUL ] org.scala-lang#scala-reflect;2.11.6!scala-reflect.jar (2570ms)
+[info] downloading https://repo1.maven.org/maven2/jline/jline/2.12.1/jline-2.12.1.jar ...
+[info] 	[SUCCESSFUL ] jline#jline;2.12.1!jline.jar (382ms)
+[info] Done updating.
+[info] Resolving jline#jline;2.12.1 ...
+[info] Done updating.
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}libisabelle...
+[info] Resolving org.apache.commons#commons-compress;1.9 ...
+[info] Compiling 64 Scala sources to /home/wneuper/proto4/libisabelle/pide-core/target/scala-2.11/classes...
+[info] Resolving jline#jline;2.12.1 ...
+[info] downloading https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.9/commons-compress-1.9.jar ...
+[info] 	[SUCCESSFUL ] org.apache.commons#commons-compress;1.9!commons-compress.jar (374ms)
+[info] downloading https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar ...
+[info] 	[SUCCESSFUL ] org.apache.commons#commons-lang3;3.3.2!commons-lang3.jar (351ms)
+[info] Done updating.
+[info] 'compiler-interface' not yet compiled for Scala 2.11.6. Compiling...
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}examples...
+[info] Resolving jline#jline;2.12.1 ...
+[info] Done updating.
+./sbt[info]   Compilation completed in 15.67 s
+
+[warn] /home/wneuper/proto4/libisabelle/pide-core/src/main/scala/term_xml.scala:55: match may not be exhaustive.
+[warn] It would fail on the following input: (List(_), _)
+[warn]         { case (Nil, a) => val (b, c) = pair(term, term)(a); App(b, c) }))
+[warn]         ^
+:
+:
+#######################################################################
+SECOND TIME + test (not successful)
+
+wneuper@ProBook:~/proto4/libisabelle$ ./sbt
+[info] Loading project definition from /home/wneuper/proto4/libisabelle/project
+[info] Set current project to root (in build file:/home/wneuper/proto4/libisabelle/)
+> 
+> test
+[info] Compiling 1 Java source to /home/wneuper/proto4/libisabelle/examples/target/scala-2.11/classes...
+[error] /home/wneuper/proto4/libisabelle/examples/src/main/java/Hello_PIDE.java:4: error: cannot find symbol
+[error] import isabelle.XML.Encode.*;    //ERROR
+[error]                    ^
+[error]   symbol:   class Encode
+[error]   location: class XML
+
+
+#######################################################################
+#######################################################################
+#######################################################################
+BEFORE WN150409...
 this is outdated now -------------------------------------------------
 
 1) Build an image of "Hello_PIDE" into ~/.isabelle
