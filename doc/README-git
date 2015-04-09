@@ -1,5 +1,7 @@
 README-git
 
+$ git clone https://github.com/larsrh/libisabelle.git
+
 $ git status
 $ gitg –all &
 $ git pull

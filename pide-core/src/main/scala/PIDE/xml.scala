@@ -328,9 +328,7 @@ object XML
     {
       case Nil => ""
       case List(XML.Text(s)) => s
-      case ts => 
-        {println("###tracing val string: ts = toString...???" /*+ toString(ts)*/ );
-         throw new XML_Body(ts)}
+      case ts => throw new XML_Body(ts)
     }
 
     val long: T[Long] = (x => long_atom(string(x)))
