@@ -1,0 +1,31 @@
+libisabelle $ grep -r "XML\.Decode" *
+
+pide-core/src/main/scala/Thy/present.scala:      import XML.Decode._
+
+pide-core/src/main/scala/General/graph.scala:  def decode[Key, A](key: XML.Decode.T[Key], info: XML.Decode.T[A])(implicit ord: Ordering[Key])
+pide-core/src/main/scala/General/graph.scala:      : XML.Decode.T[Graph[Key, A]] =
+pide-core/src/main/scala/General/graph.scala:      import XML.Decode._
+
+pide-core/src/main/scala/General/completion.scala:            import XML.Decode._
+pide-core/src/main/scala/General/completion.scala:                import XML.Decode._
+pide-core/src/main/scala/General/symbol.scala:  def decode_string: XML.Decode.T[String] = (x => decode(XML.Decode.string(x)))
+
+pide-core/src/main/scala/Tools/build.scala:    def parse(text: String): Properties.T = XML.Decode.properties(YXML.parse_body(text))
+pide-core/src/main/scala/Tools/print_operation.scala:        import XML.Decode._
+
+pide-core/src/main/scala/PIDE/protocol.scala:        import XML.Decode._
+pide-core/src/main/scala/PIDE/protocol.scala:        import XML.Decode._
+
+pide-core/src/main/scala/term_xml.scala:    import XML.Decode._
+
+libisabelle/src/main/scala/System.scala:  private val decodeResponse: XML.Decode.T[Try[XML.Body]] =
+libisabelle/src/main/scala/System.scala:    XML.Decode.variant(List(
+libisabelle/src/main/scala/XMLCodec.scala:  private def fromIsabelle[A](enc: XML.Encode.T[A], dec: XML.Decode.T[A]): XMLCodec[A] =
+libisabelle/src/main/scala/XMLCodec.scala:  val String: XMLCodec[String] = fromIsabelle(XML.Encode.string, XML.Decode.string)
+libisabelle/src/main/isabelle/Protocol/codec.ML:        Success (XML.Decode.int_atom i, tree)
+libisabelle/src/main/isabelle/Protocol/codec.ML:val int = from_lib (XML.Encode.int, XML.Decode.int) "int"
+libisabelle/src/main/isabelle/Protocol/codec.ML:val string = from_lib (XML.Encode.string, XML.Decode.string) "string"
+
+wneuper@ProBook:/usr/local/Isabelle2014/src$ 
+
+
