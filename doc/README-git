@@ -10,14 +10,16 @@ $ git clean -f      # Remove untracked files
 $ git commit -am "xxxxx"
 $ git push
 
-# https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/
-$ git pull https://github.com/larsrh/libisabelle.git
-# this makes a merge, conflicts to be handled separately in editor.
-# SEE http://git-scm.com/book/en/v2/Git-Basics-Undoing-Things
-#     http://www.gitguys.com/topics/merging-with-a-conflict-conflicts-and-resolutions
-# but then there might be: 
-#   U  file
-#   gitg –all: Unstaged changes ...
+# better MERGE manually from git clone https://github.com/larsrh/libisabelle.git
+# instead of ...
+## https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/
+#$ git pull https://github.com/larsrh/libisabelle.git
+## this makes a merge, conflicts to be handled separately in editor.
+## SEE http://git-scm.com/book/en/v2/Git-Basics-Undoing-Things
+##     http://www.gitguys.com/topics/merging-with-a-conflict-conflicts-and-resolutions
+## but then there might be: 
+##   U  file
+##   gitg –all: Unstaged changes ...
 $ git reset
 $ git commit -am "xxxxx"
 

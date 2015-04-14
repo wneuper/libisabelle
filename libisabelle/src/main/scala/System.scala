@@ -9,13 +9,13 @@ object System {
 
   // public interface
 
-  case class ProverException(msg: String) extends RuntimeException(msg)
+  case class ProverException(msg: String, body: XML.Body) extends RuntimeException(msg)
 
   def instance(sessionPath: Option[java.io.File], sessionName: String)(implicit ec: ExecutionContext): Future[System] = {
     val path = sessionPath.map(f => Path.explode(f.getAbsolutePath()))
     val session = startSession(path, sessionName)
 
-    session.map(new System(Options.init(), _, path.getOrElse(Path.current)))
+    session.map(new System(Options.init(), _))
   }
 
 
@@ -36,7 +36,7 @@ object System {
   private def mkPhaseListener(session: Session, phase: Session.Phase)(implicit ec: ExecutionContext): Future[Unit] = {
     val promise = Promise[Unit]
     val consumer = Session.Consumer[Session.Phase]("phase-listener") {
-      case `phase` => promise.trySuccess(())
+      case `phase` => promise.trySuccess(()); ()
       case _ =>
     }
     session.phase_changed += consumer
@@ -70,10 +70,10 @@ object System {
 
 }
 
-class System private(options: Options, session: Session, root: Path)(implicit ec: ExecutionContext) { self =>
+class System private(options: Options, session: Session)(implicit ec: ExecutionContext) { self =>
 
   @volatile private var count = 0L
-  @volatile private var pending = Map.empty[Long, Promise[Prover.Protocol_Output]]
+  @volatile private var pending = Map.empty[Long, Promise[XML.Tree]]
 
   session.all_messages += Session.Consumer[Prover.Message]("firehose") {
     case msg: Prover.Protocol_Output =>
@@ -82,7 +82,7 @@ class System private(options: Options, session: Session, root: Path)(implicit ec
         case _ => None
       }) foreach { id =>
         self.synchronized {
-          pending(id).success(msg)
+          pending(id).success(YXML.parse(msg.text))
           pending -= id
         }
       }
@@ -96,30 +96,20 @@ class System private(options: Options, session: Session, root: Path)(implicit ec
     future
   }
 
-  private def withRequest(f: => Unit): Future[Prover.Protocol_Output] = synchronized {
-    val promise = Promise[Prover.Protocol_Output]
+  private def withRequest(f: => Unit): Future[XML.Tree] = synchronized {
+    val promise = Promise[XML.Tree]
     pending += (count -> promise)
     f
     count += 1
     promise.future
   }
 
+  private val Ok = new Properties.Boolean("ok")
 
-  private val decodeResponse: XML.Decode.T[Try[XML.Body]] =
-    XML.Decode.variant(List(
-      { case (List(), a) => Success(a) },
-      { case (List(), exn) => Failure(System.ProverException(XML.content(exn))) }
-    ))
-
-  def invokeRaw(name: String, args: XML.Body*): Future[XML.Body] =
+  def invoke[I, O](operation: Operation[I, O])(arg: I): Future[Result[O]] =
     withRequest {
-      val args0 = List(count.toString, name) ::: args.toList.map(YXML.string_of_body)
+      val args0 = List(count.toString, operation.name, YXML.string_of_tree(operation.encode(arg)))
       session.protocol_command("libisabelle", args0: _*)
-    } flatMap { msg =>
-      Future.fromTry(decodeResponse(YXML.parse_body(msg.text)))
-    }
-
-  def invoke[I, O](operation: Operation[I, O])(arg: I): Future[Either[XML.Error, O]] =
-    invokeRaw(operation.name, operation.toProver(arg): _*).map(operation.fromProver)
+    } map { operation.decode }
 
 }

@@ -10,7 +10,7 @@ Isabelle2014                   libisabelle/pide-core/src/main
  ~~/src/Pure/ML                //missing
  ~~/src/Pure/ML-Systems        //missing
  ~~/src/Pure/PIDE              present     26      12      24
-                 /xml.scala ==
+             PIDE/xml.scala == ...
  ~~/src/Pure/Proof             //missing
  ~~/src/Pure/Syntax            //missing
  ~~/src/Pure/System            present     19      10       9
