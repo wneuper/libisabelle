@@ -23,7 +23,7 @@ $ tar xzf ~/downloads/Isabelle2014_linux.tar.gz
 $ export ISABELLE_HOME=/usr/local/Isabelle2014
 # build required session
 $ cd ~/libisabelle
-$ $/usr/local/Isabelle2014/bin/isabelle build -D . -bv
+$ /usr/local/Isabelle2014/bin/isabelle build -D . -bv
 ```
 
 Instructions for other platforms can be found in the [installation guide](http://isabelle.in.tum.de/installation.html).
