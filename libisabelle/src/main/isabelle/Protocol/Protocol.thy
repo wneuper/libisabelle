@@ -81,6 +81,16 @@ operation_setup hello = \<open>
    to_lib = Codec.string,
    action = (fn data => "Hello " ^ data)}\<close>
 
+operation_setup teststr = \<open>
+  {from_lib = Codec.string,
+   to_lib = Codec.string,
+   action = (fn data => "teststr returns " ^ data)}\<close>
+
+operation_setup testint = \<open>
+  {from_lib = Codec.int,
+   to_lib = Codec.int,
+   action = (fn data => 10 + data)}\<close>
+
 operation_setup use_thys = \<open>
   {from_lib = Codec.list Codec.string,
    to_lib = Codec.unit,
