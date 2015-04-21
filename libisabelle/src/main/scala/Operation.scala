@@ -11,7 +11,7 @@ object Operation {
 
   val Hello = implicitly[String, String]("hello")
   val Teststr = implicitly[String, String]("teststr")
-  val Iterator = implicitly[Int, XML.tree]("iterator")
+  //val Iterator = implicitly[Int, XML.tree]("iterator")
   val UseThys = implicitly[List[String], Unit]("use_thys")
 
   protected[isabelle] val UseThys_Java =
