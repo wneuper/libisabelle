@@ -1,21 +1,17 @@
 import java.io.File;
 import java.util.Arrays;
 import edu.tum.cs.isabelle.japi.*;
-//import isabelle.XML.Encode.*;    //ERROR
 
 public class Hello_PIDE {
 
   public static void main(String args[]) {
+     
+	System.out.println("Hello I'm Hello_PIDE!");
+
     JSystem sys = JSystem.instance(new File("."), "Protocol");
-    System.out.println(sys.invoke(Operations.HELLO, "world"));
-//WAS    JSystem sys = JSystem.instance(new File("."), "Hello_PIDE");
-//WAS    System.out.println(sys.sendCommand("hello", Arrays.asList("world")));
-//    System.out.println("--- test_1:");
-//    System.out.println(sys.sendCommand("test_1", Arrays.asList(Integer.toString(111))));
-//    System.out.println("--- test_2:");
-//    System.out.println(sys.sendCommandXML("test_2", Arrays.asList(isabelle.XML$.Encode$.int_().apply(222) ) ) );
-//    System.out.println("--- Iterator:");
-//    //rm ERROR: System.out.println(sys.sendCommandXML("Iterator", Arrays.asList(Integer.toString(1))));
+    System.out.println(sys.invoke(Operations.HELLO, "europa"));
+    System.out.println(sys.invoke(Operations.TESTSTR, "xxx"));
+    System.out.println(sys.invoke(Operations.TESTINT, 1));
     sys.dispose();
   }
 

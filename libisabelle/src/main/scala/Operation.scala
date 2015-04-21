@@ -10,6 +10,8 @@ object Operation {
     Operation(name, Codec[I], Codec[O])
 
   val Hello = implicitly[String, String]("hello")
+  val Teststr = implicitly[String, String]("teststr")
+  val Testint = implicitly[Int, Int]("testint")
   val UseThys = implicitly[List[String], Unit]("use_thys")
 
   protected[isabelle] val UseThys_Java =
