@@ -86,10 +86,17 @@ operation_setup teststr = \<open>
    to_lib = Codec.string,
    action = (fn data => "teststr returns " ^ data)}\<close>
 
-operation_setup testint = \<open>
+operation_setup iterator = \<open>
   {from_lib = Codec.int,
-   to_lib = Codec.int,
-   action = (fn data => 10 + data)}\<close>
+   to_lib = Codec.tree,
+   action = (fn calcid => 
+	 let 
+	   val _ = calcid (* work done in Isabelle/Isac *)
+	   val result =   (* see doc/test--isac-java--isac-kernel.txt 1st example *)
+	     XML.Elem (("CALCTREE", []),
+  	       [XML.Elem (("CALCID", []), 
+  	         [XML.Text (string_of_int calcid)])])
+	 in result end)}\<close>
 
 operation_setup use_thys = \<open>
   {from_lib = Codec.list Codec.string,

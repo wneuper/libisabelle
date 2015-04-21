@@ -16,8 +16,8 @@ public class Operations {
   public static final Operation<String, String> TESTSTR =
     Operation$.MODULE$.Teststr();
   
-  public static final Operation<String, String> TESTINT =
-    Operation$.MODULE$.Testint();
+  public static final Operation<Int, XML.tree> ITERATOR =
+    Operation$.MODULE$.Iterator();
 
   public static final Operation<java.util.List<String>, Void> USE_THYS =
     Operation$.MODULE$.UseThys_Java();
