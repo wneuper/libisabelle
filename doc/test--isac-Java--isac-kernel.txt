@@ -50,7 +50,8 @@ ML {* moveActiveRoot 1; *}
 #I: (int, ICalcIterator, ICalcIterator, int, string)
 #O: (int, FormHeadsContainer)
     isac-java/src/java/isac/util/formulae/FormHeadsContainer.java, is a list of ...
-    isac-java/src/java/isac/util/formulae/CalcFormula.java
+    isac-java/src/java/isac/util/formulae/CalcFormula.java         and ...
+    isac-java/src/java/isac/util/formulae/CalcHead.java
 ML {* getFormulaeFromTo 1 ([],Pbl) ([],Pbl) 0 false; *}
  @@@@@begin@@@@@
   1 
