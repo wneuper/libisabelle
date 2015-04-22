@@ -9,6 +9,9 @@ these are mentioned without XML from stdout.
 
 theory TTY_Communication imports Isac begin 
 
+#I: Formalization
+    isac-java/src/java/isac/util/Formalization.java
+#O: int
 ML {* CalcTree [(["equality (x+1=(2::real))", "solveFor x", "solutions L"],("Test",["sqroot-test","univariate","equation","test"],["Test","squ-equ-test-subpbl1"]))]; *}
  @@@@@begin@@@@@
   1 
@@ -17,6 +20,8 @@ ML {* CalcTree [(["equality (x+1=(2::real))", "solveFor x", "solutions L"],("Tes
  </CALCTREE>
  @@@@@end@@@@@
 
+#I: int
+#O: (int, int)
 ML {* Iterator 1; *}
  @@@@@begin@@@@@
   1 
@@ -26,6 +31,9 @@ ML {* Iterator 1; *}
  </ADDUSER>
  @@@@@end@@@@@
 
+#I: int
+#O: (int, ICalcIterator)
+    isac-java/src/java/isac/interfaces/ICalcIterator.java
 ML {* moveActiveRoot 1; *}
  @@@@@begin@@@@@
   1 
@@ -39,6 +47,10 @@ ML {* moveActiveRoot 1; *}
  </CALCITERATOR>
  @@@@@end@@@@@
 
+#I: (int, ICalcIterator, ICalcIterator, int, string)
+#O: (int, FormHeadsContainer)
+    isac-java/src/java/isac/util/formulae/FormHeadsContainer.java, is a list of ...
+    isac-java/src/java/isac/util/formulae/CalcFormula.java
 ML {* getFormulaeFromTo 1 ([],Pbl) ([],Pbl) 0 false; *}
  @@@@@begin@@@@@
   1 
@@ -63,6 +75,9 @@ ML {* getFormulaeFromTo 1 ([],Pbl) ([],Pbl) 0 false; *}
 
 ML {* getFormulaeFromTo 1 ([],Pbl) ([],Pbl) 0 false; *}
 
+#I: (int, ICalcIterator)
+#O: (int, CalcHead)
+    isac-java/src/java/isac/util/formulae/CalcHead.java
 ML {* refFormula 1 ([],Pbl); *}
  @@@@@begin@@@@@
   1 
@@ -109,6 +124,9 @@ ML {* refFormula 1 ([],Pbl); *}
  </REFFORMULA>
  @@@@@end@@@@@
 
+#I: (int, string)
+#O: (int, CalcChanged)
+	isac-java/src/java/isac/util/CalcChanged.java
  ML {* autoCalculate 1 CompleteCalc; *}
  @@@@@begin@@@@@
   1 
@@ -138,6 +156,8 @@ ML {* getFormulaeFromTo 1 ([],Pbl) ([],Res) 0 false; *}
 
 ML {* getFormulaeFromTo 1 ([],Pbl) ([],Res) 0 false; *}
 
+#I: (int, ICalcIterator)
+#O: (int, CalcFormula)
 ML {* refFormula 1 ([],Res); *}
  @@@@@begin@@@@@
   1 
@@ -161,6 +181,8 @@ ML {* refFormula 1 ([],Res); *}
 
 ML {* refFormula 1 ([],Res); *}
 
+#I: int
+#O: int
 ML {* DEconstrCalcTree 1; *}
  @@@@@begin@@@@@
   1 
