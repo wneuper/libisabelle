@@ -7,8 +7,9 @@ stdout: isac-kernel --> isac-java: XML created by "writeln" from SML.
 There are multiple calls with the same arguments for technical reasons;
 these are mentioned without XML from stdout.
 
+#------- step 0 -----------------------------------------------------
 theory TTY_Communication imports Isac begin 
-
+#------- step 1 -----------------------------------------------------
 #I: Formalization
     isac-java/src/java/isac/util/Formalization.java
 #O: int
@@ -19,7 +20,7 @@ ML {* CalcTree [(["equality (x+1=(2::real))", "solveFor x", "solutions L"],("Tes
     <CALCID> 1 </CALCID>
  </CALCTREE>
  @@@@@end@@@@@
-
+#------- step 2 -----------------------------------------------------
 #I: int
 #O: (int, int)
 ML {* Iterator 1; *}
@@ -30,7 +31,7 @@ ML {* Iterator 1; *}
    <USERID> 1 </USERID>
  </ADDUSER>
  @@@@@end@@@@@
-
+#------- step 3 -----------------------------------------------------
 #I: int
 #O: (int, ICalcIterator)
     isac-java/src/java/isac/interfaces/ICalcIterator.java
@@ -46,7 +47,7 @@ ML {* moveActiveRoot 1; *}
    </POSITION>
  </CALCITERATOR>
  @@@@@end@@@@@
-
+#------- step 4 -----------------------------------------------------
 #I: (int, ICalcIterator, ICalcIterator, int, string)
 #O: (int, FormHeadsContainer)
     isac-java/src/java/isac/util/formulae/FormHeadsContainer.java, is a list of ...
@@ -73,9 +74,9 @@ ML {* getFormulaeFromTo 1 ([],Pbl) ([],Pbl) 0 false; *}
    </FORMHEADS>
  </GETELEMENTSFROMTO>
  @@@@@end@@@@@
-
+#------- step 5 -----------------------------------------------------
 ML {* getFormulaeFromTo 1 ([],Pbl) ([],Pbl) 0 false; *}
-
+#------- step 6 -----------------------------------------------------
 #I: (int, ICalcIterator)
 #O: (int, CalcHead)
     isac-java/src/java/isac/util/formulae/CalcHead.java
@@ -124,7 +125,7 @@ ML {* refFormula 1 ([],Pbl); *}
    </CALCHEAD>
  </REFFORMULA>
  @@@@@end@@@@@
-
+#------- step 7 -----------------------------------------------------
 #I: (int, string)
 #O: (int, CalcChanged)
 	isac-java/src/java/isac/util/CalcChanged.java
@@ -152,11 +153,11 @@ ML {* refFormula 1 ([],Pbl); *}
    </CALCCHANGED>
  </AUTOCALC>
  @@@@@end@@@@@
- 
+#------- step 8 -----------------------------------------------------
 ML {* getFormulaeFromTo 1 ([],Pbl) ([],Res) 0 false; *}
-
+#------- step 9 -----------------------------------------------------
 ML {* getFormulaeFromTo 1 ([],Pbl) ([],Res) 0 false; *}
-
+#------- step 10 -----------------------------------------------------
 #I: (int, ICalcIterator)
 #O: (int, CalcFormula)
 ML {* refFormula 1 ([],Res); *}
@@ -177,11 +178,11 @@ ML {* refFormula 1 ([],Res); *}
    </CALCFORMULA>
  </REFFORMULA>
  @@@@@end@@@@@
-
+#------- step 11 -----------------------------------------------------
 ML {* refFormula 1 ([],Res); *}
-
+#------- step 12 -----------------------------------------------------
 ML {* refFormula 1 ([],Res); *}
-
+#------- step 13 -----------------------------------------------------
 #I: int
 #O: int
 ML {* DEconstrCalcTree 1; *}
