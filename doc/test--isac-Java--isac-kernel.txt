@@ -171,7 +171,8 @@ ML {* refFormula 1 ([],Res); *}
        </INTLIST>
        <POS> Res </POS>
      </POSITION>
-     <FORMULA>      <MATHML>
+     <FORMULA>      
+       <MATHML>
          <ISA> [x = 1] </ISA>
        </MATHML>
      </FORMULA>
