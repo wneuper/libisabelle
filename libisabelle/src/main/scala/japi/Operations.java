@@ -18,7 +18,7 @@ public class Operations {
   public static final Operation<String, String> TESTSTR =
     Operation$.MODULE$.Teststr();
   
-  public static final Operation<BigInteger, XML.Tree> ITERATOR =
+  public static final Operation<scala.math.BigInt, XML.Tree> ITERATOR =
     Operation$.MODULE$.Iterator();
 
   public static final Operation<java.util.List<String>, Void> USE_THYS =

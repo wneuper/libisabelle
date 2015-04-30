@@ -11,7 +11,7 @@ object Operation {
 
   val Hello = implicitly[String, String]("hello")
   val Teststr = implicitly[String, String]("teststr")
-  val Iterator = implicitly[math.BigInt, XML.Tree]("iterator")
+  val Iterator = implicitly[scala.math.BigInt, XML.Tree]("iterator")
   val UseThys = implicitly[List[String], Unit]("use_thys")
 
   protected[isabelle] val UseThys_Java =
