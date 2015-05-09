@@ -1,0 +1,35 @@
+Notes on the setup of libisabelle
+Legend: ~~/ is the root directory of the repository.
+
+(A) This is a clone of https://github.com/larsrh/libisabelle.
+  The setup will stay with git for communication with Lars Hupel
+  until the test according to ~~/doc/test--isac-Java--isac-kernel.txt works.
+  Afterwards respective components will migrate to Mercurial 
+  at https://intra.ist.tugraz.at/hg/isac
+  
+(B) The project is setup as a Scala project in SCala-IDE for Eclipse.
+  The setup does not yet compile correctly, but resorts to ~~/sbt in (2):
+ (1) libisabelle > Properties > Java Build Path > Source > Add:     
+     ~~/examples
+     ~~/libisabelle
+     ~~/pide-core
+     ~~/test
+ (2) libisabelle > Properties > Java Build Path > Libraries > Add: 
+     ~~/full/target/scala-2.11/libisabelle-full.jar
+ (3) IMPORT OF scala libraries STILL DOES NOT WORK, see
+     CodeSpec.scala
+       import org.specs2.{ScalaCheck, Specification}
+       import org.scalacheck._
+	   import org.scalacheck.Prop.forAll
+ 	 LibisabelleSpec.scala:
+ 	   import org.specs2.Specification
+	   import org.specs2.matcher.Matcher
+ ??? WHY ARE THESE LIBRARIS NOT FOUND IN libisabelle-full.jar
+ ??? OR WHERE ELSE ARE THESE TO BE FOUND ?
+ 	     
+(C) Compilation is done with these steps:
+  $ cd ~~/
+  ~~$ export ISABELLE_HOME=/usr/local/Isabelle2014
+  ~~$ /usr/local/Isabelle2014/bin/isabelle build -D . -bv
+  ~~$ ./sbt full/assembly
+  ~~$ java -cp full/target/scala-2.11/libisabelle-full.jar Hello_PIDE
