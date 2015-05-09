@@ -21,9 +21,9 @@ Legend: ~~/ is the root directory of the repository.
        import org.specs2.{ScalaCheck, Specification}
        import org.scalacheck._
 	   import org.scalacheck.Prop.forAll
- 	 LibisabelleSpec.scala:
- 	   import org.specs2.Specification
-	   import org.specs2.matcher.Matcher
+     LibisabelleSpec.scala:
+       import org.specs2.Specification
+       import org.specs2.matcher.Matcher
  ??? WHY ARE THESE LIBRARIS NOT FOUND IN libisabelle-full.jar
  ??? OR WHERE ELSE ARE THESE TO BE FOUND ?
  	     
