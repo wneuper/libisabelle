@@ -77,9 +77,11 @@ val _ = Outer_Syntax.command @{command_spec "operation_setup"} "define protocol 
 \<close>
 
 (* see mini-test in ~~/doc/test--isac-Java--isac-kernel.txt
-   and isabisac/test/Pure/PIDE/xml.ML 
-  WE KEEP THE CODE FOR MINI-TEST BELOW INDEPENDENT FROM isabisac = isac-kernel *)
-
+POLICY FOR THIS TEST PHASE:
+# WE KEEP THE CODE FOR MINI-TEST BELOW INDEPENDENT FROM isac-kernel 
+# #I = from_lib: DECOMPOSED AND CHECKED !
+# #O = to_lib: COPIED FROM isabisac/test/Pure/PIDE/xml.ML 
+*)
 (*------- step 1 -----------------------------------------------------*)
 (* TODO *)
 
