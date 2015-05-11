@@ -1,5 +1,6 @@
 import java.io.File;
 import java.math.BigInteger;
+import scala.math.BigInt;
 
 import edu.tum.cs.isabelle.japi.JSystem;
 import edu.tum.cs.isabelle.japi.Operations;
@@ -16,6 +17,7 @@ public class Mini_Test {
 		      new scala.math.BigInt(BigInteger.valueOf(i))));
 		    
 		    sys.dispose();
+		    //$ ./sbt full/assembly
 		    //$ java -cp full/target/scala-2.11/libisabelle-full.jar Mini_Test
 		  }
 
