@@ -16,16 +16,15 @@ Legend: ~~/ is the root directory of the repository.
      ~~/test
  (2) libisabelle > Properties > Java Build Path > Libraries > Add: 
      ~~/full/target/scala-2.11/libisabelle-full.jar
- (3) IMPORT OF scala libraries STILL DOES NOT WORK, see
+ (3) Copy *.jar required by Scala files from the space created by sbt:
+     ~~$ cp ~/.ivy2/cache/org.specs2/specs2-core_2.11/jars/specs2-core_2.11-3.4.jar ./lib/
+   IMPORT OF FURTHER scala libraries STILL DOES NOT WORK, see
      CodeSpec.scala
        import org.specs2.{ScalaCheck, Specification}
        import org.scalacheck._
 	   import org.scalacheck.Prop.forAll
      LibisabelleSpec.scala:
-       import org.specs2.Specification
        import org.specs2.matcher.Matcher
- ??? WHY ARE THESE LIBRARIS NOT FOUND IN libisabelle-full.jar
- ??? OR WHERE ELSE ARE THESE TO BE FOUND ?
  	     
 (C) Compilation is done with these steps:
   $ cd ~~/
