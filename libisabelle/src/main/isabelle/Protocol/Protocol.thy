@@ -76,7 +76,8 @@ val _ = Outer_Syntax.command @{command_spec "operation_setup"} "define protocol 
     >> (fn (name, txt) => Toplevel.theory (tap (Libisabelle.operation_setup name txt))))
 \<close>
 
-(*======= keep mini-test independent from isac-kernel ================*)
+section \<open>Implement mini-test from ~~/doc/test--isac-Java--isac-kernel.txt\<close>
+subsection \<open>keep mini-test independent from isac-kernel\<close>
 ML {*
 (* DONT CHANGE THESE IDENTIFIERS from library.sml, Interpret/ctree.sml, ProgLang/termC.sml, etc*)
 fun drop_last l = ((rev o tl o rev) l);
@@ -93,8 +94,29 @@ fun pos_2str Pbl = "Pbl"
   | pos_2str Frm = "Frm"
   | pos_2str Res = "Res"
   | pos_2str Und = "Und";
-*} 
-(*======= transfer to isabisac/src/... ===============================*)
+fun pair2str (s1,s2) =   "(" ^ s1 ^ ", " ^ s2 ^ ")"
+fun strs2str' strl = "[" ^ (commas strl) ^ "]"
+fun ints2str' ints = (strs2str' o (map string_of_int)) ints
+fun pos'2str (p,p_) = pair2str (ints2str' p, pos_2str p_)
+datatype auto = 
+  Step of int      (*1 do #int steps; may stop in model/specify:
+		     IS VERY INEFFICIENT IN MODEL/SPECIY*)
+| CompleteModel    (*2 complete modeling
+                       if model complete, finish specifying + start solving*)
+| CompleteCalcHead (*3 complete model/specify in one go + start solving*)
+| CompleteToSubpbl (*4 stop at the next begin of a subproblem,
+                       if none, complete the actual (sub)problem*)
+| CompleteSubpbl   (*5 complete the actual (sub)problem (incl.ev.subproblems)*)
+| CompleteCalc;    (*6 complete the calculation as a whole*)	
+fun term_to_string' ctxt t =
+  let
+    val ctxt' = Config.put show_markup false ctxt
+  in Print_Mode.setmp [] (Syntax.string_of_term ctxt') t end;
+fun term2str t = term_to_string' (Proof_Context.init_global @{theory Pure}) t;
+*} ML {*
+*}
+
+subsection \<open>New code to \<longrightarrow> isabisac/src/...\<close>
 ML {*
 (* \<longrightarrow> src/../Interpret/ctree.sml .. fun pos_2str *)
 fun str2pos_ "Pbl" = Pbl
@@ -127,8 +149,7 @@ fun xml_of_ints is = (*xml/datatypes.sml: fun ints2xml*)
 fun xml_of_pos tag (is, pp) = (*xml/datatypes.sml: fun pos'2xml*)
   XML.Elem ((tag, []), [
     xml_of_ints is,
-    XML.Elem (("POS", []), [XML.Text (pos_2str pp)])
-    ])
+    XML.Elem (("POS", []), [XML.Text (pos_2str pp)])])
 
 fun xml_to_int (XML.Elem (("INT", []), [XML.Text i])) = 
       (case int_of_str i of SOME i => i | _ => error "xml_to_int: int_of_str \<Rightarrow> NONE")
@@ -140,26 +161,98 @@ fun xml_to_pos_ (XML.Elem (("POS", []), [XML.Text pp])) = str2pos_ pp
 fun xml_to_pos (XML.Elem (("POSITION", []), [is, pp])) = (xml_to_ints is, xml_to_pos_ pp) (*: pos'*)
   | xml_to_pos tree = error ("xml_to_pos: wrong XML.tree " ^ xmlstr 0 tree)
 
+fun xml_of_auto (Step i) = 
+      XML.Elem (("AUTO", []), [XML.Text "Step", XML.Text (string_of_int i)])
+  | xml_of_auto CompleteModel = XML.Elem (("AUTO", []), [XML.Text "CompleteModel"])
+  | xml_of_auto CompleteCalcHead = XML.Elem (("AUTO", []), [XML.Text "CompleteCalcHead"])
+  | xml_of_auto CompleteToSubpbl = XML.Elem (("AUTO", []), [XML.Text "CompleteToSubpbl"])
+  | xml_of_auto CompleteSubpbl = XML.Elem (("AUTO", []), [XML.Text "CompleteSubpbl"])
+  | xml_of_auto CompleteCalc = XML.Elem (("AUTO", []), [XML.Text "CompleteCalc"])
+fun xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "Step", XML.Text i])) = Step (int_of_str i |>the)
+  | xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "CompleteModel"])) = CompleteModel
+  | xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "CompleteCalcHead"])) = CompleteCalcHead
+  | xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "CompleteToSubpbl"])) = CompleteToSubpbl
+  | xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "CompleteSubpbl"])) = CompleteSubpbl
+  | xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "CompleteCalc"])) = CompleteCalc
+  | xml_to_auto tree = error ("xml_to_auto: wrong XML.tree " ^ xmlstr 0 tree)
+
+fun xml_of_str str = XML.Elem (("STRING", []), [XML.Text str])
+fun xml_of_strs strs = XML.Elem (("STRINGLIST", []), map xml_of_str strs)
+fun xml_of_spec (thyID, pblID, metID) =
+  XML.Elem (("SPECIFICATION", []), [
+    XML.Elem (("THEORYID", []), [XML.Text thyID]),
+    XML.Elem (("PROBLEMID", []), [xml_of_strs pblID]),
+    XML.Elem (("METHODID", []), [xml_of_strs metID])])
+
+fun xml_to_str (XML.Elem (("STRING", []), [XML.Text str])) = str
+  | xml_to_str tree = error ("xml_to_str: wrong XML.tree " ^ xmlstr 0 tree)
+fun xml_to_strs (XML.Elem (("STRINGLIST", []), strs)) = map xml_to_str strs
+  | xml_to_strs tree = error ("xml_to_strs: wrong XML.tree " ^ xmlstr 0 tree)
+
+fun xml_to_spec (XML.Elem (("SPECIFICATION", []), [
+      XML.Elem (("THEORYID", []), [XML.Text thyID]),
+      XML.Elem (("PROBLEMID", []), ps),
+      XML.Elem (("METHODID", []), ms)])) = (thyID, map xml_to_strs ps, map xml_to_strs ms)
+  | xml_to_spec tree = error ("xml_to_spec: wrong XML.tree " ^ xmlstr 0 tree)
+*} ML {*
+*}
+
+subsection \<open>New code to \<longrightarrow> isabisac/test/...\<close>
 (* \<longrightarrow> test/../xmlsrc/datatypes.sml *)
+ML {*
 val (is, kind) = ([], Pbl)
 ;
 writeln (xmlstr 0 (xml_of_pos "POSITION" (is, kind)))
 *}
 
-(*======= implement mini-test ========================================
-implementation follows ~~/doc/test--isac-Java--isac-kernel.txt
-# #I = from_lib: DECOMPOSED AND CHECKED !
-# #O = to_lib: COPIED FROM isabisac/test/Pure/PIDE/xml.ML 
+subsection \<open>operation_setup for mini-test\<close>
+(*setup follows ~~/doc/test--isac-Java--isac-kernel.txt
+# #I = from_lib: CHECKED AND DECOMPOSED TO SML!
+# #O = to_lib:   COPIED FROM isabisac/test/Pure/PIDE/xml.ML 
 
 ATTENTION AT INTEGRATION INTO isabisac: 
 # use|change "fun indt" 
-# rename funs, e.g. xml/datatypes.sml: fun ints2xml
-# 
-*)
+# rename funs, e.g. xml/datatypes.sml: fun ints2xml *)
 
+subsubsection \<open>step 1\<close>
+ML {*
+(* ad --- step 1 -----------------------------------------------------
+#I: Formalization
+    isac-java/src/java/isac/util/Formalization.java
+#O: int
+ML {* CalcTree [(["equality (x+1=(2::real))", "solveFor x", "solutions L"],
+        ("Test",["sqroot-test","univariate","equation","test"],["Test","squ-equ-test-subpbl1"]))]; 
+* }*)
+val items = ["equality (x+1=(2::real))", "solveFor x", "solutions L"]
+val spec = ("Test", ["sqroot-test","univariate","equation","test"], ["Test","squ-equ-test-subpbl1"])
+val intree = (* CREATE THIS IN Mini_Test.java *)
+  XML.Elem (("FORMALIZATION", []), [
+    xml_of_strs items,
+    xml_of_spec spec])
+*}
 (*------- step 1 -----------------------------------------------------*)
-(* TODO *)
+operation_setup calctree = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn calcid => 
+	 let 
+	   val (its, spc) = case intree of
+	       XML.Elem (("FORMALIZATION", []), [its, spc]) => (its, spc)
+       | tree => error ("calctree: intree =" ^ xmlstr 0 tree)
+     val items = xml_to_strs its
+     val spec = xml_to_spec spc
+	   val calcid = 1 (* ------------------------------- work done in Isabelle/Isac *)
+	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
+	     XML.Elem (("CALCTREE", []),
+  	       [XML.Elem (("CALCID", []), 
+  	         [XML.Text (string_of_int calcid)])])
+	 in result end)}\<close>
 
+subsubsection \<open>step 2\<close>
+(*
+#I: int
+#O: (int, int)
+ML {* Iterator 1; * }*)
 (*------- step 2 -----------------------------------------------------*)
 operation_setup iterator = \<open>
   {from_lib = Codec.int,
@@ -167,22 +260,18 @@ operation_setup iterator = \<open>
    action = (fn calcid => 
 	 let 
 	   val (calcid, userid) = (1, 1) (* ------------------------------- work done in Isabelle/Isac *)
-	   val result =   (* see doc/test--isac-java--isac-kernel.txt 1st example *)
+	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
 	     XML.Elem (("ADDUSER", []),
-  	       [XML.Elem (("CALCID", []), 
-  	         [XML.Text (string_of_int calcid)]),
-  	       XML.Elem (("USERID", []), 
-  	         [XML.Text (string_of_int userid)])
-           ])
+         [XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
+         XML.Elem (("USERID", []), [XML.Text (string_of_int userid)])])
 	 in result end)}\<close>
 
-ML {*
-(* ad --- step 3 -----------------------------------------------------*)
-*} ML {*
-*} ML {*
-*} ML {*
-;
-*}
+subsubsection \<open>step 3\<close>
+(*
+#I: int
+#O: (int, ICalcIterator)
+    isac-java/src/java/isac/interfaces/ICalcIterator.java
+ML {* moveActiveRoot 1; * }*)
 (*------- step 3 -----------------------------------------------------*)
 operation_setup moveactiveroot = \<open>
   {from_lib = Codec.int,
@@ -190,23 +279,27 @@ operation_setup moveactiveroot = \<open>
    action = (fn calcid => 
 	 let 
 	   val (is, kind) = ([], Pbl) (* ---------------------------------- work done in Isabelle/Isac *)
-	   val result =   (* see doc/test--isac-java--isac-kernel.txt 1st example *)
-	     XML.Elem (("CALCITERATOR", []),
-  	       [XML.Elem (("CALCID", []), 
-  	         [XML.Text (string_of_int calcid)]),
-  	         xml_of_pos "POSITION" (is, kind)])
+	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
+	     XML.Elem (("CALCITERATOR", []), [
+         XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
+         XML.Elem (("POSITION", []), [
+           XML.Elem (("INTLIST", []), is),
+           XML.Elem (("POS", []), [XML.Text (pos_2str kind)])])])
 	 in result end)}\<close>
 
+subsubsection \<open>step 4\<close>
 ML {*
-(* ad --- step 4 -----------------------------------------------------*)
-(* from isabisac/test/Pure/PIDE/xml.ML
-  #I: (int, ICalcIterator, ICalcIterator, int, string)
-      (int, pos,           pos,           int, string)  ...SIMPLIFIED BELOW *)
+(* ad --- step 4 -----------------------------------------------------
+#I: (int, ICalcIterator, ICalcIterator, int, string) ...SIMPLIFIED TO:
+    (int, pos',          pos',          int, string)                #O: (int, FormHeadsContainer)
+    isac-java/src/java/isac/util/formulae/FormHeadsContainer.java, is a list of ...
+    isac-java/src/java/isac/util/formulae/CalcFormula.java         and ...
+    isac-java/src/java/isac/util/formulae/CalcHead.java
+ML {* getFormulaeFromTo 1 ([],Pbl) ([],Pbl) 0 false; * }*)
 val calcid = 1
 val pos as (is, kind) = ([], Pbl)
 val calcformula as (pos, formula) = (pos, "solve (x + 1 = 2, x)")
 val formheads = [calcformula (*, calchead .. see below*)]
-*} ML {*
 val intree = (* CREATE THIS IN Mini_Test.java *)
   XML.Elem (("GETFORMULAEFROMTO", []), [
     XML.Elem (("CALCID", []), 
@@ -215,12 +308,6 @@ val intree = (* CREATE THIS IN Mini_Test.java *)
       xml_of_pos "POSITION" (is, kind),
       XML.Text (string_of_int 0),
       XML.Text (bool2str false)])
-*} ML {*
-*} ML {*
-*} ML {*
-
-*} ML {*
-*} ML {*
 *}
 (*------- step 4 -----------------------------------------------------*)
 operation_setup getformulaefromto = \<open>
@@ -232,84 +319,201 @@ operation_setup getformulaefromto = \<open>
          XML.Elem (("GETFORMULAEFROMTO", []), [
            XML.Elem (("CALCID", []), [XML.Text ci]),
            p1, p2, XML.Text i, XML.Text b]) => (ci, p1, p2, i, b)
-       | _ => error "getformulaefromto: intree wrong"
-     val calcid = int_of_str ci
+       | tree => error ("getformulaefromto: intree =" ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
      val (pos1, pos2) = (xml_to_pos p1, xml_to_pos p2)
      val i = int_of_str ii
      (*val b = bool_of_str bb ...MISSING *)
 	   (* ------------------------------------------------------------ work done in Isabelle/Isac *)
-	   val (calcid, kind, formula) = (1, "Pbl", "solve (x + 1 = 2, x)")
-	   val result =   (* see doc/test--isac-java--isac-kernel.txt 1st example *)
+	   val calcid = 1
+	   val pos as (is, kind) = ([], Pbl)
+	   val formula = "solve (x + 1 = 2, x)"
+	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
 	     XML.Elem (("GETELEMENTSFROMTO", []), [
          XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
          XML.Elem (("FORMHEADS", []), [
            XML.Elem (("CALCFORMULA", []),  [
              XML.Elem (("POSITION", []), [
                XML.Elem (("INTLIST", []), is),
-                 XML.Elem (("POS", []), [XML.Text kind])]),
+                 XML.Elem (("POS", []), [XML.Text (pos_2str kind)])]),
              XML.Elem (("FORMULA", []), [
                XML.Elem (("MATHML", []), [
                  XML.Elem (("ISA", []), [XML.Text formula])])])])])])
 	 in result end)}\<close>
 
+subsubsection \<open>step 6\<close>
+(*------- step 5 -----------------------------------------------------
+ML {* refFormula 1 ([],Pbl); * } *)
 ML {*
-(* ad --- step 6 -----------------------------------------------------*)
-*} ML {*
+(* ad --- step 6 -----------------------------------------------------
+#I: (int, ICalcIterator) ...SIMPLIFIED TO:
+    (int, pos')
+#O: (int, CalcHead)
+    isac-java/src/java/isac/util/formulae/CalcHead.java
+ML {* refFormula 1 ([],Pbl); * }
+*)
+val calcid = 1
+val pos as (is, kind) = ([], Pbl)
+val intree = (* CREATE THIS IN Mini_Test.java *)
+  XML.Elem (("GETFORMULAEFROMTO", []), [
+    XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
+    xml_of_pos "POSITION" (is, kind)])
+
+(* for result cp from ~~/test/Pure/PIDE/xml.ML --- step 6 --- *)
+val head = "solve (x + 1 = 2, x)"
+val given = [] : ((string * string) * string) list
+val item as (attr, form) = (("status", "false"), "precond_rootpbl v_v")
+val where_ as items = [item]
+val find = [] : ((string * string) * string) list
+val relate = [] : ((string * string) * string) list
+val model = (given, where_, find, relate)
+val belongsto = "Pbl"
+val specification as (theoryid, problemid, methodid) = (["e_domID"], ["e_pblID"], ["e_metID"])
+val calchead = (("status", "incorrect"), (pos, head, model, belongsto, specification))
 *}
-(*------- step 6 -----------------------------------------------------*)
+(*------- step 6 + 10 ------------------------------------------------*)
 operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFFERENT result *)
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
-   action = (fn tree => 
+   action = (fn intree => 
 	 let 
-	   val xxx = tree
-	   val result =   (* see doc/test--isac-java--isac-kernel.txt 1st example *)
-	     XML.Elem (("CALCITERATOR", []), [])
+	   val (ci, p) = case intree of
+       XML.Elem (("GETFORMULAEFROMTO", []), [
+           XML.Elem (("CALCID", []), [XML.Text ci]), 
+           p]) => (ci, p)
+     val SOME calcid = int_of_str ci
+     val pos = xml_to_pos p
+	   (* ------------------------------------------------------------ work done in Isabelle/Isac *)
+	   val result = case pos of
+	     ([], Pbl) => (* see doc/test--isac-java--isac-kernel.txt --- step 6 --- *)
+	     XML.Elem (("REFFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
+         XML.Elem (("CALCHEAD", [("status", "\"incorrect\"")]), [
+           XML.Elem (("POSITION", []), [
+             XML.Elem (("INTLIST", []), is),
+             XML.Elem (("POS", []), [XML.Text (pos_2str kind)])]),
+           XML.Elem (("HEAD", []), [
+             XML.Elem (("MATHML", []), [
+               XML.Elem (("ISA", []), [XML.Text formula])])]),
+           XML.Elem (("MODEL", []), [
+             XML.Elem (("GIVEN", []), []),
+             XML.Elem (("WHERE", []), [
+               XML.Elem (("ITEM", [("status", "\"false\"")]), [
+                 XML.Elem (("MATHML", []), [
+                   XML.Elem (("ISA", []), [XML.Text "precond_rootpbl v_v"])])])]),
+             XML.Elem (("FIND", []), []),
+             XML.Elem (("RELATE", []), [])]),
+           XML.Elem (("BELONGSTO", []), [XML.Text "Pbl"]),
+           XML.Elem (("SPECIFICATION", []), [
+             XML.Elem (("THEORYID", []), [XML.Text "e_domID"]),
+             XML.Elem (("PROBLEMID", []), [
+               XML.Elem (("STRINGLIST", []), [
+                 XML.Elem (("STRING", []), [XML.Text "e_pblID"])])]),
+             XML.Elem (("METHODID", []), [
+               XML.Elem (("STRINGLIST", []), [
+                 XML.Elem (("STRING", []), [XML.Text "e_metID"])])])])])])
+	   | ([], Res) => (* see doc/test--isac-java--isac-kernel.txt --- step 10 --- *)
+	       let 
+	         val pos as (is, kind) = ([], Res)
+           val calcformula as (pos, formula) = (pos, "[x = 1]")
+           val formheads = [calcformula (*, calchead .. see below*)]
+	       in 
+           XML.Elem (("REFFORMULA", []), [
+             XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
+             XML.Elem (("CALCFORMULA", []),  [
+               XML.Elem (("POSITION", []), [
+                 XML.Elem (("INTLIST", []), is),
+                 XML.Elem (("POS", []), [XML.Text (pos_2str kind)])]),
+               XML.Elem (("FORMULA", []), [
+                 XML.Elem (("MATHML", []), [
+                   XML.Elem (("ISA", []), [XML.Text formula])])])])])
+	       end
+	   | _ => error ("refformula called with " ^ pos'2str pos)
 	 in result end)}\<close>
 
+subsubsection \<open>step 7\<close>
 ML {*
-(* ad --- step 7 -----------------------------------------------------*)
-*} ML {*
+(* ad --- step 7 -----------------------------------------------------
+#I: (int, string) ...CHANGED TO:
+    (int, auto)
+#O: (int, CalcChanged)
+	isac-java/src/java/isac/util/CalcChanged.java
+ ML {* autoCalculate 1 CompleteCalc; * }
+*)
+val calcid = 1
+val auto = CompleteCalc
+val intree = (* CREATE THIS IN Mini_Test.java *)
+  XML.Elem (("AUTOCALC", []), [
+    XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
+    xml_of_auto CompleteCalc])
+
+(* for result cp from ~~/test/Pure/PIDE/xml.ML *)
+val result =
+  XML.Elem (("AUTOCALC", []), [
+    XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
+    XML.Elem (("CALCCHANGED", []),  [
+      xml_of_pos "UNCHANGED" ([], Pbl),
+      xml_of_pos "DELETED" ([], Pbl),
+      xml_of_pos "GENERATED" ([], Res)])]);
 *}
 (*------- step 7 -----------------------------------------------------*)
 operation_setup autocalculate = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
-   action = (fn tree => 
+   action = (fn intree => 
 	 let 
-	   val xxx = tree
-	   val result =   (* see doc/test--isac-java--isac-kernel.txt 1st example *)
-	     XML.Elem (("CALCITERATOR", []), [])
+	   val (ci, a) = case intree of
+       XML.Elem (("AUTOCALC", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]), a]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+     val auto = xml_to_auto a
+	   (* ------------------------------------------------------------ work done in Isabelle/Isac *)
+     val result =   (* see doc/test--isac-java--isac-kernel.txt 1st example *)
+	     XML.Elem (("AUTOCALC", []), [
+    XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
+    XML.Elem (("CALCCHANGED", []),  [
+      XML.Elem (("UNCHANGED", []), [
+        XML.Elem (("INTLIST", []), is),
+        XML.Elem (("POS", []), [XML.Text (pos_2str kind)])]),
+      XML.Elem (("DELETED", []), [
+        XML.Elem (("INTLIST", []), is),
+        XML.Elem (("POS", []), [XML.Text (pos_2str kind)])]),
+     XML.Elem (("GENERATED", []), [
+        XML.Elem (("INTLIST", []), is),
+        XML.Elem (("POS", []), [XML.Text "Res"])])])])
 	 in result end)}\<close>
 
-ML {*
-(* ad --- step 10 -----------------------------------------------------*)
-*} ML {*
-*}
-(*------- step 10 -----------------------------------------------------*)
-operation_setup refformula = \<open>
-  {from_lib = Codec.tree,
-   to_lib = Codec.tree,
-   action = (fn tree => 
-	 let 
-	   val xxx = tree
-	   val result =   (* see doc/test--isac-java--isac-kernel.txt 1st example *)
-	     XML.Elem (("CALCITERATOR", []), [])
-	 in result end)}\<close>
+subsubsection \<open>step 10 covered by step 6\<close>
+(*------- step 8 -----------------------------------------------------
+ML {* getFormulaeFromTo 1 ([],Pbl) ([],Res) 0 false; * }
+  ------- step 9 -----------------------------------------------------
+ML {* getFormulaeFromTo 1 ([],Pbl) ([],Res) 0 false; * }
+  ------- step 10 -----------------------------------------------------
+#I: (int, ICalcIterator)
+#O: (int, CalcFormula)
+ML {* refFormula 1 ([],Res); * }
+*)
 
-ML {*
-(* ad --- step 13 -----------------------------------------------------*)
-*} ML {*
-*}
-(*------- step 13 -----------------------------------------------------*)
+subsubsection \<open>step 13\<close>
+(*------- step 11 -----------------------------------------------------
+ML {* refFormula 1 ([],Res); * }
+  ------- step 12 -----------------------------------------------------
+ML {* refFormula 1 ([],Res); * }
+  ------- step 13 -----------------------------------------------------
+#I: int
+#O: int
+ML {* DEconstrCalcTree 1; * }
+*)
 operation_setup deconstrcalctree = \<open>
-  {from_lib = Codec.tree,
+  {from_lib = Codec.int,
    to_lib = Codec.tree,
-   action = (fn tree => 
+   action = (fn calcid => 
 	 let 
-	   val xxx = tree
-	   val result =   (* see doc/test--isac-java--isac-kernel.txt 1st example *)
-	     XML.Elem (("CALCITERATOR", []), [])
+	   val _ = 1 (* ------------------------------- work done in Isabelle/Isac *)
+	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
+	     XML.Elem (("DELCALC", []), [
+	       XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)])])
 	 in result end)}\<close>
 
 
