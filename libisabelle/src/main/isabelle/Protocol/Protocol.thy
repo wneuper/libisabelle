@@ -76,12 +76,87 @@ val _ = Outer_Syntax.command @{command_spec "operation_setup"} "define protocol 
     >> (fn (name, txt) => Toplevel.theory (tap (Libisabelle.operation_setup name txt))))
 \<close>
 
-(* see mini-test in ~~/doc/test--isac-Java--isac-kernel.txt
-POLICY FOR THIS TEST PHASE:
-# WE KEEP THE CODE FOR MINI-TEST BELOW INDEPENDENT FROM isac-kernel 
+(*======= keep mini-test independent from isac-kernel ================*)
+ML {*
+(* DONT CHANGE THESE IDENTIFIERS from library.sml, Interpret/ctree.sml, ProgLang/termC.sml, etc*)
+fun drop_last l = ((rev o tl o rev) l);
+fun int_of_str str =
+    let val ss = Symbol.explode str
+	val str' = case ss of
+	   "("::s => drop_last s | _ => ss
+    in (SOME (Thy_Output.integer (implode str'))) handle _ => NONE end;
+fun bool2str true = "true"
+  | bool2str false = "false";
+datatype pos_ = Pbl | Met | Frm | Res | Und   
+fun pos_2str Pbl = "Pbl"
+  | pos_2str Met = "Met"
+  | pos_2str Frm = "Frm"
+  | pos_2str Res = "Res"
+  | pos_2str Und = "Und";
+*} 
+(*======= transfer to isabisac/src/... ===============================*)
+ML {*
+(* \<longrightarrow> src/../Interpret/ctree.sml .. fun pos_2str *)
+fun str2pos_ "Pbl" = Pbl
+  | str2pos_ "Met" = Met
+  | str2pos_ "Frm" = Frm
+  | str2pos_ "Res" = Res
+  | str2pos_ "Und" = Und
+
+(* \<longrightarrow> src/../library.sml
+ATTENTION AT INTEGRATION INTO isabisac: 
+# use|change "fun indt" *)
+fun indent i = fold (curry op ^) (replicate i "  ") ""
+
+(* \<longrightarrow> src/../xmlsrc/datatypes.sml *)
+fun xmlstr i (XML.Text str) = indent i ^ str ^ "\n"
+  | xmlstr i (XML.Elem ((str, []), trees)) = 
+    indent i ^ "<" ^ str ^ ">" ^ "\n" ^
+      List.foldr op ^ "" (map (xmlstr (i + 1)) trees) ^
+    indent i ^ "</" ^ str ^ ">" ^ "\n"
+  | xmlstr i (XML.Elem ((str, [("status", a)]), trees)) = 
+    indent i ^ "<" ^ str ^ " status " ^ a  ^ ">" ^ "\n" ^
+      List.foldr op ^ "" (map (xmlstr (i + 1)) trees) ^
+    indent i ^ "</" ^ str ^ ">" ^ "\n"
+  | xmlstr _ (XML.Elem ((_, (_ :: _)), _)) = 
+    error "xmlstr: TODO review attribute \"status\" etc";
+
+fun xml_of_int i = XML.Elem (("INT", []), [XML.Text (string_of_int i)])
+fun xml_of_ints is = (*xml/datatypes.sml: fun ints2xml*)
+  XML.Elem (("INTLIST", []), map xml_of_int is)
+fun xml_of_pos tag (is, pp) = (*xml/datatypes.sml: fun pos'2xml*)
+  XML.Elem ((tag, []), [
+    xml_of_ints is,
+    XML.Elem (("POS", []), [XML.Text (pos_2str pp)])
+    ])
+
+fun xml_to_int (XML.Elem (("INT", []), [XML.Text i])) = 
+      (case int_of_str i of SOME i => i | _ => error "xml_to_int: int_of_str \<Rightarrow> NONE")
+  | xml_to_int tree = error ("xml_to_int: wrong XML.tree " ^ xmlstr 0 tree)
+fun xml_to_ints (XML.Elem (("INTLIST", []), is)) = map xml_to_int is
+  | xml_to_ints tree = error ("xml_to_ints: wrong XML.tree " ^ xmlstr 0 tree)
+fun xml_to_pos_ (XML.Elem (("POS", []), [XML.Text pp])) = str2pos_ pp
+  | xml_to_pos_ tree = error ("xml_to_pos_: wrong XML.tree " ^ xmlstr 0 tree)
+fun xml_to_pos (XML.Elem (("POSITION", []), [is, pp])) = (xml_to_ints is, xml_to_pos_ pp) (*: pos'*)
+  | xml_to_pos tree = error ("xml_to_pos: wrong XML.tree " ^ xmlstr 0 tree)
+
+(* \<longrightarrow> test/../xmlsrc/datatypes.sml *)
+val (is, kind) = ([], Pbl)
+;
+writeln (xmlstr 0 (xml_of_pos "POSITION" (is, kind)))
+*}
+
+(*======= implement mini-test ========================================
+implementation follows ~~/doc/test--isac-Java--isac-kernel.txt
 # #I = from_lib: DECOMPOSED AND CHECKED !
 # #O = to_lib: COPIED FROM isabisac/test/Pure/PIDE/xml.ML 
+
+ATTENTION AT INTEGRATION INTO isabisac: 
+# use|change "fun indt" 
+# rename funs, e.g. xml/datatypes.sml: fun ints2xml
+# 
 *)
+
 (*------- step 1 -----------------------------------------------------*)
 (* TODO *)
 
@@ -104,59 +179,9 @@ operation_setup iterator = \<open>
 ML {*
 (* ad --- step 3 -----------------------------------------------------*)
 *} ML {*
-(* DONT CHANGE THESE IDENTIFIERS from library.sml, Interpret/ctree.sml, ProgLang/termC.sml, etc*)
-fun drop_last l = ((rev o tl o rev) l);
-fun int_of_str str =
-    let val ss = Symbol.explode str
-	val str' = case ss of
-	   "("::s => drop_last s | _ => ss
-    in (SOME (Thy_Output.integer (implode str'))) handle _ => NONE end;
-fun bool2str true = "true"
-  | bool2str false = "false";
-datatype pos_ = Pbl | Met | Frm | Res | Und   
-fun pos_2str Pbl = "Pbl"
-  | pos_2str Met = "Met"
-  | pos_2str Frm = "Frm"
-  | pos_2str Res = "Res"
-  | pos_2str Und = "Und";
 *} ML {*
-(* THIS IS MISSING IN Interpret/ctree.sml *)
-fun str2pos_ "Pbl" = Pbl
-  | str2pos_ "Met" = Met
-  | str2pos_ "Frm" = Frm
-  | str2pos_ "Res" = Res
-  | str2pos_ "Und" = Und
 *} ML {*
-val (is, kind) = ([], Pbl)
-*} ML {*
-(* ATTENTION AT INTEGRATION INTO isabisac: 
-# use|change "fun indt" 
-# rename funs, e.g. xml/datatypes.sml: fun ints2xml
-# 
-*)
-fun indent i = fold (curry op ^) (replicate i "  ") "" (*cp from isabisac/test/Pure/PIDE/xml.ML*)
-fun xmlstr i (XML.Text str) = indent i ^ str ^ "\n"
-  | xmlstr i (XML.Elem ((str, []), trees)) = 
-    indent i ^ "<" ^ str ^ ">" ^ "\n" ^
-      List.foldr op ^ "" (map (xmlstr (i + 1)) trees) ^
-    indent i ^ "</" ^ str ^ ">" ^ "\n"
-  | xmlstr i (XML.Elem ((str, [("status", a)]), trees)) = 
-    indent i ^ "<" ^ str ^ " status " ^ a  ^ ">" ^ "\n" ^
-      List.foldr op ^ "" (map (xmlstr (i + 1)) trees) ^
-    indent i ^ "</" ^ str ^ ">" ^ "\n"
-  | xmlstr _ (XML.Elem ((_, (_ :: _)), _)) = 
-    error "xmlstr: TODO review attribute \"status\" etc";
-*} ML {*
-fun xml_of_int i = XML.Elem (("INT", []), [XML.Text (string_of_int i)])
-fun xml_of_ints is = (*xml/datatypes.sml: fun ints2xml*)
-  XML.Elem (("INTLIST", []), map xml_of_int is)
-fun xml_of_pos tag (is, pp) = (*xml/datatypes.sml: fun pos'2xml*)
-  XML.Elem ((tag, []), [
-    xml_of_ints is,
-    XML.Elem (("POS", []), [XML.Text (pos_2str pp)])
-    ])
 ;
-writeln (xmlstr 0 (xml_of_pos "POSITION" (is, kind)))
 *}
 (*------- step 3 -----------------------------------------------------*)
 operation_setup moveactiveroot = \<open>
@@ -192,17 +217,9 @@ val intree = (* CREATE THIS IN Mini_Test.java *)
       XML.Text (bool2str false)])
 *} ML {*
 *} ML {*
-fun xml_to_int (XML.Elem (("INT", []), [XML.Text i])) = 
-      (case int_of_str i of SOME i => i | _ => error "xml_to_int: int_of_str \<Rightarrow> NONE")
-  | xml_to_int tree = error ("xml_to_int: wrong XML.tree " ^ xmlstr 0 tree)
-fun xml_to_ints (XML.Elem (("INTLIST", []), is)) = map xml_to_int is
-  | xml_to_ints tree = error ("xml_to_ints: wrong XML.tree " ^ xmlstr 0 tree)
-fun xml_to_pos_ (XML.Elem (("POS", []), [XML.Text pp])) = str2pos_ pp
-  | xml_to_pos_ tree = error ("xml_to_pos_: wrong XML.tree " ^ xmlstr 0 tree)
 *} ML {*
 
 *} ML {*
-fun xml_to_pos (XML.Elem (("POSITION", []), [is, pp])) = (xml_to_ints is, xml_to_pos_ pp) (*: pos'*)
 *} ML {*
 *}
 (*------- step 4 -----------------------------------------------------*)
