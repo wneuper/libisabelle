@@ -76,6 +76,18 @@ val _ = Outer_Syntax.command @{command_spec "operation_setup"} "define protocol 
     >> (fn (name, txt) => Toplevel.theory (tap (Libisabelle.operation_setup name txt))))
 \<close>
 
+section \<open>Keep Hello_PIDE.java alive\<close>
+
+operation_setup hello = \<open>
+  {from_lib = Codec.string,
+   to_lib = Codec.string,
+   action = (fn data => "Hello " ^ data)}\<close>
+
+operation_setup teststr = \<open>
+  {from_lib = Codec.string,
+   to_lib = Codec.string,
+   action = (fn data => "teststr returns " ^ data)}\<close>
+
 section \<open>Implement mini-test from ~~/doc/test--isac-Java--isac-kernel.txt\<close>
 subsection \<open>keep mini-test independent from isac-kernel\<close>
 ML {*
