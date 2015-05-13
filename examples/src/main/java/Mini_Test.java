@@ -9,18 +9,21 @@ public class Mini_Test {
 
   public static void main(String args[]) {
 		     
-    System.out.println("begin of mini-test cf. ~~/doc/test--isac-Java--isac-kernel.txt");
+    System.out.println("----- begin of mini-test cf. ~~/doc/test--isac-Java--isac-kernel.txt");
 
     JSystem sys = JSystem.instance(new File("."), "Protocol");
-    int i = 1;
+    int calcid = 1;
     System.out.println(sys.invoke(Operations.ITERATOR,       //step 2
-      new scala.math.BigInt(BigInteger.valueOf(i))));		    
+      new scala.math.BigInt(BigInteger.valueOf(calcid))));		    
     System.out.println(sys.invoke(Operations.MOVEACTIVEROOT, //step 3
-      new scala.math.BigInt(BigInteger.valueOf(i))));
+      new scala.math.BigInt(BigInteger.valueOf(calcid))));
+    String auto = "CompleteCalc";
     System.out.println(sys.invoke(Operations.AUTOCALC,       //step 7
-      new scala.math.BigInt(                                 BigInteger.valueOf(i))));
+      Mini_Test_INPUT.auto_calculate(new scala.math.BigInt(BigInteger.valueOf(calcid)), auto)));
     System.out.println(sys.invoke(Operations.DELCALC,        //step 13
-      new scala.math.BigInt(BigInteger.valueOf(i))));
+      new scala.math.BigInt(BigInteger.valueOf(calcid))));
+    
+    System.out.println("----- end of mini-test cf. ~~/doc/test--isac-Java--isac-kernel.txt");
 				    
     sys.dispose();
     //$ ./sbt full/assembly
