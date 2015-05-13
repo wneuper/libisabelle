@@ -20,15 +20,17 @@ public class Operations {
     Operation$.MODULE$.Teststr();
   
   public static final Operation<scala.math.BigInt, XML.Tree> TESTIT =
-		    Operation$.MODULE$.Testit();
+    Operation$.MODULE$.Testit();
 
   // for Mini_Test.java -----------------------------------------------
-  public static final Operation<scala.math.BigInt, XML.Tree> ITERATOR =
-		    Operation$.MODULE$.Iterator();
-  public static final Operation<scala.math.BigInt, XML.Tree> MOVEACTIVEROOT =
-		    Operation$.MODULE$.moveActiveRoot();
-  public static final Operation<scala.math.BigInt, XML.Tree> DELCALC =
-		    Operation$.MODULE$.DEconstrCalcTree();
+  public static final Operation<scala.math.BigInt, XML.Tree> ITERATOR =       //step 2
+    Operation$.MODULE$.Iterator();
+  public static final Operation<scala.math.BigInt, XML.Tree> MOVEACTIVEROOT = //step 3
+    Operation$.MODULE$.moveActiveRoot();
+  public static final Operation<XML.Tree, XML.Tree> AUTOCALC =                //step 7
+    Operation$.MODULE$.autoCalculate();
+  public static final Operation<scala.math.BigInt, XML.Tree> DELCALC =        //step 13
+    Operation$.MODULE$.DEconstrCalcTree();
 
 
   //-------------------------------------------------------------------

@@ -15,9 +15,10 @@ object Operation {
   val Testit = implicitly[scala.math.BigInt, XML.Tree]("testit")
   
   // for Mini_Test.java -----------------------------------------------
-  val Iterator = implicitly[scala.math.BigInt, XML.Tree]("iterator")
-  val moveActiveRoot = implicitly[scala.math.BigInt, XML.Tree]("moveactiveroot")
-  val DEconstrCalcTree = implicitly[scala.math.BigInt, XML.Tree]("deconstrcalctree")
+  val Iterator = implicitly[scala.math.BigInt, XML.Tree]("iterator")                 //step 2
+  val moveActiveRoot = implicitly[scala.math.BigInt, XML.Tree]("moveactiveroot")     //step 3
+  val autoCalculate = implicitly[XML.Tree, XML.Tree]("autocalculate")                //step 7
+  val DEconstrCalcTree = implicitly[scala.math.BigInt, XML.Tree]("deconstrcalctree") //step 13
 
   //-------------------------------------------------------------------
   val UseThys = implicitly[List[String], Unit]("use_thys")
