@@ -17,9 +17,9 @@ object Operation {
   // for Mini_Test.java -----------------------------------------------
   val Iterator = implicitly[scala.math.BigInt, XML.Tree]("iterator")
 
+  //-------------------------------------------------------------------
   val UseThys = implicitly[List[String], Unit]("use_thys")
 
-  //-------------------------------------------------------------------
   protected[isabelle] val UseThys_Java =
     Operation("use_thys",
       Codec[List[String]].transform[java.util.List[String]](_.asJava, _.asScala.toList),
