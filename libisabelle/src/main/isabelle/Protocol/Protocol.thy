@@ -88,6 +88,17 @@ operation_setup teststr = \<open>
    to_lib = Codec.string,
    action = (fn data => "teststr returns " ^ data)}\<close>
 
+operation_setup testit = \<open>
+  {from_lib = Codec.int,
+   to_lib = Codec.tree,
+   action = (fn calcid => 
+	 let 
+	   val result =
+	     XML.Elem (("ADDUSER", []),
+         [XML.Elem (("CALCID", []), [XML.Text (string_of_int 1)]),
+         XML.Elem (("USERID", []), [XML.Text (string_of_int 1)])])
+	 in result end)}\<close>
+
 section \<open>Implement mini-test from ~~/doc/test--isac-Java--isac-kernel.txt\<close>
 subsection \<open>keep mini-test independent from isac-kernel\<close>
 ML {*

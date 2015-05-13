@@ -9,11 +9,17 @@ object Operation {
   def implicitly[I : Codec, O : Codec](name: String): Operation[I, O] =
     Operation(name, Codec[I], Codec[O])
 
+  // for Test_PIDE.java
   val Hello = implicitly[String, String]("hello")
   val Teststr = implicitly[String, String]("teststr")
+  val Testit = implicitly[scala.math.BigInt, XML.Tree]("testit")
+  
+  // for Mini_Test.java -----------------------------------------------
   val Iterator = implicitly[scala.math.BigInt, XML.Tree]("iterator")
+
   val UseThys = implicitly[List[String], Unit]("use_thys")
 
+  //-------------------------------------------------------------------
   protected[isabelle] val UseThys_Java =
     Operation("use_thys",
       Codec[List[String]].transform[java.util.List[String]](_.asJava, _.asScala.toList),

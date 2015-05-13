@@ -12,6 +12,7 @@ public class Operations {
     return new Operation<I, O>(name, enc, dec);
   }
 
+  // for Test_PIDE.java
   public static final Operation<String, String> HELLO =
     Operation$.MODULE$.Hello();
   
@@ -19,13 +20,14 @@ public class Operations {
     Operation$.MODULE$.Teststr();
   
   public static final Operation<scala.math.BigInt, XML.Tree> TESTIT =
-		    Operation$.MODULE$.Iterator();
+		    Operation$.MODULE$.Testit();
 
-
+  // for Mini_Test.java -----------------------------------------------
   public static final Operation<scala.math.BigInt, XML.Tree> ITERATOR =
 		    Operation$.MODULE$.Iterator();
 
 
+  //-------------------------------------------------------------------
   public static final Operation<java.util.List<String>, Void> USE_THYS =
     Operation$.MODULE$.UseThys_Java();
 
