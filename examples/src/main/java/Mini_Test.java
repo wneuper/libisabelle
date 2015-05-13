@@ -14,8 +14,12 @@ public class Mini_Test {
 		    JSystem sys = JSystem.instance(new File("."), "Protocol");
 		    int i = 1;
 		    System.out.println(sys.invoke(Operations.ITERATOR, 
-		      new scala.math.BigInt(BigInteger.valueOf(i))));
-		    
+		      new scala.math.BigInt(BigInteger.valueOf(i))));		    
+		    System.out.println(sys.invoke(Operations.MOVEACTIVEROOT, 
+				      new scala.math.BigInt(BigInteger.valueOf(i))));
+		    System.out.println(sys.invoke(Operations.DELCALC, 
+				      new scala.math.BigInt(BigInteger.valueOf(i))));
+				    
 		    sys.dispose();
 		    //$ ./sbt full/assembly
 		    //$ java -cp full/target/scala-2.11/libisabelle-full.jar Mini_Test

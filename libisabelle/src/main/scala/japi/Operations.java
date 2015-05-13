@@ -25,6 +25,10 @@ public class Operations {
   // for Mini_Test.java -----------------------------------------------
   public static final Operation<scala.math.BigInt, XML.Tree> ITERATOR =
 		    Operation$.MODULE$.Iterator();
+  public static final Operation<scala.math.BigInt, XML.Tree> MOVEACTIVEROOT =
+		    Operation$.MODULE$.moveActiveRoot();
+  public static final Operation<scala.math.BigInt, XML.Tree> DELCALC =
+		    Operation$.MODULE$.DEconstrCalcTree();
 
 
   //-------------------------------------------------------------------
