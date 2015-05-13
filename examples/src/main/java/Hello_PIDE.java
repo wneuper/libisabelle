@@ -16,7 +16,7 @@ public class Hello_PIDE {
     System.out.println(sys.invoke(Operations.HELLO, "europa"));
     System.out.println(sys.invoke(Operations.TESTSTR, "xxx"));
     int i = 1;
-    System.out.println(sys.invoke(Operations.ITERATOR, 
+    System.out.println(sys.invoke(Operations.TESTIT, 
       new scala.math.BigInt(BigInteger.valueOf(i))));
     
     sys.dispose();
