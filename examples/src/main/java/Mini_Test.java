@@ -17,9 +17,12 @@ public class Mini_Test {
       new scala.math.BigInt(BigInteger.valueOf(calcid))));		    
     System.out.println(sys.invoke(Operations.MOVEACTIVEROOT, //step 3
       new scala.math.BigInt(BigInteger.valueOf(calcid))));
+    System.out.println(sys.invoke(Operations.GET_FORMULAE,   //step 4
+      ConvertXML.get_formulae(new scala.math.BigInt(BigInteger.valueOf(calcid)), 
+      "Pbl", "Pbl", new scala.math.BigInt(BigInteger.valueOf(0)), "false")));
     String auto = "CompleteCalc";
     System.out.println(sys.invoke(Operations.AUTOCALC,       //step 7
-      Mini_Test_INPUT.auto_calculate(new scala.math.BigInt(BigInteger.valueOf(calcid)), auto)));
+      ConvertXML.auto_calculate(new scala.math.BigInt(BigInteger.valueOf(calcid)), auto)));
     System.out.println(sys.invoke(Operations.DELCALC,        //step 13
       new scala.math.BigInt(BigInteger.valueOf(calcid))));
     

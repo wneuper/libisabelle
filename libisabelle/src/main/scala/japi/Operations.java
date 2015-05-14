@@ -27,6 +27,8 @@ public class Operations {
     Operation$.MODULE$.Iterator();
   public static final Operation<scala.math.BigInt, XML.Tree> MOVEACTIVEROOT = //step 3
     Operation$.MODULE$.moveActiveRoot();
+  public static final Operation<XML.Tree, XML.Tree> GET_FORMULAE =            //step 4
+    Operation$.MODULE$.getFormulaeFromTo();
   public static final Operation<XML.Tree, XML.Tree> AUTOCALC =                //step 7
     Operation$.MODULE$.autoCalculate();
   public static final Operation<scala.math.BigInt, XML.Tree> DELCALC =        //step 13

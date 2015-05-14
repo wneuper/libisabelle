@@ -8,18 +8,25 @@ cd doc/
    rm .#*
    rm *.orig
    cd ..
-cd examples/src/main/isabelle/Hello_PIDE/
+cd examples/src/main/java/
+ # Hello_PIDE.java etc
+   rm *~
+   rm #*
+   rm .#*
+   rm *.orig
+   cd ../../../../
+cd libisabelle/src/main/scala/japi/
+ # Operations.java
+   rm *~
+   rm #*
+   rm .#*
+   rm *.orig
+   cd ../../../../../
+cd libisabelle/src/main/isabelle/Protocol/
  # Protocol.thy
    rm *~
    rm #*
    rm .#*
    rm *.orig
    cd ../../../../../
-cd examples/src/main/java/
- # Hello_PIDE.java
-   rm *~
-   rm #*
-   rm .#*
-   rm *.orig
-   cd ../../../../
 

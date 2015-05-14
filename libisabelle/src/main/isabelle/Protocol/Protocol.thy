@@ -153,6 +153,11 @@ ATTENTION AT INTEGRATION INTO isabisac:
 # use|change "fun indt" *)
 fun indent i = fold (curry op ^) (replicate i "  ") ""
 
+(* \<longrightarrow> src/../calcelems.sml *)
+fun string_to_bool "true" = true
+  | string_to_bool "false" = false
+  | string_to_bool str = error ("string_to_bool: arg = " ^ str)
+
 (* \<longrightarrow> src/../xmlsrc/datatypes.sml *)
 fun xmlstr i (XML.Text str) = indent i ^ str ^ "\n"
   | xmlstr i (XML.Elem ((str, []), trees)) = 
@@ -165,6 +170,10 @@ fun xmlstr i (XML.Text str) = indent i ^ str ^ "\n"
     indent i ^ "</" ^ str ^ ">" ^ "\n"
   | xmlstr _ (XML.Elem ((_, (_ :: _)), _)) = 
     error "xmlstr: TODO review attribute \"status\" etc";
+
+fun xml_of_bool b = XML.Elem (("BOOL", []), [XML.Text (bool2str b)])
+fun xml_to_bool (XML.Elem (("BOOL", []), [XML.Text b])) = string_to_bool b
+  | xml_to_bool tree = error ("xml_to_int: wrong XML.tree " ^ xmlstr 0 tree)
 
 fun xml_of_int i = XML.Elem (("INT", []), [XML.Text (string_of_int i)])
 fun xml_of_ints is = (*xml/datatypes.sml: fun ints2xml*)
@@ -337,16 +346,24 @@ operation_setup getformulaefromto = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
    action = (fn intree => 
-	 let 
-	   val (ci, p1, p2, ii, bb) = case intree of
-         XML.Elem (("GETFORMULAEFROMTO", []), [
-           XML.Elem (("CALCID", []), [XML.Text ci]),
-           p1, p2, XML.Text i, XML.Text b]) => (ci, p1, p2, i, b)
-       | tree => error ("getformulaefromto: intree =" ^ xmlstr 0 tree)
+	 let
+	   val (ci, from, to, level, rules) = case intree of
+       XML.Elem (("GETFORMULAEFROMTO", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("POSITION", []), [
+             XML.Elem (("INTLIST", []), []),
+             XML.Elem (("POS", []), [XML.Text from])]),
+         XML.Elem (("POSITION", []), [
+             XML.Elem (("INTLIST", []), []),
+             XML.Elem (("POS", []), [XML.Text to])]),
+         XML.Elem (("INT", []), [XML.Text level]),
+         ruls as XML.Elem (("BOOL", []), [XML.Text rules])]) => (ci, from, to, level, rules)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
      val SOME calcid = int_of_str ci
-     val (pos1, pos2) = (xml_to_pos p1, xml_to_pos p2)
-     val i = int_of_str ii
-     (*val b = bool_of_str bb ...MISSING *)
+     val from = (*xml_to_pos*) from
+     val to = (*xml_to_pos*) to
+     val level = (*xml_to_int*) level
+     val ruls = (*xml_to_bool*) rules
 	   (* ------------------------------------------------------------ work done in Isabelle/Isac *)
 	   val calcid = 1
 	   val pos as (is, kind) = ([], Pbl)
