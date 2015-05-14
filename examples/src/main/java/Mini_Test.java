@@ -13,17 +13,17 @@ public class Mini_Test {
 
     JSystem sys = JSystem.instance(new File("."), "Protocol");
     int calcid = 1;
-    System.out.println(sys.invoke(Operations.ITERATOR,       //step 2
+    System.out.println(sys.invoke(Operations.ITERATOR,         //step 2
       new scala.math.BigInt(BigInteger.valueOf(calcid))));		    
-    System.out.println(sys.invoke(Operations.MOVEACTIVEROOT, //step 3
+    System.out.println(sys.invoke(Operations.MOVE_ACTIVE_ROOT, //step 3
       new scala.math.BigInt(BigInteger.valueOf(calcid))));
-    System.out.println(sys.invoke(Operations.GET_FORMULAE,   //step 4
+    System.out.println(sys.invoke(Operations.GET_FORMULAE,     //step 4
       ConvertXML.get_formulae(new scala.math.BigInt(BigInteger.valueOf(calcid)), 
       "Pbl", "Pbl", new scala.math.BigInt(BigInteger.valueOf(0)), "false")));
     String auto = "CompleteCalc";
-    System.out.println(sys.invoke(Operations.AUTOCALC,       //step 7
+    System.out.println(sys.invoke(Operations.AUTO_CALC,        //step 7
       ConvertXML.auto_calculate(new scala.math.BigInt(BigInteger.valueOf(calcid)), auto)));
-    System.out.println(sys.invoke(Operations.DELCALC,        //step 13
+    System.out.println(sys.invoke(Operations.DEL_CALC,         //step 13
       new scala.math.BigInt(BigInteger.valueOf(calcid))));
     
     System.out.println("----- end of mini-test cf. ~~/doc/test--isac-Java--isac-kernel.txt");
