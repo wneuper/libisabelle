@@ -1,4 +1,4 @@
-//package src.main.java
+//package src.main.java  ...THIS CAUSES AN ERROR IN sbt
 
 import isabelle.XML;
 import isabelle.Markup;
