@@ -29,14 +29,14 @@ object ConvertXML {
   def xml_of_pos (ints: List[scala.math.BigInt], kind: String ): XML.Tree = {
     XML.Elem(Markup("POSITION", Nil), List(
       xml_of_ints(ints),
-      XML.Text(kind)))
+      XML.Elem(Markup("POS", Nil), List(XML.Text(kind)))))
   }
-  /* HERE IS SOME ERROR:
   def xml_to_pos (t: XML.Tree): (List[scala.math.BigInt], String) = t match {
     case XML.Elem(Markup("POSITION", Nil), List(
-        is, XML.Elem(Markup("POS", Nil), List(XML.Text(kind))))) => (xml_to_ints is, kind)
+        is, XML.Elem(Markup("POS", Nil), List(XML.Text(kind))))) => (xml_to_ints(is), kind)
     case _ => throw new IllegalArgumentException("xml_to_pos exn")
-  } */ 
+  } 
+  
   
   //===== convert arguments of methods calling  --> XML(Scala)..libisabelle
    
@@ -45,22 +45,13 @@ object ConvertXML {
   def   get_formulae(calcid: scala.math.BigInt, from: String,        to: String, 
     level: scala.math.BigInt, rules/*?*/: String): XML.Tree =
   { 
-    /* THIS RAISES ERROR isabelle.System$ProverException: decoding failed
+    /*scala> val (calcid, from, to, level, rules) = 
+               (1:BigInt, "from", "to", 0:BigInt, "false")
+     */
     XML.Elem(Markup("GETFORMULAEFROMTO", Nil), List(
       XML.Elem(Markup("CALCID", Nil), List(XML.Text(calcid.toString()))),
       xml_of_pos (Nil, from),
       xml_of_pos (Nil, to),
-      XML.Elem(Markup("INT", Nil), List(XML.Text(level.toString()))),
-      XML.Elem(Markup("BOOL", Nil), List(XML.Text(rules)))))
-    */
-    XML.Elem(Markup("GETFORMULAEFROMTO", Nil), List(
-      XML.Elem(Markup("CALCID", Nil), List(XML.Text(calcid.toString()))),
-      XML.Elem(Markup("POSITION", Nil), List(
-        XML.Elem(Markup("INTLIST", Nil), Nil),
-        XML.Elem(Markup("POS", Nil), List(XML.Text(from))))),
-      XML.Elem(Markup("POSITION", Nil), List(
-        XML.Elem(Markup("INTLIST", Nil), Nil),
-        XML.Elem(Markup("POS", Nil), List(XML.Text(from))))),
       XML.Elem(Markup("INT", Nil), List(XML.Text(level.toString()))),
       XML.Elem(Markup("BOOL", Nil), List(XML.Text(rules)))))
   }  
