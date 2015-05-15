@@ -15,6 +15,7 @@ object Operation {
   val Testit = implicitly[scala.math.BigInt, XML.Tree]("testit")
   
   // for Mini_Test.java -----------------------------------------------
+  val CalcTree = implicitly[XML.Tree, XML.Tree]("calctree")                          //step 1
   val Iterator = implicitly[scala.math.BigInt, XML.Tree]("iterator")                 //step 2
   val moveActiveRoot = implicitly[scala.math.BigInt, XML.Tree]("moveactiveroot")     //step 3
   val getFormulaeFromTo = implicitly[XML.Tree, XML.Tree]("getformulaefromto")        //step 4

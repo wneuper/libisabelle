@@ -23,6 +23,8 @@ public class Operations {
     Operation$.MODULE$.Testit();
 
   // for Mini_Test.java -----------------------------------------------
+  public static final Operation<XML.Tree, XML.Tree> CALC_TREE =                 //step 1
+    Operation$.MODULE$.CalcTree();
   public static final Operation<scala.math.BigInt, XML.Tree> ITERATOR =         //step 2
     Operation$.MODULE$.Iterator();
   public static final Operation<scala.math.BigInt, XML.Tree> MOVE_ACTIVE_ROOT = //step 3
