@@ -31,8 +31,10 @@ public class Operations {
     Operation$.MODULE$.moveActiveRoot();
   public static final Operation<XML.Tree, XML.Tree> GET_FORMULAE =              //step 4
     Operation$.MODULE$.getFormulaeFromTo();
+  //step 6
   public static final Operation<XML.Tree, XML.Tree> AUTO_CALC =                 //step 7
     Operation$.MODULE$.autoCalculate();
+  //step 10
   public static final Operation<scala.math.BigInt, XML.Tree> DEL_CALC =         //step 13
     Operation$.MODULE$.DEconstrCalcTree();
 
