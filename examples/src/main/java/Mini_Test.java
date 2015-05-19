@@ -8,6 +8,8 @@ import scala.collection.immutable.$colon$colon;
 
 import edu.tum.cs.isabelle.japi.JSystem;
 import edu.tum.cs.isabelle.japi.Operations;
+import isabelle.XML;
+
 
 public class Mini_Test {
 
@@ -29,26 +31,28 @@ public class Mini_Test {
     List items = list("equality (x+1=(2::real))", "solveFor x", "solutions L");
     List pbl = list("sqroot-test","univariate","equation","test");
     List met = list("Test","squ-equ-test-subpbl1");
-    System.out.println(sys.invoke(Operations.CALC_TREE,        //step 1
-      ConvertXML.calc_tree(items, "Test", pbl, met)));		    
+    System.out.println("# 1 # " + sys.invoke(Operations.CALC_TREE,        //step 1
+      ConvertXML.calc_tree(items, "Test", pbl, met)));
+    XML.Tree xxx = sys.invoke(Operations.CALC_TREE,        //step 1
+    	      ConvertXML.calc_tree(items, "Test", pbl, met));
     int calcid = 1;
-    System.out.println(sys.invoke(Operations.ITERATOR,         //step 2
+    System.out.println("# 2 # " + sys.invoke(Operations.ITERATOR,         //step 2
       new scala.math.BigInt(BigInteger.valueOf(calcid))));		    
-    System.out.println(sys.invoke(Operations.MOVE_ACTIVE_ROOT, //step 3
+    System.out.println("# 3 # " + sys.invoke(Operations.MOVE_ACTIVE_ROOT, //step 3
       new scala.math.BigInt(BigInteger.valueOf(calcid))));
-    System.out.println(sys.invoke(Operations.GET_FORMULAE,     //step 4
+    System.out.println("# 4 # " + sys.invoke(Operations.GET_FORMULAE,     //step 4
       ConvertXML.get_formulae(new scala.math.BigInt(BigInteger.valueOf(calcid)), 
       "Pbl", "Pbl", new scala.math.BigInt(BigInteger.valueOf(0)), "false")));
-
-    //step 6
-    
+    System.out.println("# 6 # " + sys.invoke(Operations.REF_FORMULA,     //step 6
+      ConvertXML.ref_formula(new scala.math.BigInt(BigInteger.valueOf(calcid)), 
+      "Pbl")));
     String auto = "CompleteCalc";
-    System.out.println(sys.invoke(Operations.AUTO_CALC,        //step 7
+    System.out.println("# 7 # " + sys.invoke(Operations.AUTO_CALC,        //step 7
       ConvertXML.auto_calculate(new scala.math.BigInt(BigInteger.valueOf(calcid)), auto)));
 
     //step 10
     
-    System.out.println(sys.invoke(Operations.DEL_CALC,         //step 13
+    System.out.println("# 13 # " + sys.invoke(Operations.DEL_CALC,         //step 13
       new scala.math.BigInt(BigInteger.valueOf(calcid))));
     
     System.out.println("----- end of mini-test cf. ~~/doc/test--isac-Java--isac-kernel.txt");

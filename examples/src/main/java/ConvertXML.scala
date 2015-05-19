@@ -121,6 +121,18 @@ object ConvertXML {
       XML.Elem(Markup("INT", Nil), List(XML.Text(level.toString()))),
       XML.Elem(Markup("BOOL", Nil), List(XML.Text(rules)))))
   }  
+  
+  //----- step 6 -----------------------
+  //def ref_formula(calcid: scala.math.BigInt, pos: ICalcIterator,  //NOT RESOLVED BY sbt  
+  def   ref_formula(calcid: scala.math.BigInt, pos: String): XML.Tree =
+  { 
+    /*scala> val (calcid, pos) = (1:BigInt, "Pbl")
+     */
+    XML.Elem(Markup("REFFORMULA", Nil), List(
+      XML.Elem(Markup("CALCID", Nil), List(XML.Text(calcid.toString()))),
+      xml_of_pos (Nil, pos)))
+  }  
+    
   //----- step 7 -----------------------
   def auto_calculate(calcid: scala.math.BigInt, auto: String): XML.Tree =
   {    

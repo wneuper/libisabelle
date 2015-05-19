@@ -19,7 +19,7 @@ object Operation {
   val Iterator = implicitly[scala.math.BigInt, XML.Tree]("iterator")                 //step 2
   val moveActiveRoot = implicitly[scala.math.BigInt, XML.Tree]("moveactiveroot")     //step 3
   val getFormulaeFromTo = implicitly[XML.Tree, XML.Tree]("getformulaefromto")        //step 4
-  //step 6
+  val refFormula = implicitly[XML.Tree, XML.Tree]("refformula")                      //step 6
   val autoCalculate = implicitly[XML.Tree, XML.Tree]("autocalculate")                //step 7
   //step 10
   val DEconstrCalcTree = implicitly[scala.math.BigInt, XML.Tree]("deconstrcalctree") //step 13

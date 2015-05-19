@@ -395,7 +395,7 @@ ML {* refFormula 1 ([],Pbl); * }
 val calcid = 1
 val pos as (is, kind) = ([], Pbl)
 val intree = (* CREATE THIS IN Mini_Test.java *)
-  XML.Elem (("GETFORMULAEFROMTO", []), [
+  XML.Elem (("REFFORMULA", []), [
     XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
     xml_of_pos "POSITION" (is, kind)])
 
@@ -418,7 +418,7 @@ operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFF
    action = (fn intree => 
 	 let 
 	   val (ci, p) = case intree of
-       XML.Elem (("GETFORMULAEFROMTO", []), [
+       XML.Elem (("REFFORMULA", []), [
            XML.Elem (("CALCID", []), [XML.Text ci]), 
            p]) => (ci, p)
      val SOME calcid = int_of_str ci
