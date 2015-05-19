@@ -49,9 +49,9 @@ public class Mini_Test {
     String auto = "CompleteCalc";
     System.out.println("# 7 # " + sys.invoke(Operations.AUTO_CALC,        //step 7
       ConvertXML.auto_calculate(new scala.math.BigInt(BigInteger.valueOf(calcid)), auto)));
-
-    //step 10
-    
+    System.out.println("# 10 # " + sys.invoke(Operations.REF_FORMULA,     //step 10
+        ConvertXML.ref_formula(new scala.math.BigInt(BigInteger.valueOf(calcid)), 
+        "Res")));
     System.out.println("# 13 # " + sys.invoke(Operations.DEL_CALC,         //step 13
       new scala.math.BigInt(BigInteger.valueOf(calcid))));
     
