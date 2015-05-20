@@ -35,7 +35,7 @@ public class Operations {
     Operation$.MODULE$.refFormula();
   public static final Operation<XML.Tree, XML.Tree> AUTO_CALC =                 //step 7
     Operation$.MODULE$.autoCalculate();
-  //step 10
+  //re-use the operation of step 6                                                step 10
   public static final Operation<scala.math.BigInt, XML.Tree> DEL_CALC =         //step 13
     Operation$.MODULE$.DEconstrCalcTree();
   //-------------------------------------------------------------------

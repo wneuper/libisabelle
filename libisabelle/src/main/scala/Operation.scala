@@ -21,7 +21,7 @@ object Operation {
   val getFormulaeFromTo = implicitly[XML.Tree, XML.Tree]("getformulaefromto")        //step 4
   val refFormula = implicitly[XML.Tree, XML.Tree]("refformula")                      //step 6
   val autoCalculate = implicitly[XML.Tree, XML.Tree]("autocalculate")                //step 7
-  //step 10
+  //re-use the operation of step 6                                                     step 10
   val DEconstrCalcTree = implicitly[scala.math.BigInt, XML.Tree]("deconstrcalctree") //step 13
 
   //-------------------------------------------------------------------
