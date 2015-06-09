@@ -114,10 +114,6 @@ subsection \<open>operation_setup for mini-test\<close>
 # #I = from_lib: CHECKED AND DECOMPOSED TO SML!
 # #O = to_lib:   COPIED FROM isabisac/test/Pure/PIDE/xml.ML 
 
-ATTENTION AT INTEGRATION INTO isabisac: 
-# use|change "fun indt" 
-# rename funs, e.g. xml/datatypes.sml: fun ints2xml *)
-
 subsubsection \<open>step 1\<close>
 ML {*
 (* ad --- step 1 -----------------------------------------------------
