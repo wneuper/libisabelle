@@ -28,8 +28,10 @@ Legend: ~~/ is the root directory of the repository.
  	     
 (C) Compilation is done with these steps:
   $ cd ~~/
- (1)~~$ export ISABELLE_HOME=/usr/local/isabisac
- (2)~~$ /usr/local/isabisac/bin/isabelle build -D . -bv
+ (1)~~$ export ISABELLE_HOME=/usr/local/Isabelle2014
+    ~~$ export ISABELLE_HOME=/usr/local/isabisac
+ (2)~~$ /usr/local/Isabelle2014/bin/isabelle build -D . -bv
+    ~~$ /usr/local/isabisac/bin/isabelle build -D . -bv
  (3)~~$ ./sbt full/assembly
  (4)~~$ java -cp full/target/scala-2.11/libisabelle-full.jar Mini_Test
 

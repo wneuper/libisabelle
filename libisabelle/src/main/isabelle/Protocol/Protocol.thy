@@ -1,5 +1,5 @@
 theory Protocol
-imports Codec
+imports Codec "~~/src/Tools/isac/Frontend/Frontend"
 keywords "operation_setup" :: thy_decl % "ML"
 begin
 
@@ -100,134 +100,6 @@ operation_setup testit = \<open>
 	 in result end)}\<close>
 
 section \<open>Implement mini-test from ~~/doc/test--isac-Java--isac-kernel.txt\<close>
-subsection \<open>keep mini-test independent from isac-kernel\<close>
-ML {*
-(* DONT CHANGE THESE IDENTIFIERS from library.sml, Interpret/ctree.sml, ProgLang/termC.sml, etc*)
-fun drop_last l = ((rev o tl o rev) l);
-fun int_of_str str =
-    let val ss = Symbol.explode str
-	val str' = case ss of
-	   "("::s => drop_last s | _ => ss
-    in (SOME (Thy_Output.integer (implode str'))) handle _ => NONE end;
-fun bool2str true = "true"
-  | bool2str false = "false";
-datatype pos_ = Pbl | Met | Frm | Res | Und   
-fun pos_2str Pbl = "Pbl"
-  | pos_2str Met = "Met"
-  | pos_2str Frm = "Frm"
-  | pos_2str Res = "Res"
-  | pos_2str Und = "Und";
-fun pair2str (s1,s2) =   "(" ^ s1 ^ ", " ^ s2 ^ ")"
-fun strs2str' strl = "[" ^ (commas strl) ^ "]"
-fun ints2str' ints = (strs2str' o (map string_of_int)) ints
-fun pos'2str (p,p_) = pair2str (ints2str' p, pos_2str p_)
-datatype auto = 
-  Step of int      (*1 do #int steps; may stop in model/specify:
-		     IS VERY INEFFICIENT IN MODEL/SPECIY*)
-| CompleteModel    (*2 complete modeling
-                       if model complete, finish specifying + start solving*)
-| CompleteCalcHead (*3 complete model/specify in one go + start solving*)
-| CompleteToSubpbl (*4 stop at the next begin of a subproblem,
-                       if none, complete the actual (sub)problem*)
-| CompleteSubpbl   (*5 complete the actual (sub)problem (incl.ev.subproblems)*)
-| CompleteCalc;    (*6 complete the calculation as a whole*)	
-fun term_to_string' ctxt t =
-  let
-    val ctxt' = Config.put show_markup false ctxt
-  in Print_Mode.setmp [] (Syntax.string_of_term ctxt') t end;
-fun term2str t = term_to_string' (Proof_Context.init_global @{theory Pure}) t;
-*} ML {*
-*}
-
-subsection \<open>New code to \<longrightarrow> isabisac/src/...\<close>
-ML {*
-(* \<longrightarrow> src/../Interpret/ctree.sml .. fun pos_2str *)
-fun str2pos_ "Pbl" = Pbl
-  | str2pos_ "Met" = Met
-  | str2pos_ "Frm" = Frm
-  | str2pos_ "Res" = Res
-  | str2pos_ "Und" = Und
-
-(* \<longrightarrow> src/../library.sml
-ATTENTION AT INTEGRATION INTO isabisac: 
-# use|change "fun indt" *)
-fun indent i = fold (curry op ^) (replicate i "  ") ""
-
-(* \<longrightarrow> src/../calcelems.sml *)
-fun string_to_bool "true" = true
-  | string_to_bool "false" = false
-  | string_to_bool str = error ("string_to_bool: arg = " ^ str)
-
-(* \<longrightarrow> src/../xmlsrc/datatypes.sml *)
-fun xmlstr i (XML.Text str) = indent i ^ str ^ "\n"
-  | xmlstr i (XML.Elem ((str, []), trees)) = 
-    indent i ^ "<" ^ str ^ ">" ^ "\n" ^
-      List.foldr op ^ "" (map (xmlstr (i + 1)) trees) ^
-    indent i ^ "</" ^ str ^ ">" ^ "\n"
-  | xmlstr i (XML.Elem ((str, [("status", a)]), trees)) = 
-    indent i ^ "<" ^ str ^ " status " ^ a  ^ ">" ^ "\n" ^
-      List.foldr op ^ "" (map (xmlstr (i + 1)) trees) ^
-    indent i ^ "</" ^ str ^ ">" ^ "\n"
-  | xmlstr _ (XML.Elem ((_, (_ :: _)), _)) = 
-    error "xmlstr: TODO review attribute \"status\" etc";
-
-fun xml_of_bool b = XML.Elem (("BOOL", []), [XML.Text (bool2str b)])
-fun xml_to_bool (XML.Elem (("BOOL", []), [XML.Text b])) = string_to_bool b
-  | xml_to_bool tree = error ("xml_to_int: wrong XML.tree " ^ xmlstr 0 tree)
-
-fun xml_of_int i = XML.Elem (("INT", []), [XML.Text (string_of_int i)])
-fun xml_of_ints is = (*xml/datatypes.sml: fun ints2xml*)
-  XML.Elem (("INTLIST", []), map xml_of_int is)
-fun xml_of_pos tag (is, pp) = (*xml/datatypes.sml: fun pos'2xml*)
-  XML.Elem ((tag, []), [
-    xml_of_ints is,
-    XML.Elem (("POS", []), [XML.Text (pos_2str pp)])])
-
-fun xml_to_int (XML.Elem (("INT", []), [XML.Text i])) = 
-      (case int_of_str i of SOME i => i | _ => error "xml_to_int: int_of_str \<Rightarrow> NONE")
-  | xml_to_int tree = error ("xml_to_int: wrong XML.tree " ^ xmlstr 0 tree)
-fun xml_to_ints (XML.Elem (("INTLIST", []), is)) = map xml_to_int is
-  | xml_to_ints tree = error ("xml_to_ints: wrong XML.tree " ^ xmlstr 0 tree)
-fun xml_to_pos_ (XML.Elem (("POS", []), [XML.Text pp])) = str2pos_ pp
-  | xml_to_pos_ tree = error ("xml_to_pos_: wrong XML.tree " ^ xmlstr 0 tree)
-fun xml_to_pos (XML.Elem (("POSITION", []), [is, pp])) = (xml_to_ints is, xml_to_pos_ pp) (*: pos'*)
-  | xml_to_pos tree = error ("xml_to_pos: wrong XML.tree " ^ xmlstr 0 tree)
-
-fun xml_of_auto (Step i) = 
-      XML.Elem (("AUTO", []), [XML.Text "Step", XML.Text (string_of_int i)])
-  | xml_of_auto CompleteModel = XML.Elem (("AUTO", []), [XML.Text "CompleteModel"])
-  | xml_of_auto CompleteCalcHead = XML.Elem (("AUTO", []), [XML.Text "CompleteCalcHead"])
-  | xml_of_auto CompleteToSubpbl = XML.Elem (("AUTO", []), [XML.Text "CompleteToSubpbl"])
-  | xml_of_auto CompleteSubpbl = XML.Elem (("AUTO", []), [XML.Text "CompleteSubpbl"])
-  | xml_of_auto CompleteCalc = XML.Elem (("AUTO", []), [XML.Text "CompleteCalc"])
-fun xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "Step", XML.Text i])) = Step (int_of_str i |>the)
-  | xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "CompleteModel"])) = CompleteModel
-  | xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "CompleteCalcHead"])) = CompleteCalcHead
-  | xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "CompleteToSubpbl"])) = CompleteToSubpbl
-  | xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "CompleteSubpbl"])) = CompleteSubpbl
-  | xml_to_auto (XML.Elem (("AUTO", []), [XML.Text "CompleteCalc"])) = CompleteCalc
-  | xml_to_auto tree = error ("xml_to_auto: wrong XML.tree " ^ xmlstr 0 tree)
-
-fun xml_of_str str = XML.Elem (("STRING", []), [XML.Text str])
-fun xml_of_strs strs = XML.Elem (("STRINGLIST", []), map xml_of_str strs)
-fun xml_of_spec (thyID, pblID, metID) =
-  XML.Elem (("SPECIFICATION", []), [
-    XML.Elem (("THEORYID", []), [XML.Text thyID]),
-    XML.Elem (("PROBLEMID", []), [xml_of_strs pblID]),
-    XML.Elem (("METHODID", []), [xml_of_strs metID])])
-
-fun xml_to_str (XML.Elem (("STRING", []), [XML.Text str])) = str
-  | xml_to_str tree = error ("xml_to_str: wrong XML.tree " ^ xmlstr 0 tree)
-fun xml_to_strs (XML.Elem (("STRINGLIST", []), strs)) = map xml_to_str strs
-  | xml_to_strs tree = error ("xml_to_strs: wrong XML.tree " ^ xmlstr 0 tree)
-
-fun xml_to_spec (XML.Elem (("SPECIFICATION", []), [
-      XML.Elem (("THEORYID", []), [XML.Text thyID]),
-      XML.Elem (("PROBLEMID", []), ps),
-      XML.Elem (("METHODID", []), ms)])) = (thyID, map xml_to_strs ps, map xml_to_strs ms)
-  | xml_to_spec tree = error ("xml_to_spec: wrong XML.tree " ^ xmlstr 0 tree)
-*} ML {*
-*}
 
 subsection \<open>New code to \<longrightarrow> isabisac/test/...\<close>
 (* \<longrightarrow> test/../xmlsrc/datatypes.sml *)
@@ -266,19 +138,20 @@ val intree = (* CREATE THIS IN Mini_Test.java *)
 operation_setup calctree = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
-   action = (fn calcid => 
+   action = (fn intree => 
 	 let 
 	   val (its, spc) = case intree of
 	       XML.Elem (("FORMALIZATION", []), [its, spc]) => (its, spc)
        | tree => error ("calctree: intree =" ^ xmlstr 0 tree)
      val items = xml_to_strs its
      val spec = xml_to_spec spc
-	   val calcid = 1 (* ------------------------------- work done in Isabelle/Isac *)
+   in Math_Engine.CalcTree [(items, spec) : fmz] end
+(*	   val calcid = 1 (* ------------------------------- work done in Isabelle/Isac *)
 	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
 	     XML.Elem (("CALCTREE", []),
   	       [XML.Elem (("CALCID", []), 
   	         [XML.Text (string_of_int calcid)])])
-	 in result end)}\<close>
+	 in result end*))} \<close>
 
 subsubsection \<open>step 2\<close>
 (*
