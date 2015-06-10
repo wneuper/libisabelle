@@ -113,7 +113,7 @@ subsection \<open>operation_setup for mini-test\<close>
 (*setup follows ~~/doc/test--isac-Java--isac-kernel.txt
 # #I = from_lib: CHECKED AND DECOMPOSED TO SML!
 # #O = to_lib:   COPIED FROM isabisac/test/Pure/PIDE/xml.ML 
-
+*)
 subsubsection \<open>step 1\<close>
 ML {*
 (* ad --- step 1 -----------------------------------------------------
@@ -139,15 +139,14 @@ operation_setup calctree = \<open>
 	   val (its, spc) = case intree of
 	       XML.Elem (("FORMALIZATION", []), [its, spc]) => (its, spc)
        | tree => error ("calctree: intree =" ^ xmlstr 0 tree)
-     val items = xml_to_strs its
-     val spec = xml_to_spec spc
-   in Math_Engine.CalcTree [(items, spec) : fmz] end
-(*	   val calcid = 1 (* ------------------------------- work done in Isabelle/Isac *)
+	   val items = xml_to_strs its
+	   val spec = xml_to_spec spc
+	   val calcid = 1 (* ------------------------------- work done in Isabelle/Isac *)
 	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
 	     XML.Elem (("CALCTREE", []),
   	       [XML.Elem (("CALCID", []), 
   	         [XML.Text (string_of_int calcid)])])
-	 in result end*))} \<close>
+	 in result (* Math_Engine.CalcTree [(items, spec) : fmz] *) end)} \<close>
 
 subsubsection \<open>step 2\<close>
 (*
@@ -165,7 +164,7 @@ operation_setup iterator = \<open>
 	     XML.Elem (("ADDUSER", []),
          [XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
          XML.Elem (("USERID", []), [XML.Text (string_of_int userid)])])
-	 in result end)}\<close>
+	 in result (* Math_Engine.Iterator (str2int calcid) *) end)}\<close>
 
 subsubsection \<open>step 3\<close>
 (*
@@ -186,7 +185,7 @@ operation_setup moveactiveroot = \<open>
          XML.Elem (("POSITION", []), [
            XML.Elem (("INTLIST", []), is),
            XML.Elem (("POS", []), [XML.Text (pos_2str kind)])])])
-	 in result end)}\<close>
+	 in result (* Math_Engine.moveActiveRoot (str2int calcid) *) end)}\<close>
 
 subsubsection \<open>step 4\<close>
 ML {*
@@ -204,11 +203,11 @@ val formheads = [calcformula (*, calchead .. see below*)]
 val intree = (* CREATE THIS IN Mini_Test.java *)
   XML.Elem (("GETFORMULAEFROMTO", []), [
     XML.Elem (("CALCID", []), 
-      [XML.Text (string_of_int calcid)]),
+      [XML.Text  (string_of_int calcid)]),
       xml_of_pos "POSITION" (is, kind),
       xml_of_pos "POSITION" (is, kind),
-      XML.Text (string_of_int 0),
-      XML.Text (bool2str false)])
+      xml_of_int 0,
+      xml_of_bool false]);
 *}
 (*------- step 4 -----------------------------------------------------*)
 operation_setup getformulaefromto = \<open>
@@ -216,23 +215,23 @@ operation_setup getformulaefromto = \<open>
    to_lib = Codec.tree,
    action = (fn intree => 
 	 let
-	   val (ci, from, to, level, rules) = case intree of
+	   val (calcid, from, to, level, rules) = case intree of
        XML.Elem (("GETFORMULAEFROMTO", []), [
-         XML.Elem (("CALCID", []), [XML.Text ci]),
-         XML.Elem (("POSITION", []), [
-             XML.Elem (("INTLIST", []), []),
-             XML.Elem (("POS", []), [XML.Text from])]),
-         XML.Elem (("POSITION", []), [
-             XML.Elem (("INTLIST", []), []),
-             XML.Elem (("POS", []), [XML.Text to])]),
+         XML.Elem (("CALCID", []), [XML.Text calcid]),
+         from as XML.Elem (("POSITION", []), [
+           XML.Elem (("INTLIST", []), _),
+           XML.Elem (("POS", []), [XML.Text _])]),
+         to as XML.Elem (("POSITION", []), [
+           XML.Elem (("INTLIST", []), _),
+           XML.Elem (("POS", []), [XML.Text _])]),
          XML.Elem (("INT", []), [XML.Text level]),
-         ruls as XML.Elem (("BOOL", []), [XML.Text rules])]) => (ci, from, to, level, rules)
-       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
-     val SOME calcid = int_of_str ci
-     val from = (*xml_to_pos*) from
-     val to = (*xml_to_pos*) to
-     val level = (*xml_to_int*) level
-     val ruls = (*xml_to_bool*) rules
+         XML.Elem (("BOOL", []), [XML.Text rules])]) => (calcid, from, to, level, rules)
+     | tree => error ("getformulaefromto: WRONG intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str calcid
+     val from = xml_to_pos from
+     val to = xml_to_pos to
+     val SOME level = (*xml_to_int*) int_of_str level
+     val rules = (*xml_to_bool*) string_to_bool rules
 	   (* ------------------------------------------------------------ work done in Isabelle/Isac *)
 	   val calcid = 1
 	   val pos as (is, kind) = ([], Pbl)
@@ -248,7 +247,7 @@ operation_setup getformulaefromto = \<open>
              XML.Elem (("FORMULA", []), [
                XML.Elem (("MATHML", []), [
                  XML.Elem (("ISA", []), [XML.Text formula])])])])])])
-	 in result end)}\<close>
+	 in result (* Math_Engine.getFormulaeFromTo calcid from to level rules *) end)}\<close>
 
 subsubsection \<open>step 6\<close>
 (*------- step 5 -----------------------------------------------------
