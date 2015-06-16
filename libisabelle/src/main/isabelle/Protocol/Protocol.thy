@@ -1,5 +1,7 @@
 theory Protocol
-imports Codec "~~/src/Tools/isac/Frontend/Frontend"
+imports 
+  "/home/wneuper/proto4/libisabelle/libisabelle/src/main/isabelle/Protocol/Codec"
+  "~~/src/Tools/isac/Frontend/Frontend"
 keywords "operation_setup" :: thy_decl % "ML"
 begin
 

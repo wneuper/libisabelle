@@ -1,5 +1,7 @@
 theory Codec_Test
-imports Codec "~~/src/Tools/Spec_Check/Spec_Check"
+imports 
+  "/home/wneuper/proto4/libisabelle/libisabelle/src/main/isabelle/Protocol/Codec"
+  "~~/src/Tools/Spec_Check/Spec_Check"
 begin
 
 ML\<open>

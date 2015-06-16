@@ -1,4 +1,4 @@
-session Protocol = Pure +
+session Protocol = HOL +
   theories
     Codec_Test
     Protocol

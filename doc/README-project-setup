@@ -32,6 +32,7 @@ Legend: ~~/ is the root directory of the repository.
  (2)~~$ /usr/local/isabisac/bin/isabelle build -D . -bv
  (3)~~$ ./sbt full/assembly
  (4)~~$ java -cp full/target/scala-2.11/libisabelle-full.jar Mini_Test
+    ~~$ java -cp full/target/scala-2.11/libisabelle-full.jar Hello_PIDE
 
  Notes:
  (2) creates ~~/lib/specs2-core_2.11-3.4.jar
