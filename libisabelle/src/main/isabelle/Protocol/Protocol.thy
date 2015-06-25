@@ -103,21 +103,11 @@ operation_setup testit = \<open>
 	 in result end)}\<close>
 
 section \<open>Implement mini-test from ~~/doc/test--isac-Java--isac-kernel.txt\<close>
-
-subsection \<open>New code to \<longrightarrow> isabisac/test/...\<close>
-(* \<longrightarrow> test/../xmlsrc/datatypes.sml *)
-ML {*
-val (is, kind) = ([], Pbl)
-;
-writeln (xmlstr 0 (xml_of_pos "POSITION" (is, kind)))
-*}
-
-subsection \<open>operation_setup for mini-test\<close>
-(*setup follows ~~/doc/test--isac-Java--isac-kernel.txt
-# #I = from_lib: CHECKED AND DECOMPOSED TO SML!
-# #O = to_lib:   COPIED FROM isabisac/test/Pure/PIDE/xml.ML 
+(*
+# #I = "from_lib" in operation_setup: CHECKED AND DECOMPOSED TO SML!
+# #O = "to_lib"   in operation_setup: COPIED FROM isabisac/test/Pure/PIDE/xml.ML 
 *)
-subsubsection \<open>step 1\<close>
+subsection \<open>step 1\<close>
 ML {*
 (* ad --- step 1 -----------------------------------------------------
 #I: Formalization
@@ -151,7 +141,7 @@ operation_setup calctree = \<open>
   	         [XML.Text (string_of_int calcid)])])
 	 in result (* Math_Engine.CalcTree [(items, spec) : fmz] *) end)} \<close>
 
-subsubsection \<open>step 2\<close>
+subsection \<open>step 2\<close>
 (*
 #I: int
 #O: (int, int)
@@ -169,7 +159,7 @@ operation_setup iterator = \<open>
          XML.Elem (("USERID", []), [XML.Text (string_of_int userid)])])
 	 in result (* Math_Engine.Iterator (str2int calcid) *) end)}\<close>
 
-subsubsection \<open>step 3\<close>
+subsection \<open>step 3\<close>
 (*
 #I: int
 #O: (int, ICalcIterator)
@@ -190,7 +180,7 @@ operation_setup moveactiveroot = \<open>
            XML.Elem (("POS", []), [XML.Text (pos_2str kind)])])])
 	 in result (* Math_Engine.moveActiveRoot (str2int calcid) *) end)}\<close>
 
-subsubsection \<open>step 4\<close>
+subsection \<open>step 4\<close>
 ML {*
 (* ad --- step 4 -----------------------------------------------------
 #I: (int, ICalcIterator, ICalcIterator, int, string) ...SIMPLIFIED TO:
@@ -252,7 +242,7 @@ operation_setup getformulaefromto = \<open>
                  XML.Elem (("ISA", []), [XML.Text formula])])])])])])
 	 in result (* Math_Engine.getFormulaeFromTo calcid from to level rules *) end)}\<close>
 
-subsubsection \<open>step 6\<close>
+subsection \<open>step 6\<close>
 (*------- step 5 -----------------------------------------------------
 ML {* refFormula 1 ([],Pbl); * } *)
 ML {*
@@ -342,7 +332,7 @@ operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFF
 	   | _ => error ("refformula called with " ^ pos'2str pos)
 	 in result end)}\<close>
 
-subsubsection \<open>step 7\<close>
+subsection \<open>step 7\<close>
 ML {*
 (* ad --- step 7 -----------------------------------------------------
 #I: (int, string) ...CHANGED TO:
@@ -395,7 +385,7 @@ operation_setup autocalculate = \<open>
         XML.Elem (("POS", []), [XML.Text "Res"])])])])
 	 in result end)}\<close>
 
-subsubsection \<open>step 10 covered by step 6\<close>
+subsection \<open>step 10 covered by step 6\<close>
 (*------- step 8 -----------------------------------------------------
 ML {* getFormulaeFromTo 1 ([],Pbl) ([],Res) 0 false; * }
   ------- step 9 -----------------------------------------------------
@@ -406,7 +396,7 @@ ML {* getFormulaeFromTo 1 ([],Pbl) ([],Res) 0 false; * }
 ML {* refFormula 1 ([],Res); * }
 *)
 
-subsubsection \<open>step 13\<close>
+subsection \<open>step 13\<close>
 (*------- step 11 -----------------------------------------------------
 ML {* refFormula 1 ([],Res); * }
   ------- step 12 -----------------------------------------------------
