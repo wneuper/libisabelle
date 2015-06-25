@@ -11,6 +11,13 @@ $ git clean -f      # Remove untracked files
 $ git commit -am "xxxxx"
 $ git push
 
+??? git reset:
+$ git checkout xxxxx
+  # .. http://stackoverflow.com/questions/4114095/revert-to-a-previous-git-commit
+  # To revert to previous commit, ignoring any changes:
+$ git reset --hard HEAD
+  #!!! git pull, nevertheless, somehow complains
+
 # better MERGE manually from git clone https://github.com/larsrh/libisabelle.git
 # instead of ...
 ## https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/
