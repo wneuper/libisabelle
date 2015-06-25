@@ -1,4 +1,4 @@
-session Protocol = HOL +
+session Protocol = (*//Pure: Protocol imports Frontend.thy ..imports.. *) HOL +
   theories
     Codec_Test
     Protocol

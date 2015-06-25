@@ -1,6 +1,7 @@
 theory Protocol
 imports 
   "/home/wneuper/proto4/libisabelle/libisabelle/src/main/isabelle/Protocol/Codec"
+  (* isabelle build runs in /usr/local/isabisac/ and thus requires this ^^^ path *)
   "~~/src/Tools/isac/Frontend/Frontend"
 keywords "operation_setup" :: thy_decl % "ML"
 begin

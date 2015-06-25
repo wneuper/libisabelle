@@ -26,7 +26,8 @@ public class Mini_Test {
 		     
     System.out.println("----- begin of mini-test cf. ~~/doc/test--isac-Java--isac-kernel.txt");
 
-    JSystem sys = JSystem.instance(new File("usr/local/isabisac"), "Isac");
+    JSystem sys = JSystem.instance(new File("."), "Protocol");
+    // Isac comes in by: Protocol imports ".../Frontend"
 
     List items = list("equality (x+1=(2::real))", "solveFor x", "solutions L");
     List pbl = list("sqroot-test","univariate","equation","test");
