@@ -1,4 +1,6 @@
-//package src.main.java  ...THIS CAUSES AN ERROR IN sbt
+// hack "IMPORT-PROBLEM150705" to allow import in isac-java/../Variant.java
+// "package libisabelle" SEEMS PREFERABLE, but did not work.
+package edu.tum.cs.isabelle.japi //IMPORT-PROBLEM150705
 
 import isabelle.XML;
 import isabelle.Markup;

@@ -10,6 +10,7 @@ import edu.tum.cs.isabelle.japi.JSystem;
 import edu.tum.cs.isabelle.japi.Operations;
 import isabelle.XML;
 
+import edu.tum.cs.isabelle.japi.ConvertXML; //IMPORT-PROBLEM150705
 
 public class Mini_Test {
 
