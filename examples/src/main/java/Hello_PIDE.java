@@ -1,3 +1,5 @@
+package examples.src.main.java;
+
 import java.io.File;
 import java.util.Arrays;
 
