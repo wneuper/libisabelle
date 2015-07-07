@@ -29,9 +29,41 @@ public class Mini_Test {
 		     
     System.out.println("----- begin of mini-test cf. ~~/doc/test--isac-Java--isac-kernel.txt");
 
-    JSystem sys = JSystem.instance(new File("."), "Protocol");
-    // Isac comes in by: Protocol imports ".../Frontend"
-
+    // 2 obstacles for development within Eclipse:
+    // A: ISABELLE_HOME needs to be set before JSystem.instance is called
+    // B: dependencies between the many paths (1..5) below with respect to Java, sbt, isabelle build, Isabelle/Isac, Eclipse,
+    //    where (9) is still open: ...
+  ////---------------------------------------------------------------------------------------\\
+    JSystem sys = JSystem.instance(new File("/home/wneuper/proto4/libisabelle./"), "Protocol");
+  //\\---------------------------------------------------------------------------------------//
+    //                                      \_______________(1)________________/   \__(2)___/
+    //                                                       |                         |
+    //                    ROOT of (2) made relative to (1)   +------- by ./sbt --------+   packed into libisabelle-full.jar
+    // we run Mini_Test with:
+    // xxxxxxx$ java -cp /home/wneuper/proto4/libisabelle/full/target/scala-2.11/libisabelle-full.jar examples.src.main.java.Mini_Test
+    // \_(3)_/            \___________________________________(4)__________________________________/   \____________(5)_____________/
+    //    |                                                    |                                                     |
+    // partly (see (9)) freed for Eclipse by (1)         found by java                         relative to (1) by libisabelle-full.jar
+    //                                                                                                             \_____(1..2)_____/
+    // (6) Isabelle/Isac comes in by: Protocol imports ".../Frontend".                                                     /
+    // (7) Embedding into Eclipse (in the future by Run Configurations): packed into isac-java.jar by Export in Eclipse __/
+    // (8) we run all packed into isac-java.jar (with main BridgeMain):
+    // libisabelle$ java -jar /home/wneuper/proto4/dist/isac-java.jar /home/wneuper/proto4/repos/isac-java/src/java/properties/BridgeMain.properties
+    //
+    // ... works, but the following still raises an error (where "/home/wneuper/proto4" is an example for "xxxxxxx"):
+    // (9) xxxxxxx$ java -jar /home/wneuper/proto4/dist/isac-java.jar /home/wneuper/proto4/repos/isac-java/src/java/properties/BridgeMain.properties
+    // Exception in thread "main" java.lang.RuntimeException: Bad session root directory: "/home/wneuper/proto4"
+	//   at isabelle.Library$ERROR$.apply(library.scala:20)
+    //                                               \__isac-java.jar__/
+    //                                                       |
+    //                                   contains libisabelle-full.jar as a library, 
+    // where (2) is made relative to (1), 
+    // but something concerning session management in libisabelle is still not relative to the directory libisabelle.
+    // This refers to https://github.com/larsrh/libisabelle/commit/29bce1cdb2efe7d9f21e1a5d87f710299600c75f
+    //         and to https://github.com/wneuper/libisabelle ...the changeset creating these updates.
+    //
+    // ?!?!?!?!?!?!?!?!?!?!?!?!?!?!? SO THERE ARE STILL UNRESOLVED DEPENDENCIES ?!?!?!?!?!?!?!?!?!?!?!?!?!?!?
+    
     List items = list("equality (x+1=(2::real))", "solveFor x", "solutions L");
     List pbl = list("sqroot-test","univariate","equation","test");
     List met = list("Test","squ-equ-test-subpbl1");
