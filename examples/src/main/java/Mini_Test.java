@@ -34,7 +34,8 @@ public class Mini_Test {
     // B: dependencies between the many paths (1..5) below with respect to Java, sbt, isabelle build, Isabelle/Isac, Eclipse,
     //    where (9) is still open: ...
   ////---------------------------------------------------------------------------------------\\
-    JSystem sys = JSystem.instance(new File("/home/wneuper/proto4/libisabelle./"), "Protocol");
+    isabelle.Isabelle_System.init("/usr/local/isabisac", "");
+    JSystem sys = JSystem.instance(new File("/home/wneuper/proto4/libisabelle/."), "Protocol");
   //\\---------------------------------------------------------------------------------------//
     //                                      \_______________(1)________________/   \__(2)___/
     //                                                       |                         |

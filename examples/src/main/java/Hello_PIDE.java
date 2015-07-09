@@ -1,12 +1,12 @@
 package examples.src.main.java;
 
+import edu.tum.cs.isabelle.japi.*;
+
 import java.io.File;
 import java.util.Arrays;
-
 import java.math.BigInteger;
-import scala.math.BigInt;
 
-import edu.tum.cs.isabelle.japi.*;
+import scala.math.BigInt;
 
 public class Hello_PIDE {
 
@@ -14,7 +14,8 @@ public class Hello_PIDE {
      
 	System.out.println("Hello I'm Hello_PIDE!");
 
-    JSystem sys = JSystem.instance(new File("."), "Protocol");
+    isabelle.Isabelle_System.init("/usr/local/isabisac", "");
+    JSystem sys = JSystem.instance(new File("/home/wneuper/proto4/libisabelle/."), "Protocol");
     System.out.println(sys.invoke(Operations.HELLO, "europa"));
     System.out.println(sys.invoke(Operations.TESTSTR, "xxx"));
     int i = 1;
