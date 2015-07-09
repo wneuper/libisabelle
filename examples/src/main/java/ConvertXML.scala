@@ -3,6 +3,9 @@ package examples.src.main.java
 import isabelle.XML;
 import isabelle.Markup;
 
+import java.util.ArrayList;
+import scala.collection.JavaConverters._
+
 //import isac.interfaces.ICalcIterator;  //NOT RESOLVED BY sbt
 //import isac.bridge.CalcIterator;       //NOT RESOLVED BY sbt
 
@@ -50,11 +53,11 @@ object ConvertXML {
     case XML.Elem(Markup("STRINGLIST", Nil), ss) => ss map xml_to_str
     case _ => throw new IllegalArgumentException("xml_to_strs exn")
   } 
-  def xml_of_spec (thy: String, pbl: List[String], met: List[String]): XML.Tree = {
+  def xml_of_spec (thy: String, pbl: ArrayList[String], met: ArrayList[String]): XML.Tree = {
     XML.Elem(Markup("SPECIFICATION", Nil), List(
       XML.Elem(Markup("THEORYID", Nil), List(XML.Text(thy))),
-      XML.Elem(Markup("PROBLEMID", Nil), List(xml_of_strs(pbl))),
-      XML.Elem(Markup("METHODID", Nil), List(xml_of_strs(met)))))
+      XML.Elem(Markup("PROBLEMID", Nil), List(xml_of_strs(pbl.asScala.toList))),
+      XML.Elem(Markup("METHODID", Nil), List(xml_of_strs(met.asScala.toList)))))
   }
   def xml_to_spec (t: XML.Tree) = t match {
     case XML.Elem(Markup("SPECIFICATION", Nil), List(
@@ -68,9 +71,9 @@ object ConvertXML {
   //===== convert arguments of methods calling  --> XML(Scala)..libisabelle
    
   //----- step 1 -----------------------
-  def calc_tree(items: List[String], thy: String, pbl: List[String], met: List[String]): XML.Tree = {
+  def calc_tree(items: ArrayList[String], thy: String, pbl: ArrayList[String], met: ArrayList[String]): XML.Tree = {
     XML.Elem(Markup("FORMALIZATION", Nil), List(
-      xml_of_strs(items),
+      xml_of_strs(items.asScala.toList),
       xml_of_spec(thy, pbl, met)))
   }
   /*scala> val items = List("equality (x+1=(2::real))", "solveFor x", "solutions L")

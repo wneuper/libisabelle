@@ -2,11 +2,9 @@ package examples.src.main.java;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 import scala.math.BigInt;
-import scala.collection.immutable.List;
-import scala.collection.immutable.List$;
-import scala.collection.immutable.$colon$colon;
 
 import edu.tum.cs.isabelle.japi.JSystem;
 import edu.tum.cs.isabelle.japi.Operations;
@@ -15,15 +13,6 @@ import isabelle.XML;
 import examples.src.main.java.ConvertXML; //IMPORT-PROBLEM150705
 
 public class Mini_Test {
-
-  //http://stackoverflow.com/questions/4524868/can-i-use-scala-list-directly-in-java
-  public static <T> List<T> list(T ... ts) {
-      List<T> result = List$.MODULE$.empty();
-      for(int i = ts.length; i > 0; i--) {
-          result = new $colon$colon(ts[i - 1], result);
-      }
-      return result;
-  }
 
   public static void main(String args[]) {
 		     
@@ -65,9 +54,21 @@ public class Mini_Test {
     //
     // ?!?!?!?!?!?!?!?!?!?!?!?!?!?!? SO THERE ARE STILL UNRESOLVED DEPENDENCIES ?!?!?!?!?!?!?!?!?!?!?!?!?!?!?
     
-    List items = list("equality (x+1=(2::real))", "solveFor x", "solutions L");
-    List pbl = list("sqroot-test","univariate","equation","test");
-    List met = list("Test","squ-equ-test-subpbl1");
+    //List items = list("equality (x+1=(2::real))", "solveFor x", "solutions L");
+    ArrayList<String> items = new ArrayList<>();
+    items.add("equality (x+1=(2::real))");
+    items.add("solveFor x");
+    items.add("solutions L");
+    //List pbl = list("sqroot-test","univariate","equation","test");
+    ArrayList<String> pbl = new ArrayList<>();
+    pbl.add("sqroot-test");
+    pbl.add("univariate");
+    pbl.add("equation");
+    pbl.add("test");
+    //List met = list("Test","squ-equ-test-subpbl1");
+    ArrayList<String> met = new ArrayList<>();
+    met.add("Test");
+    met.add("squ-equ-test-subpbl1");
     XML.Tree CALC_TREE_out = sys.invoke(Operations.CALC_TREE,               //step 1
       ConvertXML.calc_tree(items, "Test", pbl, met));
     System.out.println("# 1 # " + CALC_TREE_out);
