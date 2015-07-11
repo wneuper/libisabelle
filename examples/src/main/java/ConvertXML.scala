@@ -134,13 +134,10 @@ object ConvertXML {
   
   //----- step 6 -----------------------
   //def ref_formula(calcid: scala.math.BigInt, pos: ICalcIterator,  //NOT RESOLVED BY sbt  
-  def   ref_formula(calcid: scala.math.BigInt, pos: String): XML.Tree =
-  { 
-    /*scala> val (calcid, pos) = (1:BigInt, "Pbl")
-     */
-    XML.Elem(Markup("REFFORMULA", Nil), List(
+  def   ref_formula(calcid: scala.math.BigInt, pos_path: Vector[Integer], pos_kind: String): XML.Tree =
+  { XML.Elem(Markup("REFFORMULA", Nil), List(
       XML.Elem(Markup("CALCID", Nil), List(XML.Text(calcid.toString()))),
-      xml_of_pos (Nil, pos)))
+      xml_of_pos (pos_path.asScala.toList map Integer_to_BigInt, pos_kind)))
   }  
     
   //----- step 7 -----------------------

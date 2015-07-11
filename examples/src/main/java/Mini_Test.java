@@ -55,6 +55,7 @@ public class Mini_Test {
     //
     // ?!?!?!?!?!?!?!?!?!?!?!?!?!?!? SO THERE ARE STILL UNRESOLVED DEPENDENCIES ?!?!?!?!?!?!?!?!?!?!?!?!?!?!?
     
+    //----- step 1 ----------------------------------------------------------------
     //List items = list("equality (x+1=(2::real))", "solveFor x", "solutions L");
     ArrayList<String> items = new ArrayList<>();
     items.add("equality (x+1=(2::real))");
@@ -70,43 +71,54 @@ public class Mini_Test {
     ArrayList<String> met = new ArrayList<>();
     met.add("Test");
     met.add("squ-equ-test-subpbl1");
-    XML.Tree CALC_TREE_out = sys.invoke(Operations.CALC_TREE,               //step 1
+    XML.Tree CALC_TREE_out = sys.invoke(Operations.CALC_TREE,
       ConvertXML.calc_tree(items, "Test", pbl, met));
     System.out.println("# 1 # " + CALC_TREE_out);
 
+    //----- step 2 ----------------------------------------------------------------
     int calcid = 1;
-    XML.Tree ITERATOR_out = sys.invoke(Operations.ITERATOR,                 //step 2
+    XML.Tree ITERATOR_out = sys.invoke(Operations.ITERATOR,
       new scala.math.BigInt(BigInteger.valueOf(calcid)));
     System.out.println("# 2 # " + ITERATOR_out);
 
-    XML.Tree MOVE_ACTIVE_ROOT_out = sys.invoke(Operations.MOVE_ACTIVE_ROOT, //step 3
+    //----- step 3 ----------------------------------------------------------------
+    XML.Tree MOVE_ACTIVE_ROOT_out = sys.invoke(Operations.MOVE_ACTIVE_ROOT,
       new scala.math.BigInt(BigInteger.valueOf(calcid)));
     System.out.println("# 3 # " + MOVE_ACTIVE_ROOT_out);
 
+    //----- step 4 ----------------------------------------------------------------
     Vector<Integer> from_path = new Vector<>();
     String from_kind = "Pbl";
     Vector<Integer> to_path = new Vector<>();
     String to_kind = "Pbl";
     int level = 0;
-    XML.Tree GET_FORMULAE_out = sys.invoke(Operations.GET_FORMULAE,         //step 4
+    XML.Tree GET_FORMULAE_out = sys.invoke(Operations.GET_FORMULAE,
       ConvertXML.get_formulae(new scala.math.BigInt(BigInteger.valueOf(calcid)), 
       from_path, from_kind, to_path, to_kind, new scala.math.BigInt(BigInteger.valueOf(level)), "false"));
     System.out.println("# 4 # " + GET_FORMULAE_out);
 
-    XML.Tree REF_FORMULA_out = sys.invoke(Operations.REF_FORMULA,           //step 6
-      ConvertXML.ref_formula(new scala.math.BigInt(BigInteger.valueOf(calcid)), "Pbl"));
+    //----- step 6 ----------------------------------------------------------------
+    Vector<Integer> pos_path = new Vector<>();
+    String pos_kind = "Pbl";
+    XML.Tree REF_FORMULA_out = sys.invoke(Operations.REF_FORMULA,
+      ConvertXML.ref_formula(new scala.math.BigInt(BigInteger.valueOf(calcid)), pos_path, pos_kind));
     System.out.println("# 6 # " + REF_FORMULA_out);
 
+    //----- step 7 ----------------------------------------------------------------
     String auto = "CompleteCalc";
-    XML.Tree AUTO_CALC_out = sys.invoke(Operations.AUTO_CALC,               //step 7
+    XML.Tree AUTO_CALC_out = sys.invoke(Operations.AUTO_CALC,
       ConvertXML.auto_calculate(new scala.math.BigInt(BigInteger.valueOf(calcid)), auto));
     System.out.println("# 7 # " + AUTO_CALC_out);
 
-    REF_FORMULA_out = sys.invoke(Operations.REF_FORMULA,                    //step 10
-      ConvertXML.ref_formula(new scala.math.BigInt(BigInteger.valueOf(calcid)), "Res"));
+    //----- step 10 ---------------------------------------------------------------
+    pos_path = new Vector<>();
+    pos_kind = "Res";
+    REF_FORMULA_out = sys.invoke(Operations.REF_FORMULA,
+      ConvertXML.ref_formula(new scala.math.BigInt(BigInteger.valueOf(calcid)), pos_path, pos_kind));
     System.out.println("# 10 # " + REF_FORMULA_out);
 
-    XML.Tree DEL_CALC_out = sys.invoke(Operations.DEL_CALC,                 //step 13
+    //----- step 13 ---------------------------------------------------------------
+    XML.Tree DEL_CALC_out = sys.invoke(Operations.DEL_CALC,
       new scala.math.BigInt(BigInteger.valueOf(calcid)));
     System.out.println("# 13 # " + DEL_CALC_out);
     
