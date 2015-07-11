@@ -3,6 +3,7 @@ package examples.src.main.java;
 import java.io.File;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import scala.math.BigInt;
 
@@ -82,9 +83,14 @@ public class Mini_Test {
       new scala.math.BigInt(BigInteger.valueOf(calcid)));
     System.out.println("# 3 # " + MOVE_ACTIVE_ROOT_out);
 
+    Vector<Integer> from_path = new Vector<>();
+    String from_kind = "Pbl";
+    Vector<Integer> to_path = new Vector<>();
+    String to_kind = "Pbl";
+    int level = 0;
     XML.Tree GET_FORMULAE_out = sys.invoke(Operations.GET_FORMULAE,         //step 4
       ConvertXML.get_formulae(new scala.math.BigInt(BigInteger.valueOf(calcid)), 
-      "Pbl", "Pbl", new scala.math.BigInt(BigInteger.valueOf(0)), "false"));
+      from_path, from_kind, to_path, to_kind, new scala.math.BigInt(BigInteger.valueOf(level)), "false"));
     System.out.println("# 4 # " + GET_FORMULAE_out);
 
     XML.Tree REF_FORMULA_out = sys.invoke(Operations.REF_FORMULA,           //step 6

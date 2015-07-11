@@ -4,6 +4,10 @@ import isabelle.XML;
 import isabelle.Markup;
 
 import java.util.ArrayList;
+import java.util.Vector;
+import java.math.BigInteger;
+
+import scala.math.BigInt;
 import scala.collection.JavaConverters._
 
 //import isac.interfaces.ICalcIterator;  //NOT RESOLVED BY sbt
@@ -11,9 +15,8 @@ import scala.collection.JavaConverters._
 
 object ConvertXML {
 
-  //===== conversions in both directions: Java <--> XML(Scala)..libisabelle
+  //===== conversions in both directions: Java <--> XML(Scala)
   //compare isabisac/src/../datatypes.sml
-  //!as long as there are no imports, we preliminarily use Scala!
   
   def xml_of_int (i: scala.math.BigInt): XML.Tree = {
     XML.Elem(Markup("INT", Nil), List(XML.Text(i.toString())))
@@ -68,8 +71,16 @@ object ConvertXML {
   } 
   
   
-  //===== convert arguments of methods calling  --> XML(Scala)..libisabelle
-   
+  //===== convert arguments of JSystem.invoke(Operations.*
+  // As long as libisabelle cannot import isac.* we use Java primitive types as arguments.
+  // Conversions are all done in Scala (has specific methods), not in Java.
+  // Note: java.int-->scala.BigInt not done here, because "int" is unknown in Scala.
+
+  /* conversion java.lang.Integer --> scala.math.BigInt */
+  def Integer_to_BigInt (i: java.lang.Integer): scala.math.BigInt = {
+    new scala.math.BigInt(new BigInteger(i.toString())) //TODO: improve conversion ?
+  }
+
   //----- step 1 -----------------------
   def calc_tree(items: ArrayList[String], thy: String, pbl: ArrayList[String], met: ArrayList[String]): XML.Tree = {
     XML.Elem(Markup("FORMALIZATION", Nil), List(
@@ -110,17 +121,13 @@ object ConvertXML {
    */
    
   //----- step 4 -----------------------
-  //def get_formulae(calcid: scala.math.BigInt, from: ICalcIterator, to: ICalcIterator,  //NOT RESOLVED BY sbt
-  def   get_formulae(calcid: scala.math.BigInt, from: String,        to: String, 
+  //def get_formulae(calcid: scala.math.BigInt, from: ICalcIterator,                           to: ICalcIterator,  //NOT RESOLVED BY sbt
+  def   get_formulae(calcid: scala.math.BigInt, from_path: Vector[Integer], from_kind: String, to_path: Vector[Integer], to_kind: String, 
     level: scala.math.BigInt, rules/*?*/: String): XML.Tree =
-  { 
-    /*scala> val (calcid, from, to, level, rules) = 
-               (1:BigInt, "from", "to", 0:BigInt, "false")
-     */
-    XML.Elem(Markup("GETFORMULAEFROMTO", Nil), List(
+  { XML.Elem(Markup("GETFORMULAEFROMTO", Nil), List(
       XML.Elem(Markup("CALCID", Nil), List(XML.Text(calcid.toString()))),
-      xml_of_pos (Nil, from),
-      xml_of_pos (Nil, to),
+      xml_of_pos (from_path.asScala.toList map Integer_to_BigInt, from_kind),
+      xml_of_pos (to_path.asScala.toList map Integer_to_BigInt, to_kind),
       XML.Elem(Markup("INT", Nil), List(XML.Text(level.toString()))),
       XML.Elem(Markup("BOOL", Nil), List(XML.Text(rules)))))
   }  
