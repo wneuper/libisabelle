@@ -15,9 +15,15 @@ import scala.collection.JavaConverters._
 
 object ConvertXML {
 
-  //===== conversions in both directions: Java <--> XML(Scala)
+  // conversions in all directions: Java <--> XML(Scala) <--> Isabelle/ML
   //compare isabisac/src/../datatypes.sml
+  //see "conversions XML <--> ML" below: xml_of_* concerning          XML(Scala) <--  Isabelle/ML in Protocol.thy
+  //see "conversions XML <--> ML" below: xml_to_* concerning          XML(Scala)  --> Isabelle/ML in Protocol.thy
+  //see "convert results of JSystem.invoke(Operations.*"   below concerning Java <--  XML(Scala) in Mini_Test.java
+  //see "convert arguments of JSystem.invoke(Operations.*" below concerning Java  --> XML(Scala) in Mini_Test.java
+  //  here some xml_of_* are reused due to native Scala conversions
   
+  //===== conversions XML(Scala) <--> Isabelle/ML
   def xml_of_int (i: scala.math.BigInt): XML.Tree = {
     XML.Elem(Markup("INT", Nil), List(XML.Text(i.toString())))
   }  
@@ -25,13 +31,22 @@ object ConvertXML {
     case XML.Elem(Markup("INT", Nil), List(XML.Text(i))) => BigInt(i)
     case _ => throw new IllegalArgumentException("xml_to_int exn")
   }
-  def xml_of_ints (is: List[scala.math.BigInt]): XML.Tree = {
+  def xml_of_ints (is: List[scala.math.BigInt]): XML.Tree = {               //XML(Scala) <-- Isabelle/ML
     XML.Elem(Markup("INTLIST", Nil), is map xml_of_int)
   }
-  def xml_to_ints (t: XML.Tree): List[scala.math.BigInt] = t match {
+  def xml_to_ints (t: XML.Tree): List[scala.math.BigInt] = t match {        //XML(Scala) --> Isabelle/ML
     case XML.Elem(Markup("INTLIST", Nil), is) => is map xml_to_int
     case _ => throw new IllegalArgumentException("xml_to_ints exn")
   }
+  def xml_to_VectorInteger (t: XML.Tree): Vector[java.lang.Integer] = t match {   //Java <-- XML(Scala)
+    case XML.Elem(Markup("INTLIST", Nil), is) => {
+      val v = new java.util.Vector[java.lang.Integer];
+      is.foreach { case (XML.Elem(Markup("INT", Nil), List(XML.Text(i)))) => v.add(new java.lang.Integer(i)) }
+      v
+    }
+    case _ => throw new IllegalArgumentException("xml_to_VectorInteger exn")
+  }
+  
   def xml_of_pos (ints: List[scala.math.BigInt], kind: String ): XML.Tree = {
     XML.Elem(Markup("POSITION", Nil), List(
       xml_of_ints(ints),
@@ -71,14 +86,18 @@ object ConvertXML {
   } 
   
   
-  //===== convert arguments of JSystem.invoke(Operations.*
+  //===== convert arguments of JSystem.invoke(Operations.* using XML(Scala) <-- Isabelle/ML
   // As long as libisabelle cannot import isac.* we use Java primitive types as arguments.
   // Conversions are all done in Scala (has specific methods), not in Java.
   // Note: java.int-->scala.BigInt not done here, because "int" is unknown in Scala.
 
-  /* conversion java.lang.Integer --> scala.math.BigInt */
+  // conversion java.lang.Integer --> scala.math.BigInt
   def Integer_to_BigInt (i: java.lang.Integer): scala.math.BigInt = {
     new scala.math.BigInt(new BigInteger(i.toString())) //TODO: improve conversion ?
+  }
+  // UNUSED conversion scala.math.BigInt --> java.lang.Integer
+  def BigInt_to_Integer (i: scala.math.BigInt): java.lang.Integer = {
+    new java.lang.Integer(i.toString()) //TODO: improve conversion ?
   }
 
   //----- step 1 -----------------------
@@ -148,8 +167,18 @@ object ConvertXML {
       XML.Elem(Markup("AUTO", Nil), List(XML.Text(auto)))))
   }
 
-  //===== prepare for spec. constructors  Java <--  XML(Scala)..libisabelle
-  
+  //===== convert results of JSystem.invoke(Operations.* using Java <-- XML(Scala)
 
+  //----- step 3 -----------------------
+  def move_active_root_out(t: XML.Tree): IntPosCompound = t match {
+    case 
+      XML.Elem (Markup("CALCITERATOR", Nil), List(
+        XML.Elem (Markup("CALCID", Nil), List(
+          XML.Text (calcid))),
+          XML.Elem(Markup("POSITION", Nil), List(
+            is, XML.Elem(Markup("POS", Nil), List(XML.Text(kind)))))))
+      => new IntPosCompound(new java.lang.Integer(calcid), xml_to_VectorInteger(is), kind)
+    case _ => throw new IllegalArgumentException("move_active_root_out exn")        
+  }
 
 }

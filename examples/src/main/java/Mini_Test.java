@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import scala.math.BigInt;
-
 import edu.tum.cs.isabelle.japi.JSystem;
 import edu.tum.cs.isabelle.japi.Operations;
 import isabelle.XML;
-
 import examples.src.main.java.ConvertXML; //IMPORT-PROBLEM150705
 
 public class Mini_Test {
@@ -84,6 +82,10 @@ public class Mini_Test {
     //----- step 3 ----------------------------------------------------------------
     XML.Tree MOVE_ACTIVE_ROOT_out = sys.invoke(Operations.MOVE_ACTIVE_ROOT,
       new scala.math.BigInt(BigInteger.valueOf(calcid)));
+    IntPosCompound calcid_pos = ConvertXML.move_active_root_out(MOVE_ACTIVE_ROOT_out);
+    calcid = calcid_pos.get_calcid();
+    Vector<Integer> ints = calcid_pos.get_ints();
+    String kind = calcid_pos.get_kind();
     System.out.println("# 3 # " + MOVE_ACTIVE_ROOT_out);
 
     //----- step 4 ----------------------------------------------------------------
