@@ -372,17 +372,17 @@ operation_setup autocalculate = \<open>
 	   (* ------------------------------------------------------------ work done in Isabelle/Isac *)
      val result =   (* see doc/test--isac-java--isac-kernel.txt 1st example *)
 	     XML.Elem (("AUTOCALC", []), [
-    XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
-    XML.Elem (("CALCCHANGED", []),  [
-      XML.Elem (("UNCHANGED", []), [
-        XML.Elem (("INTLIST", []), is),
-        XML.Elem (("POS", []), [XML.Text (pos_2str kind)])]),
-      XML.Elem (("DELETED", []), [
-        XML.Elem (("INTLIST", []), is),
-        XML.Elem (("POS", []), [XML.Text (pos_2str kind)])]),
-     XML.Elem (("GENERATED", []), [
-        XML.Elem (("INTLIST", []), is),
-        XML.Elem (("POS", []), [XML.Text "Res"])])])])
+         XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
+         XML.Elem (("CALCCHANGED", []), [
+           XML.Elem (("UNCHANGED", []), [
+             XML.Elem (("INTLIST", []), is),
+             XML.Elem (("POS", []), [XML.Text (pos_2str kind)])]),
+           XML.Elem (("DELETED", []), [
+             XML.Elem (("INTLIST", []), is),
+             XML.Elem (("POS", []), [XML.Text (pos_2str kind)])]),
+           XML.Elem (("GENERATED", []), [
+             XML.Elem (("INTLIST", []), is),
+             XML.Elem (("POS", []), [XML.Text "Res"])])])])
 	 in result end)}\<close>
 
 subsection \<open>step 10 covered by step 6\<close>

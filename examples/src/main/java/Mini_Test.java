@@ -9,7 +9,10 @@ import scala.math.BigInt;
 import edu.tum.cs.isabelle.japi.JSystem;
 import edu.tum.cs.isabelle.japi.Operations;
 import isabelle.XML;
-import examples.src.main.java.ConvertXML; //IMPORT-PROBLEM150705
+import examples.src.main.java.ConvertXML;
+import examples.src.main.java.IntIntCompound;
+import examples.src.main.java.IntPosCompound;
+import examples.src.main.java.IntCalcChangedCompound;
 
 public class Mini_Test {
 
@@ -71,12 +74,15 @@ public class Mini_Test {
     met.add("squ-equ-test-subpbl1");
     XML.Tree CALC_TREE_out = sys.invoke(Operations.CALC_TREE,
       ConvertXML.calc_tree(items, "Test", pbl, met));
+    int calcid = (ConvertXML.calc_tree_out(CALC_TREE_out)).intValue();
     System.out.println("# 1 # " + CALC_TREE_out);
 
     //----- step 2 ----------------------------------------------------------------
-    int calcid = 1;
     XML.Tree ITERATOR_out = sys.invoke(Operations.ITERATOR,
       new scala.math.BigInt(BigInteger.valueOf(calcid)));
+    IntIntCompound int_int = ConvertXML.iterator_out(ITERATOR_out);
+    calcid = int_int.get_calcid().intValue();
+    int userid = int_int.get_userid().intValue();
     System.out.println("# 2 # " + ITERATOR_out);
 
     //----- step 3 ----------------------------------------------------------------
@@ -110,6 +116,10 @@ public class Mini_Test {
     String auto = "CompleteCalc";
     XML.Tree AUTO_CALC_out = sys.invoke(Operations.AUTO_CALC,
       ConvertXML.auto_calculate(new scala.math.BigInt(BigInteger.valueOf(calcid)), auto));
+    IntCalcChangedCompound calcid_cc = ConvertXML.auto_calc_out(AUTO_CALC_out);
+    Vector<Integer> unc_ints = calcid_cc.get_unc_ints();
+    String unc_kind = calcid_cc.get_unc_kind();
+    //...
     System.out.println("# 7 # " + AUTO_CALC_out);
 
     //----- step 10 ---------------------------------------------------------------
@@ -122,6 +132,7 @@ public class Mini_Test {
     //----- step 13 ---------------------------------------------------------------
     XML.Tree DEL_CALC_out = sys.invoke(Operations.DEL_CALC,
       new scala.math.BigInt(BigInteger.valueOf(calcid)));
+    calcid = ConvertXML.del_calc_out(DEL_CALC_out).intValue();
     System.out.println("# 13 # " + DEL_CALC_out);
     
     System.out.println("----- end of mini-test cf. ~~/doc/test--isac-Java--isac-kernel.txt");

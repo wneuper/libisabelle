@@ -168,6 +168,24 @@ object ConvertXML {
   }
 
   //===== convert results of JSystem.invoke(Operations.* using Java <-- XML(Scala)
+  //----- step 1 -----------------------
+  def calc_tree_out(t: XML.Tree): java.lang.Integer = t match {
+    case
+       XML.Elem(Markup("CALCTREE", Nil), List(
+         XML.Elem(Markup("CALCID", Nil), List(XML.Text(i)))))
+      => new Integer(i)
+    case _ => throw new IllegalArgumentException("calc_tree_out exn")
+  }
+
+  //----- step 2 -----------------------
+  def iterator_out(t: XML.Tree): IntIntCompound = t match {
+    case
+      XML.Elem(Markup("ADDUSER", Nil), List(
+        XML.Elem(Markup("CALCID", Nil), List(XML.Text(calcid))),
+        XML.Elem(Markup("USERID", Nil), List(XML.Text(userid)))))
+      => new IntIntCompound(new java.lang.Integer(calcid), new java.lang.Integer(userid))
+    case _ => throw new IllegalArgumentException("iterator_out exn")
+  }
 
   //----- step 3 -----------------------
   def move_active_root_out(t: XML.Tree): IntPosCompound = t match {
@@ -178,7 +196,34 @@ object ConvertXML {
           XML.Elem(Markup("POSITION", Nil), List(
             is, XML.Elem(Markup("POS", Nil), List(XML.Text(kind)))))))
       => new IntPosCompound(new java.lang.Integer(calcid), xml_to_VectorInteger(is), kind)
-    case _ => throw new IllegalArgumentException("move_active_root_out exn")        
+    case _ => throw new IllegalArgumentException("move_active_root_out exn")
+  }
+
+  //----- step 4 ----------------------------------------------------------------
+  //----- step 6 ----------------------------------------------------------------
+  //----- step 7 ----------------------------------------------------------------
+  def auto_calc_out(t: XML.Tree): IntCalcChangedCompound = t match {
+    case
+      XML.Elem(Markup("AUTOCALC", Nil), List(
+        XML.Elem(Markup("CALCID", Nil), List(XML.Text (calcid))),
+        XML.Elem(Markup("CALCCHANGED", Nil), List(
+          XML.Elem(Markup("UNCHANGED", Nil), List(
+            unc_is, XML.Elem(Markup("POS", Nil), List(XML.Text(unc_kind))))),
+          XML.Elem(Markup("DELETED", Nil), List(
+            del_is, XML.Elem(Markup("POS", Nil), List(XML.Text(del_kind))))),
+          XML.Elem(Markup("GENERATED", Nil), List(
+            gen_is, XML.Elem(Markup("POS", Nil), List(XML.Text(gen_kind)))))))))
+      => new IntCalcChangedCompound(new java.lang.Integer(calcid), xml_to_VectorInteger(unc_is), unc_kind,
+          xml_to_VectorInteger(del_is), del_kind, xml_to_VectorInteger(gen_is), gen_kind)
+    case _ => throw new IllegalArgumentException("auto_calc_out exn")
+  }
+  //----- step 13 ---------------------------------------------------------------
+  def del_calc_out(t: XML.Tree): java.lang.Integer = t match {
+    case
+      XML.Elem(Markup("DELCALC", Nil), List(
+        XML.Elem(Markup("CALCID", Nil), List(XML.Text(calcid)))))
+      => new java.lang.Integer(calcid)
+    case _ => throw new IllegalArgumentException("del_calc_out exn")
   }
 
 }

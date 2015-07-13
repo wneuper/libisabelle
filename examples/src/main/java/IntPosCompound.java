@@ -11,7 +11,7 @@ import examples.src.main.java.IntPosCompound;
 import java.util.Vector;
 
 /**
- * compounds calcid and isac.util.formulae.Position
+ * compounds calcid and members of isac.util.formulae.Position
  * for transport from libisabelle/PIDE to isac-java.
  * @author Walther Neuper
  */
