@@ -46,6 +46,26 @@ object ConvertXML {
     }
     case _ => throw new IllegalArgumentException("xml_to_VectorInteger exn")
   }
+  def xml_to_VectorString (t: XML.Tree): Vector[java.lang.String] = t match {     //Java <-- XML(Scala)
+    case XML.Elem(Markup("STRINGLIST", Nil), ss) => {
+      val v = new java.util.Vector[java.lang.String];
+      ss.foreach { case (XML.Elem(Markup("STRING", Nil), List(XML.Text(str)))) => v.add(str) }
+      v
+    }
+    case _ => throw new IllegalArgumentException("xml_to_VectorInteger exn")
+  }
+  def xml_to_Items (t: XML.Tree): Vector[java.lang.String] = t match {     //Java <-- XML(Scala)
+    case XML.Elem(Markup("GIVEN", Nil), its) => {
+      val v = new java.util.Vector[java.lang.String];
+      its.foreach { case (XML.Elem(Markup("ITEM", Nil), List(XML.Text(str)))) => v.add(str) }
+//         status = "incorrect" INSTEAD OF.......^^^^                
+      v
+    //case "WHERE"
+    //case "FIND"
+    //case "RELATE"
+    }
+    case _ => throw new IllegalArgumentException("xml_to_VectorInteger exn")
+  }
   
   def xml_of_pos (ints: List[scala.math.BigInt], kind: String ): XML.Tree = {
     XML.Elem(Markup("POSITION", Nil), List(
@@ -167,7 +187,7 @@ object ConvertXML {
       XML.Elem(Markup("AUTO", Nil), List(XML.Text(auto)))))
   }
 
-  //===== convert results of JSystem.invoke(Operations.* using Java <-- XML(Scala)
+  //===== convert results of JSystem.invoke(Operations.* using Java <-- XML(Scala) =============
   //----- step 1 -----------------------
   def calc_tree_out(t: XML.Tree): java.lang.Integer = t match {
     case
@@ -217,6 +237,40 @@ object ConvertXML {
           xml_to_VectorInteger(del_is), del_kind, xml_to_VectorInteger(gen_is), gen_kind)
     case _ => throw new IllegalArgumentException("auto_calc_out exn")
   }
+  //----- step 10 ---------------------------------------------------------------
+  def ref_formula_out(t: XML.Tree): java.lang.Object = t match {
+    case
+      XML.Elem(Markup("REFFORMULA", Nil), List(
+        XML.Elem(Markup("CALCID", Nil), List(XML.Text (calcid))),
+        XML.Elem(Markup("CALCFORMULA", Nil), List(
+          XML.Elem(Markup("POSITION", Nil), List(
+            form_ints, XML.Elem(Markup("POS", Nil), List(XML.Text(form_kind))))),
+          XML.Elem(Markup("FORMULA", Nil), List(
+            XML.Elem(Markup("MATHML", Nil), List(
+              XML.Elem(Markup("ISA", Nil), List(XML.Text(form_isa)))))))))))
+      => new IntCalcFormCompound(new java.lang.Integer(calcid), 
+          xml_to_VectorInteger(form_ints), form_kind, form_isa)
+//case for step 6 
+//this becomes cumbersome without import CalcHead .. Model .. ModelItemList
+//thus we shift ConvertXML to isac-java
+//    case
+//      XML.Elem(Markup("REFFORMULA", Nil), List(
+//        XML.Elem(Markup("CALCID", Nil), List(XML.Text (calcid))),
+//        XML.Elem(Markup("CALCHEAD", !!!!!!!!!!!!!!!!!!!!!!!!), List(
+//          XML.Elem(Markup("POSITION", Nil), List(
+//            form_ints, XML.Elem(Markup("POS", Nil), List(XML.Text(form_kind))))),
+//          XML.Elem(Markup("HEAD", Nil), List(
+//            XML.Elem(Markup("MATHML", Nil), List(
+//              XML.Elem(Markup("ISA", Nil), List(XML.Text(form_isa)))))))))))
+//          :
+//          :
+//      => new IntCalcHeadCompound(new java.lang.Integer(calcid), 
+//          head_status, xml_to_VectorInteger(head_ints), head_kind, form_isa, head_isa,
+//          xml_to_VectorString(givens), xml_to_VectorString(wheres), xml_to_VectorString(finds), xml_to_VectorString(relates),
+//          belongsto, xml_to_VectorString(thy), xml_to_VectorString(pbl), xml_to_VectorString(met))
+    case _ => throw new IllegalArgumentException("ref_formula_out exn")
+  }
+  
   //----- step 13 ---------------------------------------------------------------
   def del_calc_out(t: XML.Tree): java.lang.Integer = t match {
     case

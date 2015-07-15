@@ -6,8 +6,6 @@
  */
 package examples.src.main.java;
 
-import examples.src.main.java.IntPosCompound;
-
 import java.util.Vector;
 
 /**

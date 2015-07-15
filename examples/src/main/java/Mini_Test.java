@@ -13,6 +13,8 @@ import examples.src.main.java.ConvertXML;
 import examples.src.main.java.IntIntCompound;
 import examples.src.main.java.IntPosCompound;
 import examples.src.main.java.IntCalcChangedCompound;
+import examples.src.main.java.IntCalcFormCompound;
+
 
 public class Mini_Test {
 
@@ -103,6 +105,7 @@ public class Mini_Test {
     XML.Tree GET_FORMULAE_out = sys.invoke(Operations.GET_FORMULAE,
       ConvertXML.get_formulae(new scala.math.BigInt(BigInteger.valueOf(calcid)), 
       from_path, from_kind, to_path, to_kind, new scala.math.BigInt(BigInteger.valueOf(level)), "false"));
+    //IntFormulaCompound   ..POSTPONED TO shift ConvertXML into isac-java
     System.out.println("# 4 # " + GET_FORMULAE_out);
 
     //----- step 6 ----------------------------------------------------------------
@@ -110,6 +113,7 @@ public class Mini_Test {
     String pos_kind = "Pbl";
     XML.Tree REF_FORMULA_out = sys.invoke(Operations.REF_FORMULA,
       ConvertXML.ref_formula(new scala.math.BigInt(BigInteger.valueOf(calcid)), pos_path, pos_kind));
+    //^^^^^^^^^^ cumbersome without import CalcHead .. Model .. ModelItemList
     System.out.println("# 6 # " + REF_FORMULA_out);
 
     //----- step 7 ----------------------------------------------------------------
@@ -127,6 +131,17 @@ public class Mini_Test {
     pos_kind = "Res";
     REF_FORMULA_out = sys.invoke(Operations.REF_FORMULA,
       ConvertXML.ref_formula(new scala.math.BigInt(BigInteger.valueOf(calcid)), pos_path, pos_kind));
+    Object calcid_formhead = ConvertXML.ref_formula_out(REF_FORMULA_out);
+    //  calcid = calcid_formhead.get_calcid().intValue();
+    //if (calcid_formhead.is_calchead()) {
+    //  IntCalcHeadCompound calc_head = (IntCalcHeadCompound) calcid_formhead;
+    //  ...
+    //} else {
+      IntCalcFormCompound calc_form = (IntCalcFormCompound) calcid_formhead;
+      Vector<Integer> form_ints = calc_form.get_form_ints();
+      String form_kind = calc_form.get_form_kind();
+      String form_isa = calc_form.get_form_isa();
+    //}
     System.out.println("# 10 # " + REF_FORMULA_out);
 
     //----- step 13 ---------------------------------------------------------------
