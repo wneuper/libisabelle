@@ -134,12 +134,13 @@ operation_setup calctree = \<open>
        | tree => error ("calctree: intree =" ^ xmlstr 0 tree)
 	   val items = xml_to_strs its
 	   val spec = xml_to_spec spc
+	   val result = Math_Engine.CalcTree [(items, spec) : fmz]
 	   val calcid = 1 (* ------------------------------- work done in Isabelle/Isac *)
 	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
 	     XML.Elem (("CALCTREE", []),
   	       [XML.Elem (("CALCID", []), 
   	         [XML.Text (string_of_int calcid)])])
-	 in (* result *) Math_Engine.CalcTree [(items, spec) : fmz] end)} \<close>
+	 in result end)} \<close>
 
 subsection \<open>step 2\<close>
 (*
@@ -170,7 +171,8 @@ operation_setup moveactiveroot = \<open>
   {from_lib = Codec.int,
    to_lib = Codec.tree,
    action = (fn calcid => 
-	 let 
+	 let
+	   val result = Math_Engine.moveActiveRoot calcid
 	   val (is, kind) = ([], Pbl) (* ---------------------------------- work done in Isabelle/Isac *)
 	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
 	     XML.Elem (("CALCITERATOR", []), [
@@ -178,7 +180,7 @@ operation_setup moveactiveroot = \<open>
          XML.Elem (("POSITION", []), [
            XML.Elem (("INTLIST", []), is),
            XML.Elem (("POS", []), [XML.Text (pos_2str kind)])])])
-	 in (* result *) Math_Engine.moveActiveRoot calcid end)}\<close>
+	 in result end)}\<close>
 
 subsection \<open>step 4\<close>
 ML {*
@@ -225,6 +227,7 @@ operation_setup getformulaefromto = \<open>
      val to = xml_to_pos to
      val SOME level = (*xml_to_int*) int_of_str level
      val rules = (*xml_to_bool*) string_to_bool rules
+     val result = Math_Engine.getFormulaeFromTo calcid from to level rules
 	   (* ------------------------------------------------------------ work done in Isabelle/Isac *)
 	   val calcid = 1
 	   val pos as (is, kind) = ([], Pbl)
@@ -240,7 +243,7 @@ operation_setup getformulaefromto = \<open>
              XML.Elem (("FORMULA", []), [
                XML.Elem (("MATHML", []), [
                  XML.Elem (("ISA", []), [XML.Text formula])])])])])])
-	 in (* result *) Math_Engine.getFormulaeFromTo calcid from to level rules end)}\<close>
+	 in result end)}\<close>
 
 subsection \<open>step 6\<close>
 (*------- step 5 -----------------------------------------------------
@@ -284,6 +287,7 @@ operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFF
            p]) => (ci, p)
      val SOME calcid = int_of_str ci
      val pos = xml_to_pos p
+     val result = Math_Engine.refFormula calcid pos
 	   (* ------------------------------------------------------------ work done in Isabelle/Isac *)
 	   val result = case pos of
 	     ([], Pbl) => (* see doc/test--isac-java--isac-kernel.txt --- step 6 --- *)
@@ -330,7 +334,7 @@ operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFF
                    XML.Elem (("ISA", []), [XML.Text formula])])])])])
 	       end
 	   | _ => error ("refformula called with " ^ pos'2str pos)
-	 in (* result *) Math_Engine.refFormula calcid pos end)}\<close>
+	 in result end)}\<close>
 
 subsection \<open>step 7\<close>
 ML {*
@@ -369,6 +373,7 @@ operation_setup autocalculate = \<open>
        | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
      val SOME calcid = int_of_str ci
      val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid CompleteCalc
 	   (* ------------------------------------------------------------ work done in Isabelle/Isac *)
      val result =   (* see doc/test--isac-java--isac-kernel.txt 1st example *)
 	     XML.Elem (("AUTOCALC", []), [
@@ -383,7 +388,7 @@ operation_setup autocalculate = \<open>
            XML.Elem (("GENERATED", []), [
              XML.Elem (("INTLIST", []), is),
              XML.Elem (("POS", []), [XML.Text "Res"])])])])
-	 in (* result *) Math_Engine.autoCalculate calcid CompleteCalc end)}\<close>
+	 in result end)}\<close>
 
 subsection \<open>step 10 covered by step 6\<close>
 (*------- step 8 -----------------------------------------------------
@@ -411,11 +416,12 @@ operation_setup deconstrcalctree = \<open>
    to_lib = Codec.tree,
    action = (fn calcid => 
 	 let 
+	   val result = Math_Engine.DEconstrCalcTree calcid
 	   val _ = 1 (* ------------------------------- work done in Isabelle/Isac *)
 	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
 	     XML.Elem (("DELCALC", []), [
 	       XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)])])
-	 in (* result *) Math_Engine.DEconstrCalcTree calcid end)}\<close>
+	 in result end)}\<close>
 
 
 operation_setup use_thys = \<open>
