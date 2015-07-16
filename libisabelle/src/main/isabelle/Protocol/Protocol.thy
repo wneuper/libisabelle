@@ -152,13 +152,14 @@ operation_setup iterator = \<open>
   {from_lib = Codec.int,
    to_lib = Codec.tree,
    action = (fn calcid => 
-	 let 
+	 let
+     val result = Math_Engine.Iterator calcid
 	   val (calcid, userid) = (1, 1) (* ------------------------------- work done in Isabelle/Isac *)
 	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
 	     XML.Elem (("ADDUSER", []),
          [XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
          XML.Elem (("USERID", []), [XML.Text (string_of_int userid)])])
-	 in (* result *) Math_Engine.Iterator calcid end)}\<close>
+	 in result end)}\<close>
 
 subsection \<open>step 3\<close>
 (*
