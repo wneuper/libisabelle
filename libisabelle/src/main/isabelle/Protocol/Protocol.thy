@@ -139,7 +139,7 @@ operation_setup calctree = \<open>
 	     XML.Elem (("CALCTREE", []),
   	       [XML.Elem (("CALCID", []), 
   	         [XML.Text (string_of_int calcid)])])
-	 in result (* Math_Engine.CalcTree [(items, spec) : fmz] *) end)} \<close>
+	 in (* result *) Math_Engine.CalcTree [(items, spec) : fmz] end)} \<close>
 
 subsection \<open>step 2\<close>
 (*
@@ -157,7 +157,7 @@ operation_setup iterator = \<open>
 	     XML.Elem (("ADDUSER", []),
          [XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
          XML.Elem (("USERID", []), [XML.Text (string_of_int userid)])])
-	 in result (* Math_Engine.Iterator (str2int calcid) *) end)}\<close>
+	 in (* result *) Math_Engine.Iterator calcid end)}\<close>
 
 subsection \<open>step 3\<close>
 (*
@@ -178,7 +178,7 @@ operation_setup moveactiveroot = \<open>
          XML.Elem (("POSITION", []), [
            XML.Elem (("INTLIST", []), is),
            XML.Elem (("POS", []), [XML.Text (pos_2str kind)])])])
-	 in result (* Math_Engine.moveActiveRoot (str2int calcid) *) end)}\<close>
+	 in (* result *) Math_Engine.moveActiveRoot calcid end)}\<close>
 
 subsection \<open>step 4\<close>
 ML {*
@@ -240,7 +240,7 @@ operation_setup getformulaefromto = \<open>
              XML.Elem (("FORMULA", []), [
                XML.Elem (("MATHML", []), [
                  XML.Elem (("ISA", []), [XML.Text formula])])])])])])
-	 in result (* Math_Engine.getFormulaeFromTo calcid from to level rules *) end)}\<close>
+	 in (* result *) Math_Engine.getFormulaeFromTo calcid from to level rules end)}\<close>
 
 subsection \<open>step 6\<close>
 (*------- step 5 -----------------------------------------------------
@@ -263,14 +263,14 @@ val intree = (* CREATE THIS IN Mini_Test.java *)
 (* for result cp from ~~/test/Pure/PIDE/xml.ML --- step 6 --- *)
 val head = "solve (x + 1 = 2, x)"
 val given = [] : ((string * string) * string) list
-val item as (attr, form) = (("status", "false"), "precond_rootpbl v_v")
+val item as (i_attr, form) = ([("status", "false")], "precond_rootpbl v_v")
 val where_ as items = [item]
 val find = [] : ((string * string) * string) list
 val relate = [] : ((string * string) * string) list
 val model = (given, where_, find, relate)
 val belongsto = "Pbl"
 val specification as (theoryid, problemid, methodid) = (["e_domID"], ["e_pblID"], ["e_metID"])
-val calchead = (("status", "incorrect"), (pos, head, model, belongsto, specification))
+val calchead as (c_attr, _) = ([("status", "incorrect")], (pos, head, model, belongsto, specification))
 *}
 (*------- step 6 + 10 ------------------------------------------------*)
 operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFFERENT result *)
@@ -289,7 +289,7 @@ operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFF
 	     ([], Pbl) => (* see doc/test--isac-java--isac-kernel.txt --- step 6 --- *)
 	     XML.Elem (("REFFORMULA", []), [
          XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)]),
-         XML.Elem (("CALCHEAD", [("status", "\"incorrect\"")]), [
+         XML.Elem (("CALCHEAD", [("status", "incorrect")]), [
            XML.Elem (("POSITION", []), [
              XML.Elem (("INTLIST", []), is),
              XML.Elem (("POS", []), [XML.Text (pos_2str kind)])]),
@@ -299,7 +299,7 @@ operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFF
            XML.Elem (("MODEL", []), [
              XML.Elem (("GIVEN", []), []),
              XML.Elem (("WHERE", []), [
-               XML.Elem (("ITEM", [("status", "\"false\"")]), [
+               XML.Elem (("ITEM", [("status", "false")]), [
                  XML.Elem (("MATHML", []), [
                    XML.Elem (("ISA", []), [XML.Text "precond_rootpbl v_v"])])])]),
              XML.Elem (("FIND", []), []),
@@ -330,7 +330,7 @@ operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFF
                    XML.Elem (("ISA", []), [XML.Text formula])])])])])
 	       end
 	   | _ => error ("refformula called with " ^ pos'2str pos)
-	 in result end)}\<close>
+	 in (* result *) Math_Engine.refFormula calcid pos end)}\<close>
 
 subsection \<open>step 7\<close>
 ML {*
@@ -383,7 +383,7 @@ operation_setup autocalculate = \<open>
            XML.Elem (("GENERATED", []), [
              XML.Elem (("INTLIST", []), is),
              XML.Elem (("POS", []), [XML.Text "Res"])])])])
-	 in result end)}\<close>
+	 in (* result *) Math_Engine.autoCalculate calcid CompleteCalc end)}\<close>
 
 subsection \<open>step 10 covered by step 6\<close>
 (*------- step 8 -----------------------------------------------------
@@ -415,7 +415,7 @@ operation_setup deconstrcalctree = \<open>
 	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
 	     XML.Elem (("DELCALC", []), [
 	       XML.Elem (("CALCID", []), [XML.Text (string_of_int calcid)])])
-	 in result end)}\<close>
+	 in (* result *) Math_Engine.DEconstrCalcTree calcid end)}\<close>
 
 
 operation_setup use_thys = \<open>
