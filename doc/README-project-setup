@@ -28,11 +28,11 @@ Legend: ~~/ is the root directory of the repository.
  	     
 (C) Compilation is done with these steps:
   $ cd ~~/
- (1)~~$ export ISABELLE_HOME=/usr/local/isabisac
+ (1)~~$ ### export ISABELLE_HOME=/usr/local/isabisac  
+        #   ^^^^^^ REPLACED BY isabelle.Isabelle_System.init("/usr/local/isabisac", "");
  (2)~~$ /usr/local/isabisac/bin/isabelle build -D . -bv
  (3)~~$ ./sbt full/assembly
- (4)~~$ java -cp full/target/scala-2.11/libisabelle-full.jar examples.src.main.java.Mini_Test
-    ~~$ java -cp full/target/scala-2.11/libisabelle-full.jar examples.src.main.java.Hello_PIDE
+ (4)~~$ java -cp full/target/scala-2.11/libisabelle-full.jar examples.src.main.java.Hello_PIDE
 
  Notes:
  (2) creates ~~/lib/specs2-core_2.11-3.4.jar
