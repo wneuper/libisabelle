@@ -118,23 +118,46 @@ ML {* CalcTree [(["equality (x+1=(2::real))", "solveFor x", "solutions L"],
 * }*)
 val items = ["equality (x+1=(2::real))", "solveFor x", "solutions L"]
 val spec = ("Test", ["sqroot-test","univariate","equation","test"], ["Test","squ-equ-test-subpbl1"])
-val intree = (* CREATE THIS IN Mini_Test.java *)
-  XML.Elem (("FORMALIZATION", []), [
-    xml_of_strs items,
-    xml_of_spec spec])
+val intree = xml_of_fmz [(items, spec)]
+*} text {*
+val intree = 
+<FORMALIZATION>
+  <VARIANT>
+    <STRINGLIST>
+      <STRING>equality (x+1=(2::real))</STRING>
+      <STRING>solveFor x</STRING>
+      <STRING>solutions L</STRING>
+    </STRINGLIST>
+  <SPECIFICATION>
+    <THEORYID>Test</THEORYID>
+    <PROBLEMID>
+      <STRINGLIST>
+        <STRING>sqroot-test</STRING>
+        <STRING>univariate</STRING>
+        <STRING>equation</STRING>
+        <STRING>test</STRING>
+      </STRINGLIST>
+    </PROBLEMID>
+    <METHODID>
+      <STRINGLIST>
+        <STRING>Test</STRING>
+        <STRING>squ-equ-test-subpbl1</STRING>
+        </STRINGLIST>
+      </METHODID>
+    </SPECIFICATION>
+  </VARIANT>
+</FORMALIZATION>:
 *}
 (*------- step 1 -----------------------------------------------------*)
 operation_setup calctree = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
    action = (fn intree => 
-	 let 
-	   val (its, spc) = case intree of
-	       XML.Elem (("FORMALIZATION", []), [its, spc]) => (its, spc)
+	 let
+	   val fmz = case intree of
+	       tree as XML.Elem (("FORMALIZATION", []), vars) => xml_to_fmz tree
        | tree => error ("calctree: intree =" ^ xmlstr 0 tree)
-	   val items = xml_to_strs its
-	   val spec = xml_to_spec spc
-	   val result = Math_Engine.CalcTree [(items, spec) : fmz]
+	   val result = Math_Engine.CalcTree fmz
 (*
 	   val calcid = 1 (* ------------------------------- work done in Isabelle/Isac *)
 	   val result =   (* see doc/test--isac-java--isac-kernel.txt *)
