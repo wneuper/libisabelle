@@ -103,9 +103,7 @@ operation_setup testit = \<open>
 	 in result end)}\<close>
 
 section \<open>Operation setup for Math_Engine : MATH_ENGINE\<close>
-ML {*
-*} ML {*
-*}
+subsection \<open>Survey on input and output\<close>
 text \<open>
   The sequence of code below follows the sequence of the signature;
   The structure of the resulting XML.tree is given by the respective fun:
@@ -259,23 +257,27 @@ signature MATH_ENGINE =
           modifycalcheadOK2xml
           sysERROR2xml
   end\<close>
+subsection \<open>Implementation\<close>
 (* val appendFormula : calcID -> cterm' -> XML.tree ------------------------
          appendformulaOK2xml
          appendformulaERROR2xml
          sysERROR2xml *)
-operation_setup append_formula = \<open>
+operation_setup append_form = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
    action = (fn intree => 
 	 let 
 	   val (ci, a) = case intree of
-       XML.Elem (("AUTOCALC", []), [
-         XML.Elem (("CALCID", []), [XML.Text ci]), a]) => (ci, a)
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
        | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
      val SOME calcid = int_of_str ci
-     val auto = xml_to_auto a
+(*     val auto = xml_to_auto a
      val result = Math_Engine.autoCalculate calcid auto
-	 in result end)}\<close>
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
 
 (* val autoCalculate : calcID -> auto -> XML.tree --------------------------
          autocalculateOK2xml
@@ -298,6 +300,22 @@ operation_setup autocalculate = \<open>
 (* val applyTactic : calcID -> pos' -> tac -> XML.tree ---------------------
          autocalculateOK2xml
          autocalculateERROR2xml *)
+operation_setup apply_tac = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
 
 (* val CalcTree : fmz list -> XML.tree -------------------------------------
          calctreeOK2xml
@@ -317,6 +335,22 @@ operation_setup calctree = \<open>
          message2xml
          contextthyOK2xml
          sysERROR2xml *)
+operation_setup check_ctxt = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
 
 (* val DEconstrCalcTree : calcID -> XML.tree -------------------------------
          deconstructcalctreeOK2xml *)
@@ -331,20 +365,121 @@ operation_setup deconstrcalctree = \<open>
 (* val fetchApplicableTactics : calcID -> int -> pos' -> XML.tree ----------
    applicabletacticsOK
    sysERROR2xml *)
+operation_setup fetch_applicable_tacs = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val fetchProposedTactic : calcID -> XML.tree ----------------------------
          fetchproposedtacticOK2xml
          fetchproposedtacticERROR2xml
          sysERROR2xml *)
+operation_setup fetch_proposed_tac = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val findFillpatterns : calcID -> errpatID -> XML.tree -------------------
          findFillpatterns2xml *)
+operation_setup find_fill_patts = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val getAccumulatedAsms : calcID -> pos' -> XML.tree ---------------------
          getasmsOK2xml
          sysERROR2xml *)
+operation_setup get_accumulated_asms = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val getActiveFormula : calcID -> XML.tree -------------------------------
          iteratorOK2xml *)
+operation_setup get_active_form = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val getAssumptions : calcID -> pos' -> XML.tree -------------------------
          getasmsOK2xml
          sysERROR2xml *)
+operation_setup get_asms = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
 
 (* val getFormulaeFromTo : calcID -> pos' -> pos' -> int -> bool -> XML.tree
          getintervalOK
@@ -374,18 +509,85 @@ operation_setup getformulaefromto = \<open>
          gettacticOK2xml
          gettacticERROR2xml
          sysERROR2xml *)
+operation_setup get_tac = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val initContext : calcID -> ketype -> pos' -> XML.tree ------------------
          message2xml
          contextthyOK2xml
          sysERROR2xml *)
+operation_setup init_ctxt = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val inputFillFormula: calcID -> string -> XML.tree ----------------------
          autocalculateOK2xml
          autocalculateERROR2xml
          message2xml *)
+operation_setup input_fill_from = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val interSteps : calcID -> pos' -> XML.tree -----------------------------
          interStepsOK
          interStepsERROR
          sysERROR2xml *)
+operation_setup inter_steps = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
 
 (* val Iterator : calcID -> XML.tree ---------------------------------------
          adduserOK2xml
@@ -402,27 +604,145 @@ operation_setup iterator = \<open>
 (* val modelProblem : calcID -> XML.tree -----------------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+operation_setup model_pbl = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val modifyCalcHead : calcID -> icalhd -> XML.tree -----------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+operation_setup modify_calchead = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val moveActiveCalcHead : calcID -> XML.tree -----------------------------
          iteratorOK2xml
          sysERROR2xml *)
+operation_setup move_active_calchead = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val moveActiveDown : calcID -> XML.tree ---------------------------------
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+operation_setup move_active_down = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val moveActiveFormula : calcID -> pos' -> XML.tree ----------------------
          iteratorOK2xml
          sysERROR2xml *)
+operation_setup move_active_form = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val moveActiveLevelDown : calcID -> XML.tree ----------------------------
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+operation_setup move_active_levdown = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val moveActiveLevelUp : calcID -> XML.tree ------------------------------
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+operation_setup move_active_levup = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
 
 (* val moveActiveRoot : calcID -> XML.tree ---------------------------------
          iteratorOK2xml
@@ -440,29 +760,147 @@ operation_setup moveactiveroot = \<open>
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+operation_setup move_active_up = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val moveCalcHead : calcID -> pos' -> XML.tree ---------------------------
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+operation_setup move_active_calchead = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val moveDown : calcID -> pos' -> XML.tree -------------------------------
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+operation_setup move_down = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val moveLevelDown : calcID -> pos' -> XML.tree --------------------------
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+operation_setup move_levdn = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val moveLevelUp : calcID -> pos' -> XML.tree ----------------------------
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+operation_setup move_levup = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val moveRoot : calcID -> XML.tree ---------------------------------------
          iteratorOK2xml
          sysERROR2xml *)
+operation_setup move_root = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val moveUp : calcID -> pos' -> XML.tree ---------------------------------
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+operation_setup move_up = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
 
 (* val refFormula : calcID -> pos' -> XML.tree -----------------------------
          refformulaOK2xml
@@ -484,32 +922,184 @@ operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFF
 (* val refineProblem : calcID -> pos' -> guh -> XML.tree -------------------
          xml_of_matchpbl
          sysERROR2xml *)
+operation_setup refine_pbl = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val replaceFormula : calcID -> cterm' -> XML.tree -----------------------
          replaceformulaOK2xml
          replaceformulaERROR2xml
          sysERROR2xml *)
+operation_setup replace_form = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val requestFillformula : calcID -> errpatID * fillpatID -> XML.tree -----
          autocalculateOK2xml
          autocalculateERROR2xml *)
+operation_setup request_fill_form = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val resetCalcHead : calcID -> XML.tree ----------------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+operation_setup reset_calchead = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val setContext : calcID -> pos' -> guh -> XML.tree ----------------------
          message2xml
          autocalculateOK2xml
          sysERROR2xml *)
+operation_setup set_ctxt = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val setMethod : calcID -> metID -> XML.tree -----------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+operation_setup set_met = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val setNextTactic : calcID -> tac -> XML.tree ---------------------------
          setnexttactic2xml
          sysERROR2xml *)
+operation_setup set_next_tac = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val setProblem : calcID -> pblID -> XML.tree ----------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+operation_setup set_pbl = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+
 (* val setTheory : calcID -> thyID -> XML.tree -----------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+operation_setup set_thy = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("APPENDFORMULA", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]),
+         XML.Elem (("CALCID", []), [XML.Text _])
+]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+(*     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+*)
+	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
 
 section \<open>Native libisabelle: operation_setup use_thys\<close>
 
