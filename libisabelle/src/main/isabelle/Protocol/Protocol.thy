@@ -106,10 +106,181 @@ section \<open>Operation setup for Math_Engine : MATH_ENGINE\<close>
 ML {*
 *} ML {*
 *}
-text \<open>The sequence below follows structure Math_Engine : MATH_ENGINE\<close>
-(* val appendFormula : calcID -> cterm' -> XML.tree ------------------------ *)
+text \<open>
+  The sequence of code below follows the sequence of the signature;
+  The structure of the resulting XML.tree is given by the respective fun:
+signature MATH_ENGINE =
+  sig
+    val appendFormula : calcID -> cterm' -> XML.tree
+          appendformulaOK2xml
+          appendformulaERROR2xml
+          sysERROR2xml
+    val autoCalculate : calcID -> auto -> XML.tree
+          autocalculateOK2xml
+          autocalculateERROR2xml
+          sysERROR2xml
+    val applyTactic : calcID -> pos' -> tac -> XML.tree
+          autocalculateOK2xml
+          autocalculateERROR2xml
+    val CalcTree : fmz list -> XML.tree
+          calctreeOK2xml
+          sysERROR2xml
+    val checkContext : calcID -> pos' -> guh -> XML.tree
+          message2xml
+          contextthyOK2xml
+          sysERROR2xml
+    val DEconstrCalcTree : calcID -> XML.tree
+          deconstructcalctreeOK2xml
+    val fetchApplicableTactics : calcID -> int -> pos' -> XML.tree
+          applicabletacticsOK
+          sysERROR2xml
+    val fetchProposedTactic : calcID -> XML.tree
+          fetchproposedtacticOK2xml
+          fetchproposedtacticERROR2xml
+          sysERROR2xml
+    val findFillpatterns : calcID -> errpatID -> XML.tree
+          findFillpatterns2xml
+    val getAccumulatedAsms : calcID -> pos' -> XML.tree
+          getasmsOK2xml
+          sysERROR2xml
+    val getActiveFormula : calcID -> XML.tree
+          iteratorOK2xml
+    val getAssumptions : calcID -> pos' -> XML.tree
+          getasmsOK2xml
+          sysERROR2xml
+    val getFormulaeFromTo : calcID -> pos' -> pos' -> int -> bool -> XML.tree
+          getintervalOK
+          sysERROR2xml
+    val getTactic : calcID -> pos' -> XML.tree
+          gettacticOK2xml
+          gettacticERROR2xml
+          sysERROR2xml
+    val initContext : calcID -> ketype -> pos' -> XML.tree
+          message2xml
+          contextthyOK2xml
+          sysERROR2xml
+    val inputFillFormula: calcID -> string -> XML.tree
+          autocalculateOK2xml
+          autocalculateERROR2xml
+          message2xml
+    val interSteps : calcID -> pos' -> XML.tree
+          interStepsOK
+          interStepsERROR
+          sysERROR2xml
+    val Iterator : calcID -> XML.tree
+          adduserOK2xml
+          sysERROR2xml
+    val IteratorTEST : calcID -> iterID
+    val modelProblem : calcID -> XML.tree
+          modifycalcheadOK2xml
+          sysERROR2xml
+    val modifyCalcHead : calcID -> icalhd -> XML.tree
+          modifycalcheadOK2xml
+          sysERROR2xml
+    val moveActiveCalcHead : calcID -> XML.tree
+          iteratorOK2xml
+          sysERROR2xml
+    val moveActiveDown : calcID -> XML.tree
+          iteratorOK2xml
+          iteratorERROR2xml
+          sysERROR2xml
+    val moveActiveFormula : calcID -> pos' -> XML.tree
+          iteratorOK2xml
+          sysERROR2xml
+    val moveActiveLevelDown : calcID -> XML.tree
+          iteratorOK2xml
+          iteratorERROR2xml
+          sysERROR2xml
+    val moveActiveLevelUp : calcID -> XML.tree
+          iteratorOK2xml
+          iteratorERROR2xml
+          sysERROR2xml
+    val moveActiveRoot : calcID -> XML.tree
+          iteratorOK2xml
+          sysERROR2xml
+    val moveActiveRootTEST : calcID -> XML.tree
+    val moveActiveUp : calcID -> XML.tree
+          iteratorOK2xml
+          iteratorERROR2xml
+          sysERROR2xml
+    val moveCalcHead : calcID -> pos' -> XML.tree
+          iteratorOK2xml
+          iteratorERROR2xml
+          sysERROR2xml
+    val moveDown : calcID -> pos' -> XML.tree
+          iteratorOK2xml
+          iteratorERROR2xml
+          sysERROR2xml
+    val moveLevelDown : calcID -> pos' -> XML.tree
+          iteratorOK2xml
+          iteratorERROR2xml
+          sysERROR2xml
+    val moveLevelUp : calcID -> pos' -> XML.tree
+          iteratorOK2xml
+          iteratorERROR2xml
+          sysERROR2xml
+    val moveRoot : calcID -> XML.tree
+          iteratorOK2xml
+          sysERROR2xml
+    val moveUp : calcID -> pos' -> XML.tree
+          iteratorOK2xml
+          iteratorERROR2xml
+          sysERROR2xml
+    val refFormula : calcID -> pos' -> XML.tree
+          refformulaOK2xml
+          sysERROR2xml
+    val refineProblem : calcID -> pos' -> guh -> XML.tree
+          xml_of_matchpbl
+          sysERROR2xml
+    val replaceFormula : calcID -> cterm' -> XML.tree
+          replaceformulaOK2xml
+          replaceformulaERROR2xml
+          sysERROR2xml
+    val requestFillformula : calcID -> errpatID * fillpatID -> XML.tree
+          autocalculateOK2xml
+          autocalculateERROR2xml
+    val resetCalcHead : calcID -> XML.tree
+          modifycalcheadOK2xml
+          sysERROR2xml
+    val setContext : calcID -> pos' -> guh -> XML.tree
+          message2xml
+          autocalculateOK2xml
+          sysERROR2xml
+    val setMethod : calcID -> metID -> XML.tree
+          modifycalcheadOK2xml
+          sysERROR2xml
+    val setNextTactic : calcID -> tac -> XML.tree
+          setnexttactic2xml
+          sysERROR2xml
+    val setProblem : calcID -> pblID -> XML.tree
+          modifycalcheadOK2xml
+          sysERROR2xml
+    val setTheory : calcID -> thyID -> XML.tree
+          modifycalcheadOK2xml
+          sysERROR2xml
+  end\<close>
+(* val appendFormula : calcID -> cterm' -> XML.tree ------------------------
+         appendformulaOK2xml
+         appendformulaERROR2xml
+         sysERROR2xml *)
+operation_setup append_formula = \<open>
+  {from_lib = Codec.tree,
+   to_lib = Codec.tree,
+   action = (fn intree => 
+	 let 
+	   val (ci, a) = case intree of
+       XML.Elem (("AUTOCALC", []), [
+         XML.Elem (("CALCID", []), [XML.Text ci]), a]) => (ci, a)
+       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     val SOME calcid = int_of_str ci
+     val auto = xml_to_auto a
+     val result = Math_Engine.autoCalculate calcid auto
+	 in result end)}\<close>
 
-(* val autoCalculate : calcID -> auto -> XML.tree -------------------------- *)
+(* val autoCalculate : calcID -> auto -> XML.tree --------------------------
+         autocalculateOK2xml
+         autocalculateERROR2xml
+         sysERROR2xml *)
 operation_setup autocalculate = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -124,9 +295,13 @@ operation_setup autocalculate = \<open>
      val result = Math_Engine.autoCalculate calcid auto
 	 in result end)}\<close>
 
-(* val applyTactic : calcID -> pos' -> tac -> XML.tree --------------------- *)
+(* val applyTactic : calcID -> pos' -> tac -> XML.tree ---------------------
+         autocalculateOK2xml
+         autocalculateERROR2xml *)
 
-(* val CalcTree : fmz list -> XML.tree ------------------------------------- *)
+(* val CalcTree : fmz list -> XML.tree -------------------------------------
+         calctreeOK2xml
+         sysERROR2xml *)
 operation_setup calctree = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -138,9 +313,13 @@ operation_setup calctree = \<open>
 	   val result = Math_Engine.CalcTree fmz
 	 in result end)} \<close>
 
-(* val checkContext : calcID -> pos' -> guh -> XML.tree -------------------- *)
+(* val checkContext : calcID -> pos' -> guh -> XML.tree --------------------
+         message2xml
+         contextthyOK2xml
+         sysERROR2xml *)
 
-(* val DEconstrCalcTree : calcID -> XML.tree ------------------------------- *)
+(* val DEconstrCalcTree : calcID -> XML.tree -------------------------------
+         deconstructcalctreeOK2xml *)
 operation_setup deconstrcalctree = \<open>
   {from_lib = Codec.int,
    to_lib = Codec.tree,
@@ -149,14 +328,27 @@ operation_setup deconstrcalctree = \<open>
 	   val result = Math_Engine.DEconstrCalcTree calcid
 	 in result end)}\<close>
 
-(* val fetchApplicableTactics : calcID -> int -> pos' -> XML.tree ---------- *)
-(* val fetchProposedTactic : calcID -> XML.tree ---------------------------- *)
-(* val findFillpatterns : calcID -> errpatID -> XML.tree ------------------- *)
-(* val getAccumulatedAsms : calcID -> pos' -> XML.tree --------------------- *)
-(* val getActiveFormula : calcID -> XML.tree ------------------------------- *)
-(* val getAssumptions : calcID -> pos' -> XML.tree ------------------------- *)
+(* val fetchApplicableTactics : calcID -> int -> pos' -> XML.tree ----------
+   applicabletacticsOK
+   sysERROR2xml *)
+(* val fetchProposedTactic : calcID -> XML.tree ----------------------------
+         fetchproposedtacticOK2xml
+         fetchproposedtacticERROR2xml
+         sysERROR2xml *)
+(* val findFillpatterns : calcID -> errpatID -> XML.tree -------------------
+         findFillpatterns2xml *)
+(* val getAccumulatedAsms : calcID -> pos' -> XML.tree ---------------------
+         getasmsOK2xml
+         sysERROR2xml *)
+(* val getActiveFormula : calcID -> XML.tree -------------------------------
+         iteratorOK2xml *)
+(* val getAssumptions : calcID -> pos' -> XML.tree -------------------------
+         getasmsOK2xml
+         sysERROR2xml *)
 
-(* val getFormulaeFromTo : calcID -> pos' -> pos' -> int -> bool -> XML.tree *)
+(* val getFormulaeFromTo : calcID -> pos' -> pos' -> int -> bool -> XML.tree
+         getintervalOK
+         sysERROR2xml *)
 operation_setup getformulaefromto = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -178,12 +370,26 @@ operation_setup getformulaefromto = \<open>
      val result = Math_Engine.getFormulaeFromTo calcid from to level rules
 	 in result end)}\<close>
 
-(* val getTactic : calcID -> pos' -> XML.tree ------------------------------ *)
-(* val initContext : calcID -> ketype -> pos' -> XML.tree ------------------ *)
-(* val inputFillFormula: calcID -> string -> XML.tree ---------------------- *)
-(* val interSteps : calcID -> pos' -> XML.tree ----------------------------- *)
+(* val getTactic : calcID -> pos' -> XML.tree ------------------------------
+         gettacticOK2xml
+         gettacticERROR2xml
+         sysERROR2xml *)
+(* val initContext : calcID -> ketype -> pos' -> XML.tree ------------------
+         message2xml
+         contextthyOK2xml
+         sysERROR2xml *)
+(* val inputFillFormula: calcID -> string -> XML.tree ----------------------
+         autocalculateOK2xml
+         autocalculateERROR2xml
+         message2xml *)
+(* val interSteps : calcID -> pos' -> XML.tree -----------------------------
+         interStepsOK
+         interStepsERROR
+         sysERROR2xml *)
 
-(* val Iterator : calcID -> XML.tree --------------------------------------- *)
+(* val Iterator : calcID -> XML.tree ---------------------------------------
+         adduserOK2xml
+         sysERROR2xml *)
 operation_setup iterator = \<open>
   {from_lib = Codec.int,
    to_lib = Codec.tree,
@@ -193,15 +399,34 @@ operation_setup iterator = \<open>
 	 in result end)}\<close>
 
 (* val IteratorTEST : calcID -> iterID ------------------------------------- *)
-(* val modelProblem : calcID -> XML.tree ----------------------------------- *)
-(* val modifyCalcHead : calcID -> icalhd -> XML.tree ----------------------- *)
-(* val moveActiveCalcHead : calcID -> XML.tree ----------------------------- *)
-(* val moveActiveDown : calcID -> XML.tree --------------------------------- *)
-(* val moveActiveFormula : calcID -> pos' -> XML.tree ---------------------- *)
-(* val moveActiveLevelDown : calcID -> XML.tree ---------------------------- *)
-(* val moveActiveLevelUp : calcID -> XML.tree ------------------------------ *)
+(* val modelProblem : calcID -> XML.tree -----------------------------------
+         modifycalcheadOK2xml
+         sysERROR2xml *)
+(* val modifyCalcHead : calcID -> icalhd -> XML.tree -----------------------
+         modifycalcheadOK2xml
+         sysERROR2xml *)
+(* val moveActiveCalcHead : calcID -> XML.tree -----------------------------
+         iteratorOK2xml
+         sysERROR2xml *)
+(* val moveActiveDown : calcID -> XML.tree ---------------------------------
+         iteratorOK2xml
+         iteratorERROR2xml
+         sysERROR2xml *)
+(* val moveActiveFormula : calcID -> pos' -> XML.tree ----------------------
+         iteratorOK2xml
+         sysERROR2xml *)
+(* val moveActiveLevelDown : calcID -> XML.tree ----------------------------
+         iteratorOK2xml
+         iteratorERROR2xml
+         sysERROR2xml *)
+(* val moveActiveLevelUp : calcID -> XML.tree ------------------------------
+         iteratorOK2xml
+         iteratorERROR2xml
+         sysERROR2xml *)
 
-(* val moveActiveRoot : calcID -> XML.tree --------------------------------- *)
+(* val moveActiveRoot : calcID -> XML.tree ---------------------------------
+         iteratorOK2xml
+         sysERROR2xml *)
 operation_setup moveactiveroot = \<open>
   {from_lib = Codec.int,
    to_lib = Codec.tree,
@@ -211,15 +436,37 @@ operation_setup moveactiveroot = \<open>
 	 in result end)}\<close>
 
 (* val moveActiveRootTEST : calcID -> XML.tree ----------------------------- *)
-(* val moveActiveUp : calcID -> XML.tree ----------------------------------- *)
-(* val moveCalcHead : calcID -> pos' -> XML.tree --------------------------- *)
-(* val moveDown : calcID -> pos' -> XML.tree ------------------------------- *)
-(* val moveLevelDown : calcID -> pos' -> XML.tree -------------------------- *)
-(* val moveLevelUp : calcID -> pos' -> XML.tree ---------------------------- *)
-(* val moveRoot : calcID -> XML.tree --------------------------------------- *)
-(* val moveUp : calcID -> pos' -> XML.tree --------------------------------- *)
+(* val moveActiveUp : calcID -> XML.tree -----------------------------------
+         iteratorOK2xml
+         iteratorERROR2xml
+         sysERROR2xml *)
+(* val moveCalcHead : calcID -> pos' -> XML.tree ---------------------------
+         iteratorOK2xml
+         iteratorERROR2xml
+         sysERROR2xml *)
+(* val moveDown : calcID -> pos' -> XML.tree -------------------------------
+         iteratorOK2xml
+         iteratorERROR2xml
+         sysERROR2xml *)
+(* val moveLevelDown : calcID -> pos' -> XML.tree --------------------------
+         iteratorOK2xml
+         iteratorERROR2xml
+         sysERROR2xml *)
+(* val moveLevelUp : calcID -> pos' -> XML.tree ----------------------------
+         iteratorOK2xml
+         iteratorERROR2xml
+         sysERROR2xml *)
+(* val moveRoot : calcID -> XML.tree ---------------------------------------
+         iteratorOK2xml
+         sysERROR2xml *)
+(* val moveUp : calcID -> pos' -> XML.tree ---------------------------------
+         iteratorOK2xml
+         iteratorERROR2xml
+         sysERROR2xml *)
 
-(* val refFormula : calcID -> pos' -> XML.tree ----------------------------- *)
+(* val refFormula : calcID -> pos' -> XML.tree -----------------------------
+         refformulaOK2xml
+         sysERROR2xml *)
 operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFFERENT result *)
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -234,15 +481,35 @@ operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFF
      val result = Math_Engine.refFormula calcid pos
 	 in result end)}\<close>
 
-(* val refineProblem : calcID -> pos' -> guh -> XML.tree ------------------- *)
-(* val replaceFormula : calcID -> cterm' -> XML.tree ----------------------- *)
-(* val requestFillformula : calcID -> errpatID * fillpatID -> XML.tree ----- *)
-(* val resetCalcHead : calcID -> XML.tree ---------------------------------- *)
-(* val setContext : calcID -> pos' -> guh -> XML.tree ---------------------- *)
-(* val setMethod : calcID -> metID -> XML.tree ----------------------------- *)
-(* val setNextTactic : calcID -> tac -> XML.tree --------------------------- *)
-(* val setProblem : calcID -> pblID -> XML.tree ---------------------------- *)
-(* val setTheory : calcID -> thyID -> XML.tree ----------------------------- *)
+(* val refineProblem : calcID -> pos' -> guh -> XML.tree -------------------
+         xml_of_matchpbl
+         sysERROR2xml *)
+(* val replaceFormula : calcID -> cterm' -> XML.tree -----------------------
+         replaceformulaOK2xml
+         replaceformulaERROR2xml
+         sysERROR2xml *)
+(* val requestFillformula : calcID -> errpatID * fillpatID -> XML.tree -----
+         autocalculateOK2xml
+         autocalculateERROR2xml *)
+(* val resetCalcHead : calcID -> XML.tree ----------------------------------
+         modifycalcheadOK2xml
+         sysERROR2xml *)
+(* val setContext : calcID -> pos' -> guh -> XML.tree ----------------------
+         message2xml
+         autocalculateOK2xml
+         sysERROR2xml *)
+(* val setMethod : calcID -> metID -> XML.tree -----------------------------
+         modifycalcheadOK2xml
+         sysERROR2xml *)
+(* val setNextTactic : calcID -> tac -> XML.tree ---------------------------
+         setnexttactic2xml
+         sysERROR2xml *)
+(* val setProblem : calcID -> pblID -> XML.tree ----------------------------
+         modifycalcheadOK2xml
+         sysERROR2xml *)
+(* val setTheory : calcID -> thyID -> XML.tree -----------------------------
+         modifycalcheadOK2xml
+         sysERROR2xml *)
 
 section \<open>Native libisabelle: operation_setup use_thys\<close>
 
