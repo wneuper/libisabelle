@@ -310,25 +310,18 @@ operation_setup autocalculate = \<open>
 (* val applyTactic : calcID -> pos' -> tac -> XML.tree ---------------------
          autocalculateOK2xml
          autocalculateERROR2xml *)
-ML {*
-*} ML {*
-*}
 operation_setup apply_tac = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
    action = (fn intree => 
 	 let 
-	   val (ci, a) = case intree of
-       XML.Elem (("APPENDFORMULA", []), [
+	   val (ci, pos, tac) = case intree of
+       XML.Elem (("AUTOCALC", []), [
          XML.Elem (("CALCID", []), [XML.Text ci]),
-         XML.Elem (("CALCID", []), [XML.Text _])
-]) => (ci, a)
-       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
-     val SOME calcid = int_of_str ci
-(*     val auto = xml_to_auto a
-     val result = Math_Engine.autoCalculate calcid auto
-*)
-	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+         pos, tac]) => (str2int ci, xml_to_pos pos, xml_to_tac tac)
+       | tree => raise ERROR ("apply_tac: intree = " ^ xmlstr 0 tree)
+     val result = Math_Engine.applyTactic ci pos tac
+	 in result end)}\<close>
 
 (* val CalcTree : fmz list -> XML.tree -------------------------------------
          calctreeOK2xml
