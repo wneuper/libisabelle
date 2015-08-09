@@ -262,22 +262,31 @@ subsection \<open>Implementation\<close>
          appendformulaOK2xml
          appendformulaERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*} ML {*
+
+*} ML {*
+*} ML {*
+xml_to_formula
+*} ML {*
+*} ML {*
+val t = parse @{theory} "111" |> the |> term_of;
+*} ML {*
+*}
 operation_setup append_form = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
    action = (fn intree => 
-	 let 
-	   val (ci, a) = case intree of
+	 (let 
+	   val (calcid, cterm') = case intree of
        XML.Elem (("APPENDFORMULA", []), [
          XML.Elem (("CALCID", []), [XML.Text ci]),
-         XML.Elem (("CALCID", []), [XML.Text _])
-]) => (ci, a)
-       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
-     val SOME calcid = int_of_str ci
-(*     val auto = xml_to_auto a
-     val result = Math_Engine.autoCalculate calcid auto
-*)
-	 in XML.Text("TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO") end)}\<close>
+         form]) => (ci |> int_of_str', form |> xml_to_formula |> term2str)
+     | x => raise ERROR ("append_form: intree = " ^ xmlstr 0 x)
+     val result = Math_Engine.appendFormula calcid cterm'
+	 in result end)
+	 handle ERROR msg => appendformulaERROR2xml 4711 msg)}\<close>
 
 (* val autoCalculate : calcID -> auto -> XML.tree --------------------------
          autocalculateOK2xml
@@ -287,19 +296,23 @@ operation_setup autocalculate = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
    action = (fn intree => 
-	 let 
+	 (let 
 	   val (ci, a) = case intree of
        XML.Elem (("AUTOCALC", []), [
          XML.Elem (("CALCID", []), [XML.Text ci]), a]) => (ci, a)
-       | tree => error ("autocalculate: intree = " ^ xmlstr 0 tree)
+     | tree => raise ERROR ("autocalculate: intree = " ^ xmlstr 0 tree)
      val SOME calcid = int_of_str ci
      val auto = xml_to_auto a
      val result = Math_Engine.autoCalculate calcid auto
-	 in result end)}\<close>
+	 in result end)
+	 handle ERROR msg => autocalculateERROR2xml 4711 msg)}\<close>
 
 (* val applyTactic : calcID -> pos' -> tac -> XML.tree ---------------------
          autocalculateOK2xml
          autocalculateERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup apply_tac = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -335,6 +348,9 @@ operation_setup calctree = \<open>
          message2xml
          contextthyOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup check_ctxt = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -365,6 +381,9 @@ operation_setup deconstrcalctree = \<open>
 (* val fetchApplicableTactics : calcID -> int -> pos' -> XML.tree ----------
    applicabletacticsOK
    sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup fetch_applicable_tacs = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -386,6 +405,9 @@ operation_setup fetch_applicable_tacs = \<open>
          fetchproposedtacticOK2xml
          fetchproposedtacticERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup fetch_proposed_tac = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -405,6 +427,9 @@ operation_setup fetch_proposed_tac = \<open>
 
 (* val findFillpatterns : calcID -> errpatID -> XML.tree -------------------
          findFillpatterns2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup find_fill_patts = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -425,6 +450,9 @@ operation_setup find_fill_patts = \<open>
 (* val getAccumulatedAsms : calcID -> pos' -> XML.tree ---------------------
          getasmsOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup get_accumulated_asms = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -444,6 +472,9 @@ operation_setup get_accumulated_asms = \<open>
 
 (* val getActiveFormula : calcID -> XML.tree -------------------------------
          iteratorOK2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup get_active_form = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -464,6 +495,9 @@ operation_setup get_active_form = \<open>
 (* val getAssumptions : calcID -> pos' -> XML.tree -------------------------
          getasmsOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup get_asms = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -509,6 +543,9 @@ operation_setup getformulaefromto = \<open>
          gettacticOK2xml
          gettacticERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup get_tac = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -530,6 +567,9 @@ operation_setup get_tac = \<open>
          message2xml
          contextthyOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup init_ctxt = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -551,6 +591,9 @@ operation_setup init_ctxt = \<open>
          autocalculateOK2xml
          autocalculateERROR2xml
          message2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup input_fill_from = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -572,6 +615,9 @@ operation_setup input_fill_from = \<open>
          interStepsOK
          interStepsERROR
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup inter_steps = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -604,6 +650,9 @@ operation_setup iterator = \<open>
 (* val modelProblem : calcID -> XML.tree -----------------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup model_pbl = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -624,6 +673,9 @@ operation_setup model_pbl = \<open>
 (* val modifyCalcHead : calcID -> icalhd -> XML.tree -----------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup modify_calchead = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -644,6 +696,9 @@ operation_setup modify_calchead = \<open>
 (* val moveActiveCalcHead : calcID -> XML.tree -----------------------------
          iteratorOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_active_calchead = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -665,6 +720,9 @@ operation_setup move_active_calchead = \<open>
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_active_down = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -685,6 +743,9 @@ operation_setup move_active_down = \<open>
 (* val moveActiveFormula : calcID -> pos' -> XML.tree ----------------------
          iteratorOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_active_form = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -706,6 +767,9 @@ operation_setup move_active_form = \<open>
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_active_levdown = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -727,6 +791,9 @@ operation_setup move_active_levdown = \<open>
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_active_levup = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -760,6 +827,9 @@ operation_setup moveactiveroot = \<open>
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_active_up = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -781,6 +851,9 @@ operation_setup move_active_up = \<open>
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_active_calchead = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -802,6 +875,9 @@ operation_setup move_active_calchead = \<open>
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_down = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -823,6 +899,9 @@ operation_setup move_down = \<open>
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_levdn = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -844,6 +923,9 @@ operation_setup move_levdn = \<open>
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_levup = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -864,6 +946,9 @@ operation_setup move_levup = \<open>
 (* val moveRoot : calcID -> XML.tree ---------------------------------------
          iteratorOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_root = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -885,6 +970,9 @@ operation_setup move_root = \<open>
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup move_up = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -922,6 +1010,9 @@ operation_setup refformula = \<open> (* ATTENTION: 2nd call in step 10 WITH DIFF
 (* val refineProblem : calcID -> pos' -> guh -> XML.tree -------------------
          xml_of_matchpbl
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup refine_pbl = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -943,6 +1034,9 @@ operation_setup refine_pbl = \<open>
          replaceformulaOK2xml
          replaceformulaERROR2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup replace_form = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -963,6 +1057,9 @@ operation_setup replace_form = \<open>
 (* val requestFillformula : calcID -> errpatID * fillpatID -> XML.tree -----
          autocalculateOK2xml
          autocalculateERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup request_fill_form = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -983,6 +1080,9 @@ operation_setup request_fill_form = \<open>
 (* val resetCalcHead : calcID -> XML.tree ----------------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup reset_calchead = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -1004,6 +1104,9 @@ operation_setup reset_calchead = \<open>
          message2xml
          autocalculateOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup set_ctxt = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -1024,6 +1127,9 @@ operation_setup set_ctxt = \<open>
 (* val setMethod : calcID -> metID -> XML.tree -----------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup set_met = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -1044,6 +1150,9 @@ operation_setup set_met = \<open>
 (* val setNextTactic : calcID -> tac -> XML.tree ---------------------------
          setnexttactic2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup set_next_tac = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -1064,6 +1173,9 @@ operation_setup set_next_tac = \<open>
 (* val setProblem : calcID -> pblID -> XML.tree ----------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup set_pbl = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -1084,6 +1196,9 @@ operation_setup set_pbl = \<open>
 (* val setTheory : calcID -> thyID -> XML.tree -----------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
+ML {*
+*} ML {*
+*}
 operation_setup set_thy = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
