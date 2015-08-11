@@ -740,7 +740,7 @@ operation_setup move_active_up = \<open>
          iteratorOK2xml
          iteratorERROR2xml
          sysERROR2xml *)
-operation_setup move_active_calchead = \<open>
+operation_setup move_calchead = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
    action = (fn intree => 
