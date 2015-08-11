@@ -22,22 +22,22 @@ public class Operations {
   public static final Operation<scala.math.BigInt, XML.Tree> TESTIT =
     Operation$.MODULE$.Testit();
 
-  // for Mini_Test.java -----------------------------------------------
-  public static final Operation<XML.Tree, XML.Tree> CALC_TREE =                 //step 1
+  // Protoco.thy operation_setup for all isabisac's Math_Engine --------
+  public static final Operation<XML.Tree, XML.Tree> AUTO_CALC =
+		    Operation$.MODULE$.autoCalculate();
+  public static final Operation<XML.Tree, XML.Tree> CALC_TREE =
     Operation$.MODULE$.CalcTree();
-  public static final Operation<scala.math.BigInt, XML.Tree> ITERATOR =         //step 2
+  public static final Operation<scala.math.BigInt, XML.Tree> DEL_CALC =
+		    Operation$.MODULE$.DEconstrCalcTree();
+  public static final Operation<XML.Tree, XML.Tree> GET_FORMULAE =
+		    Operation$.MODULE$.getFormulaeFromTo();
+  public static final Operation<scala.math.BigInt, XML.Tree> ITERATOR =
     Operation$.MODULE$.Iterator();
-  public static final Operation<scala.math.BigInt, XML.Tree> MOVE_ACTIVE_ROOT = //step 3
+  public static final Operation<scala.math.BigInt, XML.Tree> MOVE_ACTIVE_ROOT =
     Operation$.MODULE$.moveActiveRoot();
-  public static final Operation<XML.Tree, XML.Tree> GET_FORMULAE =              //step 4
-    Operation$.MODULE$.getFormulaeFromTo();
-  public static final Operation<XML.Tree, XML.Tree> REF_FORMULA =               //step 6
+  public static final Operation<XML.Tree, XML.Tree> REF_FORMULA =
     Operation$.MODULE$.refFormula();
-  public static final Operation<XML.Tree, XML.Tree> AUTO_CALC =                 //step 7
-    Operation$.MODULE$.autoCalculate();
-  //re-use the operation of step 6                                                step 10
-  public static final Operation<scala.math.BigInt, XML.Tree> DEL_CALC =         //step 13
-    Operation$.MODULE$.DEconstrCalcTree();
+
   //-------------------------------------------------------------------
   public static final Operation<java.util.List<String>, Void> USE_THYS =
     Operation$.MODULE$.UseThys_Java();

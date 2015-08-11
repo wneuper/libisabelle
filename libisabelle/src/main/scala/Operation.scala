@@ -14,15 +14,14 @@ object Operation {
   val Teststr = implicitly[String, String]("teststr")
   val Testit = implicitly[scala.math.BigInt, XML.Tree]("testit")
   
-  // for Mini_Test.java -----------------------------------------------
-  val CalcTree = implicitly[XML.Tree, XML.Tree]("calctree")                          //step 1
-  val Iterator = implicitly[scala.math.BigInt, XML.Tree]("iterator")                 //step 2
-  val moveActiveRoot = implicitly[scala.math.BigInt, XML.Tree]("moveactiveroot")     //step 3
-  val getFormulaeFromTo = implicitly[XML.Tree, XML.Tree]("getformulaefromto")        //step 4
-  val refFormula = implicitly[XML.Tree, XML.Tree]("refformula")                      //step 6
-  val autoCalculate = implicitly[XML.Tree, XML.Tree]("autocalculate")                //step 7
-  //re-use the operation of step 6                                                     step 10
-  val DEconstrCalcTree = implicitly[scala.math.BigInt, XML.Tree]("deconstrcalctree") //step 13
+  // Protoco.thy operation_setup for all isabisac's Math_Engine --------
+  val autoCalculate = implicitly[XML.Tree, XML.Tree]("autocalculate") 
+  val CalcTree = implicitly[XML.Tree, XML.Tree]("calctree")
+  val DEconstrCalcTree = implicitly[scala.math.BigInt, XML.Tree]("deconstrcalctree")
+  val getFormulaeFromTo = implicitly[XML.Tree, XML.Tree]("getformulaefromto")
+  val Iterator = implicitly[scala.math.BigInt, XML.Tree]("iterator")
+  val moveActiveRoot = implicitly[scala.math.BigInt, XML.Tree]("moveactiveroot")
+  val refFormula = implicitly[XML.Tree, XML.Tree]("refformula")
 
   //-------------------------------------------------------------------
   val UseThys = implicitly[List[String], Unit]("use_thys")
