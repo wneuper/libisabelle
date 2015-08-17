@@ -59,7 +59,7 @@ public class Operations {
     Operation$.MODULE$.interSteps();
   public static final Operation<scala.math.BigInt, XML.Tree> ITERATOR =
     Operation$.MODULE$.Iterator();
-  public static final Operation<XML.Tree, XML.Tree> MODEL_PBL =
+  public static final Operation<scala.math.BigInt, XML.Tree> MODEL_PBL =
     Operation$.MODULE$.modelProblem();
   public static final Operation<XML.Tree, XML.Tree> MODIFY_CALCHEAD =
     Operation$.MODULE$.modifyCalcHead();

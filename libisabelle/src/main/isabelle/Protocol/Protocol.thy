@@ -297,7 +297,8 @@ operation_setup autocalculate = \<open>
 
 (* val applyTactic : calcID -> pos' -> tac -> XML.tree ---------------------
          autocalculateOK2xml
-         autocalculateERROR2xml *)
+         autocalculateERROR2xml 
+   NOT IMPLEMENTED IN isac-java WN150813 *)
 operation_setup apply_tac = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -394,7 +395,8 @@ operation_setup fetch_proposed_tac = \<open>
 	 handle ERROR msg => sysERROR2xml 4711 msg)}\<close>
 
 (* val findFillpatterns : calcID -> errpatID -> XML.tree -------------------
-         findFillpatterns2xml *)
+         findFillpatterns2xml 
+  NOT IMPL. IN isac-java *)
 operation_setup find_fill_patts = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -447,9 +449,6 @@ operation_setup get_active_form = \<open>
 (* val getAssumptions : calcID -> pos' -> XML.tree -------------------------
          getasmsOK2xml
          sysERROR2xml *)
-ML {*
-*} ML {*
-*}
 operation_setup get_asms = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -906,10 +905,8 @@ operation_setup replace_form = \<open>
 
 (* val requestFillformula : calcID -> errpatID * fillpatID -> XML.tree -----
          autocalculateOK2xml
-         autocalculateERROR2xml *)
-ML {*
-*} ML {*
-*}
+         autocalculateERROR2xml 
+  NOT IMPL. IN isac-java *)
 operation_setup request_fill_form = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
@@ -966,6 +963,8 @@ operation_setup set_ctxt = \<open>
 	 in result end)
 	 handle ERROR msg => sysERROR2xml 4711 msg)}\<close>
 
+(*/===vvv TODO ================================================================*)
+
 (* val setMethod : calcID -> metID -> XML.tree -----------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
@@ -1002,7 +1001,9 @@ operation_setup set_next_tac = \<open>
 	 in result end)
 	 handle ERROR msg => sysERROR2xml 4711 msg)}\<close>
 
-(* val setProblem : calcID -> pblID -> XML.tree ----------------------------
+(*/===^^^ GOON TODO ================================================================*)
+
+ (* val setProblem : calcID -> pblID -> XML.tree ----------------------------
          modifycalcheadOK2xml
          sysERROR2xml *)
 operation_setup set_pbl = \<open>
@@ -1031,7 +1032,7 @@ operation_setup set_thy = \<open>
 	   val (ci, thy_id) = case intree of
        XML.Elem (("MODIFYCALCHEAD", []), [
          XML.Elem (("CALCID", []), [XML.Text ci]),
-         XML.Elem (("METHODID", []), [XML.Text thy_id])])
+         XML.Elem (("THEORYID", []), [XML.Text thy_id])])
      => (str2int ci, thy_id)
      | tree => raise ERROR ("set_thy: WRONG intree = " ^ xmlstr 0 tree)
      val result = Math_Engine.setTheory ci thy_id
@@ -1044,5 +1045,12 @@ operation_setup use_thys = \<open>
   {from_lib = Codec.list Codec.string,
    to_lib = Codec.unit,
    action = Thy_Info.use_thys o map (rpair Position.none)}\<close>
+
+ML {*
+*}  ML {*
+xml_of_term
+*}  ML {*
+*}  ML {*
+*}
 
 end

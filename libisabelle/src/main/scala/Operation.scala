@@ -36,7 +36,7 @@ object Operation {
   val inputFillFormula = implicitly[XML.Tree, XML.Tree]("input_fill_form")
   val interSteps = implicitly[XML.Tree, XML.Tree]("inter_steps")
   val Iterator = implicitly[scala.math.BigInt, XML.Tree]("iterator")
-  val modelProblem = implicitly[XML.Tree, XML.Tree]("model_pbl")
+  val modelProblem = implicitly[scala.math.BigInt, XML.Tree]("model_pbl")
   val modifyCalcHead = implicitly[XML.Tree, XML.Tree]("modify_calchead")
 
   val moveActiveCalcHead = implicitly[XML.Tree, XML.Tree]("move_active_calchead")
