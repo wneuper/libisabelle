@@ -516,9 +516,9 @@ operation_setup init_ctxt = \<open>
   {from_lib = Codec.tree,
    to_lib = Codec.tree,
    action = (fn intree => 
-	 (let 
+	 ((let 
 	   val (ci, ketype, pos) = case intree of
-       XML.Elem (("CONTEXTTHY", []), [
+       XML.Elem (("CONTEXT", []), [
          XML.Elem (("CALCID", []), [XML.Text ci]),
          ketype as XML.Elem (("KETYPE", []), _),
          pos as XML.Elem (("POSITION", []), _)]) 
@@ -526,7 +526,8 @@ operation_setup init_ctxt = \<open>
      | tree => raise ERROR ("init_ctxt: WRONG intree = " ^ xmlstr 0 tree)
      val result = Math_Engine.initContext ci ketype pos
 	 in result end)
-	 handle ERROR msg => sysERROR2xml 4711 msg)}\<close>
+	 handle ERROR msg => sysERROR2xml 4711 msg)
+	   handle _  => sysERROR2xml 4711 "Protocol.operation_setup init_ctxt UNKNOWN exn")}\<close>
 
 (* val inputFillFormula: calcID -> string -> XML.tree ----------------------
          autocalculateOK2xml
@@ -1049,7 +1050,7 @@ operation_setup use_thys = \<open>
 
 ML {*
 *}  ML {*
-xml_of_term
+ContThm
 *}  ML {*
 *}  ML {*
 *}
