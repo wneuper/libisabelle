@@ -518,7 +518,7 @@ operation_setup init_ctxt = \<open>
    action = (fn intree => 
 	 ((let 
 	   val (ci, ketype, pos) = case intree of
-       XML.Elem (("CONTEXT", []), [
+       XML.Elem (("INITCONTEXT", []), [
          XML.Elem (("CALCID", []), [XML.Text ci]),
          ketype as XML.Elem (("KETYPE", []), _),
          pos as XML.Elem (("POSITION", []), _)]) 
