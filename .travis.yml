@@ -1,11 +1,19 @@
 language: scala
+jdk:
+  - oraclejdk8
+env:
+  - ISABELLE_VERSION=2015
 scala:
   - 2.10.5
-  - 2.11.6
-env:
-  - ISABELLE_HOME=./Isabelle2014
-before_install:
-  - wget http://isabelle.in.tum.de/dist/Isabelle2014_linux.tar.gz -O /tmp/Isabelle.tar.gz
-  - tar xzf /tmp/Isabelle.tar.gz
+  - 2.11.7
 install:
-  - $ISABELLE_HOME/bin/isabelle build -d . -bv Protocol
+  - git submodule update --init --recursive
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION publishLocal
+  - sbt ++$TRAVIS_SCALA_VERSION "appBootstrap/run --version $ISABELLE_VERSION"
+  - sbt ++$TRAVIS_SCALA_VERSION test
+matrix:
+  include:
+    - jdk: openjdk7
+      scala: 2.10.5
+      env: ISABELLE_VERSION=2014

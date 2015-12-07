@@ -1,32 +1,34 @@
-package edu.tum.cs.isabelle
+package edu.tum.cs
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent._
+import scala.util._
 
-import isabelle.XML
+import edu.tum.cs.isabelle.api.XML
 
-object defaults {
-  implicit lazy val isabelleExecutionContext: ExecutionContext =
-    isabelle.Future.execution_context
-}
+import acyclic.file
 
-object `package` {
+package object isabelle {
 
-  private[isabelle] implicit class ListOps[A](as: List[A]) {
-    def traverse[E, B](f: A => Either[E, B]): Either[E, List[B]] = {
-      @annotation.tailrec
-      def go(as: List[A], bs: List[B]): Either[E, List[B]] = as match {
-        case Nil => Right(bs)
-        case a :: as =>
-          f(a) match {
-            case Right(b) => go(as, b :: bs)
-            case Left(err) => Left(err)
-          }
+  type Indexname = (String, BigInt)
+  type Sort = List[String]
+
+  /**
+   * The result type for [[Codec#decode decoding values]] from
+   * [[edu.tum.cs.isabelle.api.XML.Tree XML trees]]. Failure values
+   * should contain an error message and a list of erroneous trees.
+   */
+  type XMLResult[+A] = Either[(String, XML.Body), A]
+
+  implicit class FutureOps[T](val future: Future[T]) extends AnyVal {
+    def flatMapC[U](f: T => CancellableFuture[U])(implicit ec: ExecutionContext): CancellableFuture[U] = {
+      val u = future.map(f)
+      val promise = Promise[U]
+      u.onComplete {
+        case Success(ct) => promise.completeWith(ct.future)
+        case Failure(exn) => promise.failure(exn)
       }
-
-      go(as, Nil).right.map(_.reverse)
+      new CancellableFuture(promise, () => u.foreach(_.doCancel()))
     }
   }
-
-  type Result[+A] = Either[(String, XML.Body), A]
 
 }
