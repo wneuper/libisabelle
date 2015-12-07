@@ -1,0 +1,212 @@
+POINTS FROM libisabelle/README.md
+
+1. Run the `sbt` script to fetch all required Scala dependencies.
+   After this is done, you are in the SBT shell.
+
+2. Compile the sources with `compile`.
+--------------------------------------
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}root...
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}pideInterface...
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}docs...
+[info] Resolving jline#jline;2.12.1 ...
+[info] downloading https://jcenter.bintray.com/org/scala-lang/scala-library/2.11.7/scala-library-2.11.7.jar ...
+   :
+[info] Done updating.
+[info] Resolving org.scala-lang#scala-library;2.11.7 ...
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}pide2015...
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}pide2014...
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}libisabelle...
+[info] Resolving org.scala-lang#scala-compiler;2.11.7 ...
+[info] Compiling 6 Scala sources and 1 Java source to /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/classes...
+[info] Resolving jline#jline;2.12.1 ...
+   :
+[info] Done updating.
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}appTemplate...
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}tests...
+[info] Resolving jline#jline;2.12.1 ...
+   :
+[info] Done updating.
+[info] Resolving info.hupel#pide-interface_2.11;0.3-SNAPSHOT ...
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}appReport...
+[info] Resolving org.log4s#log4s_2.11;1.2.1 ...
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}appBootstrap...
+[info] Resolving org.scalaz#scalaz-concurrent_2.11;7.1.3 ...
+[info] Compiling 66 Scala sources to /home/wneuper/proto4/libisabelle/pide/2014/target/scala-2.11/classes...
+[info] Compiling 9 Scala sources to /home/wneuper/proto4/libisabelle/libisabelle/target/scala-2.11/classes...
+[info] Compiling 85 Scala sources to /home/wneuper/proto4/libisabelle/pide/2015/target/scala-2.11/classes...
+[info] Resolving jline#jline;2.12.1 ...
+[info] downloading https://jcenter.bintray.com/org/specs2/specs2-core_2.11/3.6.5/specs2-core_2.11-3.6.5.jar ...
+   :
+[info] Done updating.
+[info] Compiling 4 Scala sources to /home/wneuper/proto4/libisabelle/setup/target/scala-2.11/classes...
+[info] Compiling 1 Scala source to /home/wneuper/proto4/libisabelle/app-template/target/scala-2.11/classes...
+[info] Compiling 1 Scala source to /home/wneuper/proto4/libisabelle/apps/bootstrap/target/scala-2.11/classes...
+[info] Compiling 1 Scala source to /home/wneuper/proto4/libisabelle/apps/report/target/scala-2.11/classes...
+   :
+[warn] one warning found
+[success] Total time: 149 s, completed Dec 7, 2015 6:57:40 PM
+> 
+   
+3. If you have used an arbitrary snapshot of the sources (e.g. via `git clone`), run `publishLocal`.
+----------------------------------------------------------------------------------------------------
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[info] Packaging /home/wneuper/proto4/libisabelle/setup/target/scala-2.11/libisabelle-setup_2.11-0.3-SNAPSHOT-sources.jar ...
+[info] Packaging /home/wneuper/proto4/libisabelle/pide/2015/target/scala-2.11/pide-2015_2.11-0.3-SNAPSHOT-sources.jar ...
+[info] Packaging /home/wneuper/proto4/libisabelle/pide/2014/target/scala-2.11/pide-2014_2.11-0.3-SNAPSHOT-sources.jar ...
+[info] Packaging /home/wneuper/proto4/libisabelle/libisabelle/target/scala-2.11/libisabelle_2.11-0.3-SNAPSHOT-sources.jar ...
+[info] Packaging /home/wneuper/proto4/libisabelle/docs/target/scala-2.11/libisabelle-docs_2.11-0.3-SNAPSHOT-sources.jar ...
+[info] Packaging /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/pide-interface_2.11-0.3-SNAPSHOT-sources.jar ...
+[info] Done packaging.
+   :
+[info] Done packaging.
+[info] Wrote /home/wneuper/proto4/libisabelle/docs/target/scala-2.11/libisabelle-docs_2.11-0.3-SNAPSHOT.pom
+[info] :: delivering :: info.hupel#pide-interface_2.11;0.3-SNAPSHOT :: 0.3-SNAPSHOT :: integration :: Mon Dec 07 18:58:17 CET 2015
+[info]  delivering ivy file to /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/ivy-0.3-SNAPSHOT.xml
+[info] :: delivering :: info.hupel#libisabelle-docs_2.11;0.3-SNAPSHOT :: 0.3-SNAPSHOT :: integration :: Mon Dec 07 18:58:17 CET 2015
+[info]  delivering ivy file to /home/wneuper/proto4/libisabelle/docs/target/scala-2.11/ivy-0.3-SNAPSHOT.xml
+[info] Main Scala API documentation to /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/api...
+   :
+[info] Packaging /home/wneuper/proto4/libisabelle/docs/target/scala-2.11/libisabelle-docs_2.11-0.3-SNAPSHOT.jar ...
+[info] Done packaging.
+[info] Wrote /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/pide-interface_2.11-0.3-SNAPSHOT.pom
+[info] Packaging /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/pide-interface_2.11-0.3-SNAPSHOT.jar ...
+[info] Done packaging.
+[info] Wrote /home/wneuper/proto4/libisabelle/pide/2014/target/scala-2.11/pide-2014_2.11-0.3-SNAPSHOT.pom
+   :
+model contains 17 documentable templates
+[info] Main Scala API documentation to /home/wneuper/proto4/libisabelle/docs/target/scala-2.11/api...
+model contains 15 documentable templates
+model contains 41 documentable templates
+[warn] /home/wneuper/proto4/libisabelle/pide-interface/src/main/scala/package.scala:5: Could not find any member to link for "edu.tum.cs.isabelle.Implementations".
+   :
+[warn]   ^
+[warn] four warnings found
+[info] Main Scala API documentation successful.
+[info] Packaging /home/wneuper/proto4/libisabelle/setup/target/scala-2.11/libisabelle-setup_2.11-0.3-SNAPSHOT-javadoc.jar ...
+[warn] 5 warnings found
+[info] Main Scala API documentation successful.
+[warn] /home/wneuper/proto4/libisabelle/libisabelle/src/main/scala/System.scala:235: Could not find any member to link for "edu.tum.cs.isabelle.api.Environment".
+  :
+[info] Packaging /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/pide-interface_2.11-0.3-SNAPSHOT-javadoc.jar ...
+[info] Done packaging.
+[info]  published libisabelle-setup_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-setup_2.11/0.3-SNAPSHOT/poms/libisabelle-setup_2.11.pom
+[info]  published libisabelle-setup_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-setup_2.11/0.3-SNAPSHOT/jars/libisabelle-setup_2.11.jar
+[info]  published libisabelle-setup_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-setup_2.11/0.3-SNAPSHOT/srcs/libisabelle-setup_2.11-sources.jar
+[info]  published libisabelle-setup_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-setup_2.11/0.3-SNAPSHOT/docs/libisabelle-setup_2.11-javadoc.jar
+[info]  published ivy to /home/wneuper/.ivy2/local/info.hupel/libisabelle-setup_2.11/0.3-SNAPSHOT/ivys/ivy.xml
+[warn] /home/wneuper/proto4/libisabelle/libisabelle/src/main/scala/System.scala:14: Could not find any member to link for "edu.tum.cs.isabelle.api.Configuration".
+[warn]   /**
+   :
+[warn]   ^
+[info] Done packaging.
+[info]  published pide-interface_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-interface_2.11/0.3-SNAPSHOT/poms/pide-interface_2.11.pom
+[info]  published pide-interface_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-interface_2.11/0.3-SNAPSHOT/jars/pide-interface_2.11.jar
+[info]  published pide-interface_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-interface_2.11/0.3-SNAPSHOT/srcs/pide-interface_2.11-sources.jar
+[info]  published pide-interface_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-interface_2.11/0.3-SNAPSHOT/docs/pide-interface_2.11-javadoc.jar
+[info]  published ivy to /home/wneuper/.ivy2/local/info.hupel/pide-interface_2.11/0.3-SNAPSHOT/ivys/ivy.xml
+[warn] /home/wneuper/proto4/libisabelle/libisabelle/src/main/scala/Operation.scala:66: Could not find any member to link for "edu.tum.cs.isabelle.api.Configuration".
+[warn]   /**
+[warn]   ^
+   :
+[warn]   ^
+[warn] two warnings found
+[info] Main Scala API documentation successful.
+[info] Packaging /home/wneuper/proto4/libisabelle/docs/target/scala-2.11/libisabelle-docs_2.11-0.3-SNAPSHOT-javadoc.jar ...
+[info] Done packaging.
+[info]  published libisabelle-docs_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-docs_2.11/0.3-SNAPSHOT/poms/libisabelle-docs_2.11.pom
+   :
+ [info]   published ivy to /home/wneuper/.ivy2/local/info.hupel/pide-2014_2.11/0.3-SNAPSHOT/ivys/ivy.xml
+[info] Main Scala API documentation successful.
+[info] Packaging /home/wneuper/proto4/libisabelle/pide/2015/target/scala-2.11/pide-2015_2.11-0.3-SNAPSHOT-javadoc.jar ...
+[info] Done packaging.
+[info]  published pide-2015_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2015_2.11/0.3-SNAPSHOT/poms/pide-2015_2.11.pom
+[info]  published pide-2015_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2015_2.11/0.3-SNAPSHOT/jars/pide-2015_2.11.jar
+[info]  published pide-2015_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2015_2.11/0.3-SNAPSHOT/srcs/pide-2015_2.11-sources.jar
+[info]  published pide-2015_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2015_2.11/0.3-SNAPSHOT/docs/pide-2015_2.11-javadoc.jar
+[info]  published ivy to /home/wneuper/.ivy2/local/info.hupel/pide-2015_2.11/0.3-SNAPSHOT/ivys/ivy.xml
+[success] Total time: 12 s, completed Dec 7, 2015 6:58:28 PM
+  
+   
+4. Bootstrap an Isabelle installation using `appBootstrap/run --version 2015`, which will download and extract the latest supported Isabelle version for you.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+wneuper@wneuper-w541:~/proto4/libisabelle$ ./sbt
+   :
+>
+> appBootstrap/run --version 2015
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[info] Running edu.tum.cs.isabelle.app.bootstrap.Main --version 2015
+19:15:28.229 [run-main-0] INFO  edu.tum.cs.isabelle.setup.Setup - Using default platform; detected Linux
+19:15:28.235 [run-main-0] INFO  edu.tum.cs.isabelle.setup.Setup - Using default setup; no setup found in /home/wneuper/.local/share/libisabelle/setups
+19:15:28.236 [run-main-0] INFO  edu.tum.cs.isabelle.setup.Setup - Downloading setup <Isabelle2015> to /home/wneuper/.local/share/libisabelle/setups
+19:17:40.675 [pool-5-thread-5] INFO  edu.tum.cs.isabelle.setup.Setup - Downloading artifact from https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.4/scala-parser-combinators_2.11-1.0.4.jar ...
+19:17:41.030 [pool-5-thread-5] INFO  edu.tum.cs.isabelle.setup.Setup - Successfully downloaded scala-parser-combinators_2.11-1.0.4.jar
+19:17:41.045 [ForkJoinPool-1-worker-9] INFO  edu.tum.cs.isabelle.api.Environment - Instantiating environment for <Isabelle2015> at /home/wneuper/.local/share/libisabelle/setups/Isabelle2015
+19:17:41.308 [ForkJoinPool-1-worker-9] INFO  edu.tum.cs.isabelle.api.Environment - Building session Protocol2015 at . ...
+[error] (run-main-0) ERROR(Bad session root directory: "/home/wneuper/proto4/libisabelle/protocol"
+[error] The error(s) above occurred in session catalog "/home/wneuper/proto4/libisabelle/ROOTS")
+ERROR(Bad session root directory: "/home/wneuper/proto4/libisabelle/protocol"
+The error(s) above occurred in session catalog "/home/wneuper/proto4/libisabelle/ROOTS")
+  at isabelle.Library$ERROR$.apply(library.scala:33)
+  at isabelle.Library$.error(library.scala:37)
+  at isabelle.Basic_Library$$anonfun$2.apply(library.scala:220)
+  at isabelle.Basic_Library$$anonfun$2.apply(library.scala:220)
+  at isabelle.Build$$anonfun$find_roots$1$2.apply(build.scala:335)
+  at isabelle.Build$$anonfun$find_roots$1$2.apply(build.scala:329)
+  at scala.collection.TraversableLike$WithFilter$$anonfun$map$2.apply(TraversableLike.scala:728)
+  at scala.collection.immutable.List.foreach(List.scala:381)
+  at scala.collection.TraversableLike$WithFilter.map(TraversableLike.scala:727)
+  at isabelle.Build$.find_roots$1(build.scala:329)
+  at isabelle.Build$.isabelle$Build$$find_dir$1(build.scala:314)
+  at isabelle.Build$$anonfun$find_sessions$5.apply(build.scala:350)
+  at isabelle.Build$$anonfun$find_sessions$5.apply(build.scala:349)
+  at scala.collection.TraversableLike$WithFilter$$anonfun$flatMap$2.apply(TraversableLike.scala:759)
+  at scala.collection.immutable.List.foreach(List.scala:381)
+  at scala.collection.TraversableLike$WithFilter.flatMap(TraversableLike.scala:758)
+  at isabelle.Build$.find_sessions(build.scala:349)
+  at isabelle.Build$.build_results(build.scala:778)
+  at isabelle.Build$.build(build.scala:1032)
+  at edu.tum.cs.isabelle.impl.Environment.build(Environment.scala:53)
+  at edu.tum.cs.isabelle.System$.build(System.scala:36)
+  at edu.tum.cs.isabelle.app.bootstrap.Main$.run(Main.scala:18)
+  at edu.tum.cs.isabelle.app.Template$$anonfun$2.apply(Template.scala:40)
+  at edu.tum.cs.isabelle.app.Template$$anonfun$2.apply(Template.scala:39)
+  at scala.concurrent.Future$$anonfun$flatMap$1.apply(Future.scala:251)
+  at scala.concurrent.Future$$anonfun$flatMap$1.apply(Future.scala:249)
+  at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:32)
+  at scala.concurrent.impl.ExecutionContextImpl$AdaptedForkJoinTask.exec(ExecutionContextImpl.scala:121)
+  at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+  at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.pollAndExecAll(ForkJoinPool.java:1253)
+  at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1346)
+  at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+  at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+[trace] Stack trace suppressed: run last appBootstrap/compile:run for the full output.
+java.lang.RuntimeException: Nonzero exit code: 1
+  at scala.sys.package$.error(package.scala:27)
+[trace] Stack trace suppressed: run last appBootstrap/compile:run for the full output.
+[error] (appBootstrap/compile:run) Nonzero exit code: 1
+[error] Total time: 135 s, completed Dec 7, 2015 7:17:41 PM
+> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
