@@ -209,3 +209,9 @@ releaseProcess := Seq[ReleaseStep](
   commitNextVersion,
   ReleaseStep(action = Command.process("sonatypeReleaseAll", _), enableCrossBuild = true)
 )
+
+libraryDependencies ++= Seq(
+  "info.hupel" %% "libisabelle" % "0.2",
+  "info.hupel" %% "libisabelle-setup" % "0.2",
+  "info.hupel" %% "pide-interface" % "0.2"
+)
