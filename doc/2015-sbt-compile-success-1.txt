@@ -1,0 +1,148 @@
+logged after copying ~~/protocol/Protocol.thy
+?: where define the Java-side
+
+wneuper@wneuper-w541:~/proto4/libisabelle$ ./sbt
+[info] Loading project definition from /home/wneuper/proto4/libisabelle/project
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+[info] Set current project to root (in build file:/home/wneuper/proto4/libisabelle/)
+> 
+> 
+> compile
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[info] Updating {file:/home/wneuper/proto4/libisabelle/}root...
+[info] Resolving org.scala-lang#scala-library;2.11.7 ...
+[info] Compiling 1 Scala source to /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/classes...
+[info] Resolving jline#jline;2.12.1 ...
+[info] downloading https://jcenter.bintray.com/info/hupel/libisabelle_2.11/0.2/libisabelle_2.11-0.2.jar ...
+[info]  [SUCCESSFUL ] info.hupel#libisabelle_2.11;0.2!libisabelle_2.11.jar (2491ms)
+[info] downloading https://jcenter.bintray.com/info/hupel/libisabelle-setup_2.11/0.2/libisabelle-setup_2.11-0.2.jar ...
+[info]  [SUCCESSFUL ] info.hupel#libisabelle-setup_2.11;0.2!libisabelle-setup_2.11.jar (2810ms)
+[info] downloading https://jcenter.bintray.com/info/hupel/pide-interface_2.11/0.2/pide-interface_2.11-0.2.jar ...
+[info]  [SUCCESSFUL ] info.hupel#pide-interface_2.11;0.2!pide-interface_2.11.jar (3596ms)
+[info] Done updating.
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[info] Compiling 1 Scala source to /home/wneuper/proto4/libisabelle/pide/2014/target/scala-2.11/classes...
+[info] Compiling 1 Scala source to /home/wneuper/proto4/libisabelle/pide/2015/target/scala-2.11/classes...
+[success] Total time: 18 s, completed Dec 8, 2015 12:53:50 PM
+> 
+> 
+> publishLocal
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[info] Wrote /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/pide-interface_2.11-0.3-SNAPSHOT.pom
+[info] :: delivering :: info.hupel#libisabelle-docs_2.11;0.3-SNAPSHOT :: 0.3-SNAPSHOT :: integration :: Tue Dec 08 12:56:10 CET 2015
+[info]  delivering ivy file to /home/wneuper/proto4/libisabelle/docs/target/scala-2.11/ivy-0.3-SNAPSHOT.xml
+[info] Main Scala API documentation to /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/api...
+[info] :: delivering :: info.hupel#pide-interface_2.11;0.3-SNAPSHOT :: 0.3-SNAPSHOT :: integration :: Tue Dec 08 12:56:10 CET 2015
+[info]  delivering ivy file to /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/ivy-0.3-SNAPSHOT.xml
+[info] Packaging /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/pide-interface_2.11-0.3-SNAPSHOT.jar ...
+[info] Wrote /home/wneuper/proto4/libisabelle/docs/target/scala-2.11/libisabelle-docs_2.11-0.3-SNAPSHOT.pom
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[info] Wrote /home/wneuper/proto4/libisabelle/pide/2014/target/scala-2.11/pide-2014_2.11-0.3-SNAPSHOT.pom
+[info] :: delivering :: info.hupel#libisabelle_2.11;0.3-SNAPSHOT :: 0.3-SNAPSHOT :: integration :: Tue Dec 08 12:56:10 CET 2015
+[info]  delivering ivy file to /home/wneuper/proto4/libisabelle/libisabelle/target/scala-2.11/ivy-0.3-SNAPSHOT.xml
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[info] Done packaging.
+[info] :: delivering :: info.hupel#pide-2015_2.11;0.3-SNAPSHOT :: 0.3-SNAPSHOT :: integration :: Tue Dec 08 12:56:10 CET 2015
+[info]  delivering ivy file to /home/wneuper/proto4/libisabelle/pide/2015/target/scala-2.11/ivy-0.3-SNAPSHOT.xml
+[info] Wrote /home/wneuper/proto4/libisabelle/libisabelle/target/scala-2.11/libisabelle_2.11-0.3-SNAPSHOT.pom
+[info] Wrote /home/wneuper/proto4/libisabelle/pide/2015/target/scala-2.11/pide-2015_2.11-0.3-SNAPSHOT.pom
+[info] :: delivering :: info.hupel#libisabelle-setup_2.11;0.3-SNAPSHOT :: 0.3-SNAPSHOT :: integration :: Tue Dec 08 12:56:10 CET 2015
+[info]  delivering ivy file to /home/wneuper/proto4/libisabelle/setup/target/scala-2.11/ivy-0.3-SNAPSHOT.xml
+[info] Main Scala API documentation to /home/wneuper/proto4/libisabelle/pide/2014/target/scala-2.11/api...
+[info] Wrote /home/wneuper/proto4/libisabelle/setup/target/scala-2.11/libisabelle-setup_2.11-0.3-SNAPSHOT.pom
+[info] :: delivering :: info.hupel#pide-2014_2.11;0.3-SNAPSHOT :: 0.3-SNAPSHOT :: integration :: Tue Dec 08 12:56:10 CET 2015
+[info]  delivering ivy file to /home/wneuper/proto4/libisabelle/pide/2014/target/scala-2.11/ivy-0.3-SNAPSHOT.xml
+[info] Main Scala API documentation to /home/wneuper/proto4/libisabelle/pide/2015/target/scala-2.11/api...
+[warn] Credentials file /home/wneuper/.ivy2/.credentials does not exist
+[warn] Multiple main classes detected.  Run 'show discoveredMainClasses' to see the list
+[info]  published libisabelle_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle_2.11/0.3-SNAPSHOT/poms/libisabelle_2.11.pom
+[info]  published libisabelle_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle_2.11/0.3-SNAPSHOT/jars/libisabelle_2.11.jar
+[info]  published libisabelle_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle_2.11/0.3-SNAPSHOT/srcs/libisabelle_2.11-sources.jar
+[info]  published libisabelle_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle_2.11/0.3-SNAPSHOT/docs/libisabelle_2.11-javadoc.jar
+[info]  published ivy to /home/wneuper/.ivy2/local/info.hupel/libisabelle_2.11/0.3-SNAPSHOT/ivys/ivy.xml
+[warn] Multiple main classes detected.  Run 'show discoveredMainClasses' to see the list
+[info]  published libisabelle-setup_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-setup_2.11/0.3-SNAPSHOT/poms/libisabelle-setup_2.11.pom
+[info]  published libisabelle-setup_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-setup_2.11/0.3-SNAPSHOT/jars/libisabelle-setup_2.11.jar
+[info]  published libisabelle-setup_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-setup_2.11/0.3-SNAPSHOT/srcs/libisabelle-setup_2.11-sources.jar
+[info]  published libisabelle-setup_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-setup_2.11/0.3-SNAPSHOT/docs/libisabelle-setup_2.11-javadoc.jar
+[info]  published ivy to /home/wneuper/.ivy2/local/info.hupel/libisabelle-setup_2.11/0.3-SNAPSHOT/ivys/ivy.xml
+[info] Packaging /home/wneuper/proto4/libisabelle/pide/2014/target/scala-2.11/pide-2014_2.11-0.3-SNAPSHOT.jar ...
+[info] Packaging /home/wneuper/proto4/libisabelle/pide/2015/target/scala-2.11/pide-2015_2.11-0.3-SNAPSHOT.jar ...
+[info] Main Scala API documentation to /home/wneuper/proto4/libisabelle/docs/target/scala-2.11/api...
+[info] Done packaging.
+[info] Done packaging.
+model contains 17 documentable templates
+[warn] /home/wneuper/proto4/libisabelle/pide-interface/src/main/scala/package.scala:5: Could not find any member to link for "edu.tum.cs.isabelle.Implementations".
+[warn] /**
+[warn] ^
+[warn] /home/wneuper/proto4/libisabelle/pide-interface/src/main/scala/Configuration.scala:39: Could not find any member to link for "edu.tum.cs.isabelle.System.build".
+[warn] /**
+[warn] ^
+[warn] /home/wneuper/proto4/libisabelle/pide-interface/src/main/scala/Environment.scala:48: Could not find any member to link for "edu.tum.cs.isabelle.setup.Setup".
+[warn] /**
+[warn] ^
+[warn] /home/wneuper/proto4/libisabelle/pide-interface/src/main/scala/Environment.scala:127: Could not find any member to link for "edu.tum.cs.isabelle.System#dispose".
+[warn]   /**
+[warn]   ^
+[warn] /home/wneuper/proto4/libisabelle/pide-interface/src/main/scala/Configuration.scala:26: Could not find any member to link for "edu.tum.cs.isabelle.System.create".
+[warn]   /**
+[warn]   ^
+[warn] 5 warnings found
+[info] Main Scala API documentation successful.
+[info] Packaging /home/wneuper/proto4/libisabelle/pide-interface/target/scala-2.11/pide-interface_2.11-0.3-SNAPSHOT-javadoc.jar ...
+[info] Done packaging.
+[info]  published pide-interface_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-interface_2.11/0.3-SNAPSHOT/poms/pide-interface_2.11.pom
+[info]  published pide-interface_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-interface_2.11/0.3-SNAPSHOT/jars/pide-interface_2.11.jar
+[info]  published pide-interface_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-interface_2.11/0.3-SNAPSHOT/srcs/pide-interface_2.11-sources.jar
+[info]  published pide-interface_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-interface_2.11/0.3-SNAPSHOT/docs/pide-interface_2.11-javadoc.jar
+[info]  published ivy to /home/wneuper/.ivy2/local/info.hupel/pide-interface_2.11/0.3-SNAPSHOT/ivys/ivy.xml
+model contains 67 documentable templates
+[warn] /home/wneuper/proto4/libisabelle/pide-interface/src/main/scala/Environment.scala:127: Could not find any member to link for "scala.concurrent.ExecutionContext".
+[warn]   /**
+[warn]   ^
+[warn] /home/wneuper/proto4/libisabelle/libisabelle/src/main/scala/System.scala:191: Could not find any member to link for "scala.concurrent.ExecutionContext".
+[warn]   /**
+[warn]   ^
+[warn] two warnings found
+[info] Main Scala API documentation successful.
+[info] Packaging /home/wneuper/proto4/libisabelle/docs/target/scala-2.11/libisabelle-docs_2.11-0.3-SNAPSHOT-javadoc.jar ...
+[info] Done packaging.
+[info]  published libisabelle-docs_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-docs_2.11/0.3-SNAPSHOT/poms/libisabelle-docs_2.11.pom
+[info]  published libisabelle-docs_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-docs_2.11/0.3-SNAPSHOT/jars/libisabelle-docs_2.11.jar
+[info]  published libisabelle-docs_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-docs_2.11/0.3-SNAPSHOT/srcs/libisabelle-docs_2.11-sources.jar
+[info]  published libisabelle-docs_2.11 to /home/wneuper/.ivy2/local/info.hupel/libisabelle-docs_2.11/0.3-SNAPSHOT/docs/libisabelle-docs_2.11-javadoc.jar
+[info]  published ivy to /home/wneuper/.ivy2/local/info.hupel/libisabelle-docs_2.11/0.3-SNAPSHOT/ivys/ivy.xml
+model contains 377 documentable templates
+model contains 440 documentable templates
+[info] Main Scala API documentation successful.
+[info] Packaging /home/wneuper/proto4/libisabelle/pide/2014/target/scala-2.11/pide-2014_2.11-0.3-SNAPSHOT-javadoc.jar ...
+[info] Done packaging.
+[info]  published pide-2014_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2014_2.11/0.3-SNAPSHOT/poms/pide-2014_2.11.pom
+[info]  published pide-2014_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2014_2.11/0.3-SNAPSHOT/jars/pide-2014_2.11.jar
+[info]  published pide-2014_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2014_2.11/0.3-SNAPSHOT/srcs/pide-2014_2.11-sources.jar
+[info]  published pide-2014_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2014_2.11/0.3-SNAPSHOT/docs/pide-2014_2.11-javadoc.jar
+[info]  published ivy to /home/wneuper/.ivy2/local/info.hupel/pide-2014_2.11/0.3-SNAPSHOT/ivys/ivy.xml
+[info] Main Scala API documentation successful.
+[info] Packaging /home/wneuper/proto4/libisabelle/pide/2015/target/scala-2.11/pide-2015_2.11-0.3-SNAPSHOT-javadoc.jar ...
+[info] Done packaging.
+[info]  published pide-2015_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2015_2.11/0.3-SNAPSHOT/poms/pide-2015_2.11.pom
+[info]  published pide-2015_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2015_2.11/0.3-SNAPSHOT/jars/pide-2015_2.11.jar
+[info]  published pide-2015_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2015_2.11/0.3-SNAPSHOT/srcs/pide-2015_2.11-sources.jar
+[info]  published pide-2015_2.11 to /home/wneuper/.ivy2/local/info.hupel/pide-2015_2.11/0.3-SNAPSHOT/docs/pide-2015_2.11-javadoc.jar
+[info]  published ivy to /home/wneuper/.ivy2/local/info.hupel/pide-2015_2.11/0.3-SNAPSHOT/ivys/ivy.xml
+[success] Total time: 14 s, completed Dec 8, 2015 12:56:24 PM
