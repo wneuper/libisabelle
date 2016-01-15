@@ -1,7 +1,8 @@
 package edu.tum.cs.isabelle.setup
 
 import java.net.URL
-import java.nio.file.{Path, Paths}
+import java.nio.channels.FileChannel
+import java.nio.file._
 
 import org.apache.commons.lang3.SystemUtils
 
@@ -12,7 +13,7 @@ import acyclic.file
 /**
  * Detection of the machine's [[Platform platform]].
  *
- * Currently, only Linux is supported.
+ * Currently, only Linux and Windows are supported.
  */
 object Platform {
 
@@ -28,29 +29,38 @@ object Platform {
       Paths.get(System.getenv("LOCALAPPDATA")).resolve("libisabelle").toAbsolutePath
   }
 
+  /** Universal OS X platform for both 32- and 64-bit machines. */
+  case object OSX extends OfficialPlatform("macos") {
+    def localStorage =
+      Paths.get(System.getProperty("user.home")).resolve("Library/Preferences/libisabelle").toAbsolutePath
+  }
+
   /** Make an educated guess at the platform, not guaranteed to be correct. */
-  def guess: Option[Platform] =
+  def guess: Option[OfficialPlatform] =
     if (SystemUtils.IS_OS_LINUX)
       Some(Linux)
     else if (SystemUtils.IS_OS_WINDOWS)
       Some(Windows)
+    else if (SystemUtils.IS_OS_MAC_OSX)
+      Some(OSX)
     else
       None
 
-  def genericPlatform(name: String, localStorage0: Path): Platform =
-    new Platform(name) {
+  def genericPlatform(localStorage0: Path): Platform =
+    new Platform {
       val localStorage = localStorage0.toAbsolutePath
     }
 
 }
 
 /**
- * Wrapper around Isabelle's platform identifiers.
+ * The underlying operating system platform with knowlege of a local storage
+ * path.
  *
  * It is recommended to obtain instances via the
  * [[Platform$ companion object]].
  */
-sealed abstract class Platform(val name: String) {
+sealed abstract class Platform {
 
   def localStorage: Path
 
@@ -63,9 +73,33 @@ sealed abstract class Platform(val name: String) {
   final def versionedStorage: Path =
     localStorage.resolve(s"v${BuildInfo.version}")
 
+  final def lockFile: Path =
+    localStorage.resolve(".lock")
+
+  def withLock[A](f: () => A): A = {
+    Files.createDirectories(localStorage)
+    Option(FileChannel.open(lockFile, StandardOpenOption.CREATE, StandardOpenOption.WRITE).tryLock()) match {
+      case None =>
+        sys.error("lock could not be acquired")
+      case Some(lock) =>
+        try {
+          f()
+        }
+        finally {
+          lock.close()
+        }
+    }
+  }
+
 }
 
-sealed abstract class OfficialPlatform private[isabelle](name: String) extends Platform(name) {
+/**
+ * A `[[Platform]]` with known archive location.
+ *
+ * Official platforms can be installed and bootstrapped automatically via the
+ * appropriate methods in [[Setup$ `Setup`]].
+ */
+sealed abstract class OfficialPlatform private[isabelle](val name: String) extends Platform {
 
   /** Default base URL pointing to the standard Isabelle server. */
   protected def baseURL(version: Version) =

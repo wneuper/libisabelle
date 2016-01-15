@@ -1,5 +1,6 @@
 package edu.tum.cs.isabelle
 
+import scala.collection.JavaConverters._
 import scala.util.control.NoStackTrace
 
 import edu.tum.cs.isabelle.api.XML
@@ -16,7 +17,7 @@ object Operation {
    * There is no stack traces available, because instance are only created when
    * the prover throws an exception.
    */
-  case class ProverException private[isabelle](operation: String, msg: String, input: Any) extends RuntimeException(msg) with NoStackTrace {
+  final case class ProverException private[isabelle](operation: String, msg: String, input: Any) extends RuntimeException(msg) with NoStackTrace {
     def fullMessage =
       s"Prover error in operation $operation: $msg\nOffending input: $input"
   }
@@ -73,6 +74,11 @@ object Operation {
    * be loaded again.
    */
   val UseThys = implicitly[List[String], Unit]("use_thys")
+
+  protected[isabelle] val UseThys_Java =
+    Operation.simple("use_thys",
+      Codec[List[String]].transform[java.util.List[String]](_.asJava, _.asScala.toList),
+      Codec[Unit].transform[Void](_ => null, _ => ()))
 
 }
 

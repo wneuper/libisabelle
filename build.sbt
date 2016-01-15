@@ -78,18 +78,25 @@ lazy val apiBuildInfoKeys = Seq[BuildInfoKey](
   git.gitHeadCommit
 )
 
+lazy val logback = "ch.qos.logback" % "logback-classic" % "1.1.1"
+
 
 lazy val root = project.in(file("."))
   .settings(standardSettings)
   .settings(noPublishSettings)
-  .aggregate(pideInterface, libisabelle, setup, pide2014, pide2015, tests, docs, appTemplate, appBootstrap, appReport)
+  .aggregate(
+    pideInterface, libisabelle, setup,
+    tests, docs, examples,
+    appTemplate, appBootstrap, appReport, appCli,
+    pide2014, pide2015, pide2016
+  )
 
 lazy val docs = project.in(file("docs"))
   .settings(moduleName := "libisabelle-docs")
   .settings(standardSettings)
   .settings(unidocSettings)
   .settings(
-    unidocProjectFilter in (ScalaUnidoc, unidoc) := inAnyProject -- inProjects(pide2014, pide2015, tests, appBootstrap, appReport),
+    unidocProjectFilter in (ScalaUnidoc, unidoc) := inProjects(pideInterface, libisabelle, appTemplate, setup),
     doc in Compile := (doc in ScalaUnidoc).value,
     target in unidoc in ScalaUnidoc := crossTarget.value / "api"
   )
@@ -122,14 +129,36 @@ lazy val setup = project.in(file("setup"))
   .settings(acyclicSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "org.apache.commons" % "commons-compress" % "1.9",
-      "org.apache.commons" % "commons-lang3" % "3.3.2",
+      "com.github.alexarchambault" %% "coursier" % "0.1.0-M2",
+      "com.github.alexarchambault" %% "coursier-files" % "0.1.0-M2",
       "com.github.fge" % "java7-fs-more" % "0.2.0",
       "com.google.code.findbugs" % "jsr305" % "1.3.9" % "compile",
-      "com.github.alexarchambault" %% "coursier" % "0.1.0-M1",
-      "com.github.alexarchambault" %% "coursier-files" % "0.1.0-M1"
+      "org.apache.commons" % "commons-compress" % "1.9",
+      "org.apache.commons" % "commons-lang3" % "3.3.2"
     )
   )
+
+
+// Tests
+
+lazy val tests = project.in(file("tests"))
+  .dependsOn(libisabelle, setup)
+  .settings(noPublishSettings)
+  .settings(standardSettings)
+  .settings(warningSettings)
+  .settings(acyclicSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.specs2" %% "specs2-core" % "3.6.5" % "test",
+      "org.specs2" %% "specs2-scalacheck" % "3.6.5" % "test",
+      "org.scalacheck" %% "scalacheck" % "1.12.5" % "test",
+      logback % "test"
+    ),
+    parallelExecution in Test := false
+  )
+
+
+// PIDE implementations
 
 def pide(version: String) = Project(s"pide$version", file(s"pide/$version"))
   .dependsOn(pideInterface)
@@ -149,39 +178,17 @@ def pide(version: String) = Project(s"pide$version", file(s"pide/$version"))
 
 lazy val pide2014 = pide("2014")
 lazy val pide2015 = pide("2015")
-
-lazy val versions = Map(
-  "2014" -> pide2014,
-  "2015" -> pide2015
-)
-
-lazy val tests = project.in(file("tests"))
-  .dependsOn(libisabelle, setup)
-  .settings(noPublishSettings)
-  .settings(standardSettings)
-  .settings(warningSettings)
-  .settings(acyclicSettings)
-  .settings(
-    libraryDependencies ++= Seq(
-      "org.specs2" %% "specs2-core" % "3.6.5" % "test",
-      "org.specs2" %% "specs2-scalacheck" % "3.6.5" % "test",
-      "org.scalacheck" %% "scalacheck" % "1.12.5" % "test",
-      "ch.qos.logback" % "logback-classic" % "1.1.1" % "test"
-    )
-  )
+lazy val pide2016 = pide("2016-RC0")
 
 
 // Standalone applications
 
 lazy val appTemplate = project.in(file("app-template"))
-  .dependsOn(libisabelle, setup)
-  .settings(noPublishSettings)
+  .dependsOn(setup)
   .settings(standardSettings)
   .settings(warningSettings)
   .settings(acyclicSettings)
-  .settings(
-    libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.1"
-  )
+  .settings(libraryDependencies += logback)
 
 def app(identifier: String) = Project(s"app${identifier.capitalize}", file(s"apps/$identifier"))
   .dependsOn(appTemplate)
@@ -190,7 +197,47 @@ def app(identifier: String) = Project(s"app${identifier.capitalize}", file(s"app
   .settings(warningSettings)
 
 lazy val appBootstrap = app("bootstrap")
+lazy val appCli = app("cli")
 lazy val appReport = app("report")
+
+
+// Examples
+
+lazy val examples = project.in(file("examples"))
+  .dependsOn(setup)
+  .settings(noPublishSettings)
+  .settings(standardSettings)
+  .settings(warningSettings)
+  .settings(libraryDependencies += logback)
+
+
+// Workbench
+
+lazy val workbench = project.in(file("workbench"))
+  .dependsOn(setup)
+  .settings(noPublishSettings)
+  .settings(standardSettings)
+  .settings(
+    libraryDependencies += logback,
+    initialCommands in console := """
+      import edu.tum.cs.isabelle._
+      import edu.tum.cs.isabelle.api._
+      import edu.tum.cs.isabelle.pure._
+      import edu.tum.cs.isabelle.hol._
+      import edu.tum.cs.isabelle.setup._
+      import scala.concurrent.duration.Duration
+      import scala.concurrent.Await
+      import scala.concurrent.ExecutionContext.Implicits.global
+      import java.nio.file.Paths
+
+      val setup = Await.result(Setup.defaultSetup(Version("2015")), Duration.Inf)
+      val env = Await.result(setup.makeEnvironment, Duration.Inf)
+      val config = Configuration.fromPath(Paths.get("."), "HOL-Protocol")
+      System.build(env, config)
+      val system = Await.result(System.create(env, config), Duration.Inf)
+
+      val main = Theory(system, "Main")"""
+  )
 
 
 // Release stuff
@@ -208,10 +255,4 @@ releaseProcess := Seq[ReleaseStep](
   setNextVersion,
   commitNextVersion,
   ReleaseStep(action = Command.process("sonatypeReleaseAll", _), enableCrossBuild = true)
-)
-
-libraryDependencies ++= Seq(
-  "info.hupel" %% "libisabelle" % "0.2",
-  "info.hupel" %% "libisabelle-setup" % "0.2",
-  "info.hupel" %% "pide-interface" % "0.2"
 )

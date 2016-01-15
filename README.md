@@ -1,16 +1,21 @@
 # libisabelle
+
 Minimal wrapper around Isabelle/PIDE for non-IDE applications
 
 | Service                   | Status |
 | ------------------------- | ------ |
-| Travis (Linux CI)         | [![Build Status](https://travis-ci.org/larsrh/libisabelle.svg?branch=master)](https://travis-ci.org/larsrh/libisabelle) |
+| Travis (Linux/Mac CI)     | [![Build Status](https://travis-ci.org/larsrh/libisabelle.svg?branch=master)](https://travis-ci.org/larsrh/libisabelle) |
+| AppVeyor (Windows CI)     | [![Build status](https://ci.appveyor.com/api/projects/status/uuafgv21ragvoqei/branch/master?svg=true)](https://ci.appveyor.com/project/larsrh/libisabelle/branch/master) |
 | Maven Central             | [![Maven Central](https://img.shields.io/maven-central/v/info.hupel/libisabelle_2.11.svg?label=latest%20release%20for%202.11)](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22info.hupel%22%20AND%20a%3A%22libisabelle_2.11%22) |
 | Scaladoc                  | [![Scaladoc](http://javadoc-badge.appspot.com/info.hupel/libisabelle-docs_2.11.svg?label=scaladoc)](http://javadoc-badge.appspot.com/info.hupel/libisabelle-docs_2.11) |
+| Zenodo (DOI)              | [![DOI](https://zenodo.org/badge/19880/larsrh/libisabelle.svg)](https://zenodo.org/badge/latestdoi/19880/larsrh/libisabelle) |
+
 
 ## Setup
 
 `libisabelle` is a Scala library which talks to Isabelle.
 It currently works with Isabelle2014 and Isabelle2015.
+Experimental support for Isabelle2016-RC0 is available.
 
 To get started, follow these steps:
 
@@ -18,19 +23,27 @@ To get started, follow these steps:
    After this is done, you are in the SBT shell.
 2. Compile the sources with `compile`.
 3. If you have used an arbitrary snapshot of the sources (e.g. via `git clone`), run `publishLocal`.
+WN: NOT FOR ISAC ...\
 4. Bootstrap an Isabelle installation using `appBootstrap/run --version 2015`, which will download and extract the latest supported Isabelle version for you.
+WN: NOT FOR ISAC .../
 
 On some systems, you might need to install Perl, Python, and/or some additional libraries.
 
 Note to proficient Isabelle users:
 `libisabelle` does not respect `ISABELLE_HOME`.
-Bootstrapping will create a new installation in your home folder (Linux: `.local/share`, Windows: `%LOCALAPPDATA%`).
+Bootstrapping will create a new installation in your home folder (Linux: `~/.local/share`, Windows: `%LOCALAPPDATA%`, OS X: `~/Library/Preferences`).
+
 
 ## Operating system support
 
-Using an existing Isabelle installation, `libisabelle` should work on all platforms supported by Isabelle (Mac OS X, Linux, Windows).
-Bootstrapping an Isabelle installation from within `libisabelle` should work on both Windows and Linux.
-However, only Linux is tested regularly via continuous integration builds.
+`libisabelle` works on all platforms supported by Isabelle (Mac OS X, Linux, Windows).
+It can either use an existing installation or bootstrap one (by downloading the appropriate archive from the Isabelle website).
+Bootstrapping is automatically tested on all three platforms.
+
+### Note on Windows support
+
+AppVeyor builds `libisabelle` on Windows, but only bootstraps an Isabelle installation.
+It does not run the integration tests (for now).
 
 
 ## Running the tests
@@ -50,6 +63,22 @@ $ ./sbt
 
 Make sure to have bootstrapped the installation as described above for the appropriate Isabelle version, otherwise the tests will fail.
 
+
+## Command line interface
+
+The `cli` application launches an Isabelle/jEdit instance with a specified logic.
+
+```
+$ cd libisabelle
+$ ./sbt
+...
+> appCli/run --version 2015 HOL-Probability
+```
+
+By default, the `HOL` session is selected.
+The version has to be specified always.
+
+
 ## Including libisabelle into your project
 
 `libisabelle` is cross-built for Scala 2.10.x and 2.11.x.
@@ -57,8 +86,8 @@ Drop the following lines into your `build.sbt`:
 
 ```scala
 libraryDependencies ++= Seq(
-  "info.hupel" %% "libisabelle" % "0.2",
-  "info.hupel" %% "libisabelle-setup" % "0.2",
-  "info.hupel" %% "pide-interface" % "0.2"
+  "info.hupel" %% "libisabelle" % "0.2.3",
+  "info.hupel" %% "libisabelle-setup" % "0.2.3",
+  "info.hupel" %% "pide-interface" % "0.2.3"
 )
 ```

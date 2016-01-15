@@ -14,11 +14,12 @@ object Environment {
 
   private val logger = getLogger
 
-  private[isabelle] def getVersion(clazz: Class[_ <: Environment]): Version = {
-    val identifier = clazz.getAnnotation(classOf[Implementation]).identifier
-    if (identifier == null)
-      sys.error("malformed implementation")
-    Version(identifier)
+  private[isabelle] def getVersion(clazz: Class[_ <: Environment]): Version =
+    Option(clazz.getAnnotation(classOf[Implementation]).identifier) match {
+      case None =>
+        sys.error("malformed implementation")
+      case Some(identifier) =>
+        Version(identifier)
   }
 
   private val instances: java.util.Map[Class[_ <: Environment], Path] =
@@ -42,6 +43,13 @@ object Environment {
     }
   }
 
+  private[isabelle] def patchSettings(instance: Any, patch: Map[String, String]) = {
+    val field = instance.getClass.getDeclaredField("_settings")
+    field.setAccessible(true)
+    val old = field.get(instance).asInstanceOf[Option[Map[String, String]]].get
+    field.set(instance, Some(old ++ patch))
+  }
+
 }
 
 
@@ -53,7 +61,7 @@ object Environment {
  * an environment knows how to manage Isabelle processes. It can also manage
  * multiple running processes at the same time.
  *
- * A subclass of this class is called ''implementation'' througout
+ * A subclass of this class is called ''implementation'' throughout
  * `libisabelle`. The `[[edu.tum.cs.isabelle.Implementations Implementations]]`
  * class serves as a registry of those and using it is strongly recommended.
  * (Since subclasses should `protect` their constructors, manual instantiation
@@ -98,11 +106,17 @@ object Environment {
  * principle it could do so, it would require the introduction of even more
  * global mutable state. It might do so in the future.
  */
-abstract class Environment protected[isabelle](home: Path) { self =>
+abstract class Environment protected[isabelle](val home: Path) { self =>
 
   Environment.checkInstance(getClass(), home)
 
-  final val version = Environment.getVersion(getClass())
+  final val version: Version = Environment.getVersion(getClass())
+
+  final val variables: Map[String, String] = Map(
+    "ISABELLE_VERSION" -> version.identifier,
+    "LIBISABELLE_GIT" -> BuildInfo.gitHeadCommit.getOrElse(""),
+    "LIBISABELLE_VERSION" -> BuildInfo.version
+  )
 
   override def toString: String =
     s"$version at $home"

@@ -177,6 +177,11 @@ object Codec {
     }
   }
 
+  implicit def tree: Codec[XML.Tree] = new Codec[XML.Tree] {
+    def encode(t: XML.Tree) = t
+    def decode(tree: XML.Tree) = Right(tree)
+  }.tagged("XML.tree")
+
   /**
    * Obtain an instance of a codec from the implicit scope.
    *
@@ -204,13 +209,13 @@ object Codec {
  *
  * For the opposite direction, it is generally expected that a value which
  * cannot be produced via `[[encode]]` should not [[decode]] cleanly. This is
- * generally achieved by adding _tags_ to the trees. For example, if the codec
- * for type `Foo` for a given value would produce an XML document `t` before
- * tagging, the XML document after tagging would be `<tag name="foo">t</tag>`.
- * The `[[tagged]]` method transforms a raw codec into a tagged codec. Nested
- * tags are allowed (for example, when chaining multiple calls of
- * `[[tagged]]`), but produce additional overhead in the resulting XML
- * documents.
+ * generally achieved by adding ''tags'' to the trees. For example, if the
+ * codec for type `Foo` for a given value would produce an XML document `t`
+ * before tagging, the XML document after tagging would be
+ * `<tag name="foo">t</tag>`. The `[[tagged]]` method transforms a raw codec
+ * into a tagged codec. Nested tags are allowed (for example, when chaining
+ * multiple calls of `[[tagged]]`), but produce additional overhead in the
+ * resulting XML documents.
  */
 trait Codec[T] { self =>
 
@@ -244,6 +249,14 @@ trait Codec[T] { self =>
   def transform[U](f: T => U, g: U => T): Codec[U] = new Codec[U] {
     def encode(u: U): XML.Tree = self.encode(g(u))
     def decode(tree: XML.Tree) = self.decode(tree).right.map(f)
+  }
+
+  def ptransform[U](f: T => Option[U], g: U => T): Codec[U] = new Codec[U] {
+    def encode(u: U): XML.Tree = self.encode(g(u))
+    def decode(tree: XML.Tree) = self.decode(tree) match {
+      case Left(err) => Left(err)
+      case Right(t) => f(t).map(Right.apply).getOrElse(Left("transformation failed" -> List(tree)))
+    }
   }
 
   /** Codec for a list of `T`s, tagged with the string `list`. */
